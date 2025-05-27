@@ -50,7 +50,7 @@
                            <div class="d-flex align-items-center">
                               <div class="rounded-circle iq-card-icon bg-info"><i class="ri-radar-line"></i></div>
                               <div class="text-left ml-3">                                 
-                                 <h2 class="mb-0"><span class="counter">690</span></h2>
+                                 <h2 class="mb-0"><span class="counter">3</span></h2>
                                  <h5 class="">Chờ Duyệt</h5>
                               </div>
                            </div>

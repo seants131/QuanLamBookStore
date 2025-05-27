@@ -72,7 +72,7 @@
                   <li><a href="{{ route('admin.categories') }}"><i class="ri-record-circle-line"></i>Danh Mục Sách</a></li>
                   <li><a href="{{ route('admin.orders.index') }}"><i class="ri-record-circle-line"></i>Đơn Hàng</a></li>
                   <li><a href="{{ route('admin.books.index') }}"><i class="ri-record-circle-line"></i>Sách</a></li>
-                  <li><a href="{{ route('admin.khachhang.index') }}"><i class="ri-record-circle-line"></i>Người Dùng</a></li>
+                  <li><a href="{{ route('admin.khachhang.index') }}"><i class="ri-record-circle-line"></i>Khách hàng</a></li>
                   <form action="{{ route('logout') }}" method="POST" class="d-inline-block w-100 text-center p-3">
                      @csrf
                      <button type="submit" class="bg-primary iq-sign-btn" style="border: none;">
@@ -332,7 +332,7 @@
                               </div>
                            </div>
                            @else
-                              <p>Chưa đăng nhập</p> <!-- Hiển thị nếu người dùng chưa đăng nhập -->
+                              {{-- <p>Admin</p> <!-- Hiển thị nếu người dùng chưa đăng nhập --> --}}
                            @endif
                         </li>
                      </ul>

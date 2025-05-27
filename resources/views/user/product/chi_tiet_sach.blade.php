@@ -324,7 +324,7 @@
                         <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
                            <img src="images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
                            <div class="caption">
-                              <h6 class="mb-1 line-height">Ông Trần Thuận</h6>
+                              <h6 class="mb-1 line-height">Login</h6>
                               <p class="mb-0 text-primary">Tài Khoản</p>
                            </div>
                         </a>
@@ -492,10 +492,10 @@
                            <div class="col-md-6">
                               <div class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height">
                                  <div class="iq-card-body p-0">
-                                    <h3 class="mb-3">Payback Time - Ngày Đòi Nợ</h3>
+                                    <h3 class="mb-3">Sách giáo khoa toán tập 1 (chân trời)</h3>
                                     <div class="price d-flex align-items-center font-weight-500 mb-2">
-                                       <span class="font-size-20 pr-2 old-price">350.000 ₫</span>
-                                       <span class="font-size-24 text-dark">299.000 ₫</span>
+                                       <span class="font-size-20 pr-2 old-price">50.000 ₫</span>
+                                       <span class="font-size-24 text-dark">29.000 ₫</span>
                                     </div>
                                     <div class="mb-3 d-block">
                                        <span class="font-size-20 text-warning">
@@ -506,13 +506,8 @@
                                           <i class="fa fa-star"></i>
                                        </span>
                                     </div>
-                                    <span class="text-dark mb-4 pb-4 iq-border-bottom d-block">"Trong chứng khoán và thị
-                                       trường tài chính, dám tham gia đầu tư cũng là một thành công tâm lý ban đầu. Dù
-                                       vậy, 95% nhà đầu tư Việt Nam thuộc nhóm nhà đầu tư nhỏ lẻ với vốn kiến thức tài
-                                       chính vô cùng hạn chế. Họ tham gia vào thị trường chứng khoán với 100% ý chí và
-                                       sự quyết tâm chiến thắng thị trường, nhưng thật không may mắn kết cục cuối cùng
-                                       của họ luôn là sự thất bại và mất tiền.</span>
-                                    <div class="text-primary mb-4">Tác giả: <span class="text-body">HappyLive</span>
+                                    <span class="text-dark mb-4 pb-4 iq-border-bottom d-block">Sách giáo khoa toán tập 1 từ nhà xuất bản chân trời.</span>
+                                    <div class="text-primary mb-4">Tác giả: <span class="text-body">Nhiều tác giả</span>
                                     </div>
                                     <div class="mb-4 d-flex align-items-center">
                                        <a href="checkout.html" class="btn btn-primary view-more mr-2">Thêm vào giỏ
