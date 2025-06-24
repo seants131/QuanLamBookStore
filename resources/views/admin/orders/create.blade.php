@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
 <div id="content-page" class="content-page">
     <div class="container-fluid">
         <div class="row">
@@ -9,185 +8,252 @@
                 <div class="iq-card">
                     <div class="iq-card-header d-flex justify-content-between">
                         <div class="iq-header-title">
-                            <h4 class="card-title">Thêm đơn hàng</h4>
+                            <h4 class="card-title">Tạo đơn hàng mới</h4>
                         </div>
                     </div>
 
-                    <!-- Hiển thị lỗi nếu có -->
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.orders.store') }}">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('admin.orders.store') }}" method="POST">
                         @csrf
                         <a href="{{ route('admin.orders.index') }}" class="close-form-button" title="Đóng">&times;</a>
 
                         <div class="form-group">
-                            <label for="user_id">Khách hàng:</label>
-                            <select name="user_id" id="user_id" required>
+                            <label for="user_id">Khách hàng</label>
+                            <select name="user_id" class="form-control" required>
                                 <option value="">-- Chọn khách hàng --</option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}" {{ old('user_id') == $customer->id ? 'selected' : '' }}>
-                                        {{ $customer->name }}
-                                    </option>
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="ngay_mua">Ngày mua:</label>
-                            <input type="date" name="ngay_mua" id="ngay_mua" required value="{{ old('ngay_mua') }}">
+                            <label for="ngay_mua">Ngày mua</label>
+                            <input type="date" name="ngay_mua" class="form-control" value="{{ old('ngay_mua', date('Y-m-d')) }}" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="trang_thai">Trạng thái:</label>
-                            <select name="trang_thai" id="trang_thai" required>
-                                <option value="cho_xu_ly" {{ old('trang_thai') == 'cho_xu_ly' ? 'selected' : '' }}>Chờ xử lý</option>
-                                <option value="dang_giao" {{ old('trang_thai') == 'dang_giao' ? 'selected' : '' }}>Đang giao</option>
-                                <option value="hoan_thanh" {{ old('trang_thai') == 'hoan_thanh' ? 'selected' : '' }}>Hoàn thành</option>
-                                <option value="huy" {{ old('trang_thai') == 'huy' ? 'selected' : '' }}>Hủy</option>
+                            <label for="trang_thai">Trạng thái</label>
+                            <select name="trang_thai" class="form-control" required>
+                                <option value="cho_xu_ly">Chờ xử lý</option>
+                                <option value="dang_giao">Đang giao</option>
+                                <option value="hoan_thanh">Hoàn thành</option>
+                                <option value="huy">Hủy</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="hinh_thuc_thanh_toan">Hình thức thanh toán:</label>
-                            <select name="hinh_thuc_thanh_toan" id="hinh_thuc_thanh_toan" required>
-                                <option value="tien_mat" {{ old('hinh_thuc_thanh_toan') == 'tien_mat' ? 'selected' : '' }}>Tiền mặt</option>
-                                <option value="chuyen_khoan" {{ old('hinh_thuc_thanh_toan') == 'chuyen_khoan' ? 'selected' : '' }}>Chuyển khoản</option>
+                            <label for="hinh_thuc_thanh_toan">Hình thức thanh toán</label>
+                            <select name="hinh_thuc_thanh_toan" class="form-control" required>
+                                <option value="tien_mat">Tiền mặt</option>
+                                <option value="chuyen_khoan">Chuyển khoản</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="giam_gia">Giảm giá (%):</label>
-                            <input type="number" name="giam_gia" id="giam_gia" min="0" max="100" value="{{ old('giam_gia', 0) }}">
-                        </div>
+                        <hr>
+                        <h5>Danh sách sách mua</h5>
+                        <table class="table table-bordered" id="table-sach">
+                            <thead>
+                                <tr>
+                                    <th>Nhà xuất bản</th>
+                                    <th>Sách</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn Giá</th>
+                                    <th>Thành tiền</th>
+                                    <th><button type="button" class="btn btn-success btn-sm" onclick="addRow()">+</button></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="form-control nxb-select" required>
+                                            <option value="">-- Chọn NXB --</option>
+                                            @foreach ($nhaXuatBans as $nxb)
+                                                <option value="{{ $nxb->id }}">{{ $nxb->ten }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="sach_id[]" class="form-control sach-select" required disabled>
+                                            <option value="">-- Chọn sách --</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="number" name="so_luong[]" class="form-control so_luong" min="0" value="0" required></td>
+                                    <td><input type="number" name="don_gia[]" class="form-control don_gia" readonly></td>
+                                    <td><input type="number" name="thanh_tien[]" class="form-control thanh_tien" readonly></td>
+                                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">-</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                         <div class="form-group">
-                            <label for="tong_tien">Tổng tiền (VND):</label>
-                            <input type="number" name="tong_tien" id="tong_tien" required min="0" value="{{ old('tong_tien') }}">
+                            <label for="khuyen_mai_id">Khuyến mãi (nếu có)</label>
+                            <select name="khuyen_mai_id" class="form-control">
+                                <option value="">-- Không áp dụng --</option>
+                                @foreach ($khuyenMaiList as $km)
+                                    <option value="{{ $km->id }}">{{ $km->ten }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="tong_so_luong">Tổng số lượng:</label>
-                            <input type="number" name="tong_so_luong" id="tong_so_luong" required min="0" value="{{ old('tong_so_luong') }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="khuyen_mai_id">Khuyến mãi (nếu có):</label>
-                            <input type="number" name="khuyen_mai_id" id="khuyen_mai_id" min="1" value="{{ old('khuyen_mai_id') }}">
-                        </div>
+                        <input type="hidden" name="tong_tien" id="tong_tien_input">
+                        <input type="hidden" name="tong_so_luong" id="tong_so_luong_input">
 
                         <div class="form-group d-flex justify-content-between">
-                            <div>
-                            <button type="submit" class="btn btn-success">Thêm Đơn Hàng</button>
-                            </div>
+                            <button type="submit" class="btn btn-success">Lưu đơn hàng</button>
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">← Trở về</a>
                         </div>
                     </form>
+
+                    @section('scripts')
+                    <script>
+                        const allBooks = @json($sachs);
+
+                        function calculateRow(row) {
+                            const soLuong = parseInt(row.querySelector('.so_luong').value) || 0;
+                            const donGia = parseFloat(row.querySelector('.don_gia').value) || 0;
+                            const thanhTien = soLuong > 0 ? soLuong * donGia : 0;
+                            row.querySelector('.thanh_tien').value = thanhTien;
+                            updateTotals();
+                        }
+
+                        function updateTotals() {
+                            let total = 0, totalQty = 0;
+                            document.querySelectorAll('#table-sach tbody tr').forEach(row => {
+                                const qty = parseInt(row.querySelector('.so_luong').value) || 0;
+                                const price = parseFloat(row.querySelector('.don_gia').value) || 0;
+                                total += qty * price;
+                                totalQty += qty;
+                            });
+                            document.getElementById('tong_tien_input').value = total;
+                            document.getElementById('tong_so_luong_input').value = totalQty;
+                        }
+
+                        function attachRowEvents(row) {
+                            const nxbSelect = row.querySelector('.nxb-select');
+                            const sachSelect = row.querySelector('.sach-select');
+                            const donGiaInput = row.querySelector('.don_gia');
+
+                            nxbSelect.addEventListener('change', function () {
+                                const nxbId = this.value;
+                                const filteredBooks = allBooks.filter(book => book.nha_xuat_ban_id == nxbId);
+                                const options = filteredBooks.map(book =>
+                                    `<option value="${book.MaSach}" data-dongia="${book.GiaBia}">${book.TenSach}</option>`
+                                );
+                                sachSelect.innerHTML = '<option value="">-- Chọn sách --</option>' + options.join('');
+                                sachSelect.disabled = false;
+                            });
+
+                            sachSelect.addEventListener('change', function () {
+                                const selected = this.options[this.selectedIndex];
+                                donGiaInput.value = selected.getAttribute('data-dongia') || 0;
+                                calculateRow(row);
+                            });
+
+                            row.querySelector('.so_luong').addEventListener('input', () => {
+                                calculateRow(row);
+                            });
+                        }
+
+                        function addRow() {
+                            const table = document.querySelector('#table-sach tbody');
+                            const row = table.rows[0].cloneNode(true);
+
+                            row.querySelectorAll('input').forEach(input => input.value = input.classList.contains('so_luong') ? 0 : '');
+                            row.querySelector('.don_gia').value = '';
+                            row.querySelector('.thanh_tien').value = '';
+                            row.querySelector('.nxb-select').selectedIndex = 0;
+                            const sachSelect = row.querySelector('.sach-select');
+                            sachSelect.innerHTML = '<option value="">-- Chọn sách --</option>';
+                            sachSelect.disabled = true;
+
+                            table.appendChild(row);
+                            attachRowEvents(row);
+                        }
+
+                        function removeRow(button) {
+                            const row = button.closest('tr');
+                            const table = document.querySelector('#table-sach tbody');
+                            if (table.rows.length > 1) row.remove();
+                            else alert('Phải có ít nhất một sách.');
+                            updateTotals();
+                        }
+
+                        document.querySelectorAll('#table-sach tbody tr').forEach(row => attachRowEvents(row));
+                        document.querySelector('form').addEventListener('submit', updateTotals);
+                    </script>
+                    @endsection
+
+                    @section('styles')
+                    <style>
+                        .close-form-button {
+                            position: absolute;
+                            top: 15px;
+                            right: 20px;
+                            z-index: 10;
+                            background-color: #dc3545;
+                            color: white;
+                            font-size: 22px;
+                            font-weight: bold;
+                            border: none;
+                            border-radius: 50%;
+                            width: 36px;
+                            height: 36px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            text-decoration: none;
+                            transition: background-color 0.3s ease;
+                        }
+
+                        .close-form-button:hover {
+                            background-color: #bd2130;
+                        }
+
+                        form {
+                            background-color: #ffffff;
+                            padding: 15px;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            max-width: 1250px;
+                            margin: auto;
+                        }
+
+                        input, select {
+                            width: 100%;
+                            padding: 10px;
+                            font-size: 16px;
+                            border: 1px solid #ddd;
+                            border-radius: 4px;
+                        }
+
+                        th, td {
+                            vertical-align: middle;
+                        }
+
+                        .btn-sm {
+                            font-size: 14px;
+                            padding: 4px 8px;
+                        }
+                    </style>
+                    @endsection
 
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@endsection
-
-@section('styles')
-<style>
-    .close-form-button {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        z-index: 10;
-        background-color: #dc3545;
-        color: white;
-        font-size: 22px;
-        font-weight: bold;
-        line-height: 1;
-        border: none;
-        border-radius: 50%;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
-
-    .close-form-button:hover {
-        background-color: #bd2130;
-        text-decoration: none;
-    }
-    
-    .form-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        background-color: #f8f9fa;
-    }
-
-    form {
-        background-color: #ffffff;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 1250px;
-        box-sizing: border-box;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    input, select, textarea {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    textarea {
-        height: 120px;
-        resize: vertical;
-    }
-
-    button {
-        background-color: #28a745;
-        color: white;
-        padding: 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 16px;
-    }
-
-    button:hover {
-        background-color: rgb(21, 206, 86);
-    }
-
-    h1.text-center {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
-</style>
 @endsection
