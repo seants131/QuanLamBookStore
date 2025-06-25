@@ -13,13 +13,13 @@
                     </div>
 
                     @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
 
                     <form method="POST" action="{{ route('admin.orders.update', $order->id) }}">
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="ngay_mua">Ngày mua:</label>
                             <input type="datetime-local" name="ngay_mua" id="ngay_mua" class="form-control" required
-                                value="{{ old('ngay_mua', \Carbon\Carbon::parse($order->ngay_mua)->format('Y-m-d\\TH:i')) }}">
+                                value="{{ old('ngay_mua', \Carbon\Carbon::parse($order->ngay_mua)->format('Y-m-d\TH:i')) }}">
                         </div>
 
                         <div class="form-group">
@@ -64,63 +64,73 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="giam_gia">Giảm giá (%):</label>
-                            <input type="number" name="giam_gia" id="giam_gia" class="form-control" min="0" max="100"
-                                value="{{ old('giam_gia', $order->giam_gia) }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tong_so_luong">Tổng số lượng:</label>
-                            <input type="number" name="tong_so_luong" id="tong_so_luong" class="form-control" required min="0"
-                                value="{{ old('tong_so_luong', $order->tong_so_luong) }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tong_tien">Tổng tiền (VND):</label>
-                            <input type="number" name="tong_tien" id="tong_tien" class="form-control" required min="0"
-                                value="{{ old('tong_tien', $order->tong_tien) }}">
-                        </div>
-
-                        <div class="form-group">
                             <label for="khuyen_mai_id">Khuyến mãi (nếu có):</label>
                             <select name="khuyen_mai_id" id="khuyen_mai_id" class="form-control">
                                 <option value="">-- Không áp dụng --</option>
                                 @foreach ($khuyenMaiList as $km)
-                                    <option value="{{ $km->id }}" {{ $order->khuyen_mai_id == $km->id ? 'selected' : '' }}>
-                                        {{ $km->ten }}
+                                    <option value="{{ $km->id }}" data-phantram="{{ $km->phan_tram_giam }}"
+                                        {{ $order->khuyen_mai_id == $km->id ? 'selected' : '' }}>
+                                        {{ $km->ten }} ({{ $km->phan_tram_giam }}%)
                                     </option>
                                 @endforeach
                             </select>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="dia_chi_giao_hang">Địa chỉ giao hàng</label>
+                            <textarea name="dia_chi_giao_hang" class="form-control" rows="3" required>{{ old('dia_chi_giao_hang', $order->dia_chi_giao_hang ?? '') }}</textarea>
+                        </div>
 
                         <hr>
                         <h5>Chi tiết sách đã mua</h5>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="bang-chitiet">
                             <thead>
                                 <tr>
                                     <th>Tên sách</th>
                                     <th>Số lượng</th>
                                     <th>Đơn giá (Giá bìa)</th>
-                                    <th>Thành tiền</th>
+                                    <th>Thành tiền (đã giảm)</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $tongSoLuong = 0;
+                                    $tongTien = 0;
+                                @endphp
                                 @foreach ($order->chiTietDonHang as $item)
+                                    @php
+                                        $giam = $order->khuyenMai->phan_tram_giam ?? 0;
+                                        $goc = $item->don_gia * $item->so_luong;
+                                        $daGiam = $goc - ($goc * $giam / 100);
+                                        $tongSoLuong += $item->so_luong;
+                                        $tongTien += $daGiam;
+                                    @endphp
                                     <tr>
                                         <td>{{ $item->sach->TenSach ?? 'Không tìm thấy sách' }}</td>
                                         <td>{{ $item->so_luong }}</td>
                                         <td>{{ number_format($item->don_gia, 0, ',', '.') }} VND</td>
-                                        <td>{{ number_format($item->thanh_tien, 0, ',', '.') }} VND</td>
+                                        <td>{{ number_format($daGiam, 0, ',', '.') }} VND</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
+                        <div class="form-group">
+                            <label for="tong_so_luong">Tổng số lượng:</label>
+                            <input type="number" name="tong_so_luong" id="tong_so_luong" class="form-control" required readonly value="{{ $tongSoLuong }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tong_tien">Tổng tiền sau giảm:</label>
+                            <input type="number" name="tong_tien" id="tong_tien" class="form-control" required readonly value="{{ round($tongTien) }}">
+                        </div>
 
                         <div class="form-group d-flex justify-content-between">
                             <button type="submit" class="btn btn-success">Cập nhật Đơn Hàng</button>
                             <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">← Trở về</a>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -175,11 +185,6 @@
     th,
     td {
         vertical-align: middle;
-    }
-
-    .btn-sm {
-        font-size: 14px;
-        padding: 4px 8px;
     }
 </style>
 @endsection

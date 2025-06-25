@@ -45,7 +45,7 @@ class OrderController extends Controller
         $customers = KhachHang::all();
         $sachs = Sach::all();
         $khuyenMaiList = KhuyenMai::all();
-        $nhaXuatBans = NhaXuatBan::all(); // thêm dòng này
+        $nhaXuatBans = NhaXuatBan::all();
 
         return view('admin.orders.create', compact('customers', 'sachs', 'khuyenMaiList', 'nhaXuatBans'));
     }
@@ -57,26 +57,35 @@ class OrderController extends Controller
             'ngay_mua' => 'required|date',
             'trang_thai' => ['required', Rule::in(['cho_xu_ly', 'dang_giao', 'hoan_thanh', 'huy'])],
             'hinh_thuc_thanh_toan' => ['required', Rule::in(['tien_mat', 'chuyen_khoan'])],
-            'giam_gia' => 'nullable|integer|min:0|max:100',
-            'tong_tien' => 'required|numeric|min:0',
             'tong_so_luong' => 'required|integer|min:1',
             'khuyen_mai_id' => 'nullable|exists:khuyen_mai,id',
             'sach_id' => 'required|array|min:1',
             'so_luong' => 'required|array|min:1',
+            'dia_chi_giao_hang' => 'required|string|max:500',
         ]);
 
         DB::beginTransaction();
 
         try {
+            $phanTramGiam = 0;
+            if (!empty($validated['khuyen_mai_id'])) {
+                $km = KhuyenMai::find($validated['khuyen_mai_id']);
+                $phanTramGiam = $km ? $km->phan_tram_giam : 0;
+            }
+
+            $tongTien = 0;
+            $tongSoLuong = 0;
+
             $donHang = DonHang::create([
                 'user_id' => $validated['user_id'],
                 'ngay_mua' => $validated['ngay_mua'],
                 'trang_thai' => $validated['trang_thai'],
                 'hinh_thuc_thanh_toan' => $validated['hinh_thuc_thanh_toan'],
-                'giam_gia' => $validated['giam_gia'] ?? 0,
-                'tong_tien' => $validated['tong_tien'],
-                'tong_so_luong' => $validated['tong_so_luong'],
+                'giam_gia' => $phanTramGiam,
+                'tong_tien' => 0, // cập nhật sau
+                'tong_so_luong' => 0,
                 'khuyen_mai_id' => $validated['khuyen_mai_id'] ?? null,
+                'dia_chi_giao_hang' => $validated['dia_chi_giao_hang'], // thêm dòng này
             ]);
 
             foreach ($validated['sach_id'] as $index => $sachId) {
@@ -88,7 +97,6 @@ class OrderController extends Controller
                     return back()->withInput()->with('error', "Không tìm thấy sách có mã {$sachId}.");
                 }
 
-                // Kiểm tra tồn kho
                 if ($sach->SoLuong < $soLuong) {
                     DB::rollBack();
                     return back()->withInput()->with('error', "Sách '{$sach->TenSach}' không đủ số lượng tồn kho.");
@@ -97,7 +105,9 @@ class OrderController extends Controller
                 $donGia = $sach->GiaBia;
                 $thanhTien = $soLuong * $donGia;
 
-                // Trừ kho
+                $tongTien += $thanhTien;
+                $tongSoLuong += $soLuong;
+
                 $sach->SoLuong -= $soLuong;
                 $sach->save();
 
@@ -109,6 +119,13 @@ class OrderController extends Controller
                     'thanh_tien' => $thanhTien,
                 ]);
             }
+
+            $tongTienSauGiam = $tongTien * (1 - ($phanTramGiam / 100));
+
+            $donHang->update([
+                'tong_tien' => $tongTienSauGiam,
+                'tong_so_luong' => $tongSoLuong
+            ]);
 
             DB::commit();
             return redirect()->route('admin.orders.index')->with('success', 'Hóa đơn đã được tạo thành công.');
@@ -134,14 +151,21 @@ class OrderController extends Controller
             'ngay_mua' => 'required|date',
             'trang_thai' => ['required', Rule::in(['cho_xu_ly', 'dang_giao', 'hoan_thanh', 'huy'])],
             'hinh_thuc_thanh_toan' => ['required', Rule::in(['tien_mat', 'chuyen_khoan'])],
-            'giam_gia' => 'nullable|integer|min:0|max:100',
             'tong_tien' => 'required|numeric|min:0',
             'tong_so_luong' => 'required|integer|min:0',
             'khuyen_mai_id' => 'nullable|exists:khuyen_mai,id',
+            'dia_chi_giao_hang' => 'required|string|max:500',
         ]);
 
         $order = DonHang::findOrFail($id);
-        $order->update($validated);
+
+        $phanTramGiam = 0;
+        if (!empty($validated['khuyen_mai_id'])) {
+            $km = KhuyenMai::find($validated['khuyen_mai_id']);
+            $phanTramGiam = $km ? $km->phan_tram_giam : 0;
+        }
+
+        $order->update(array_merge($validated, ['giam_gia' => $phanTramGiam,'dia_chi_giao_hang' => $validated['dia_chi_giao_hang'],]));
 
         return redirect()->route('admin.orders.index')->with('success', 'Hóa đơn đã được cập nhật thành công.');
     }

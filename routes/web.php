@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\LienHeController;
 use App\Http\Controllers\PhieuNhapController;
+use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminAuthController;
@@ -64,6 +65,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('khachhang', KhachHangController::class);
     Route::resource('lienhe', LienHeController::class);
     Route::resource('phieunhap',PhieuNhapController::class);
+    Route::resource('khuyenmai', KhuyenMaiController::class);
     Route::get('/profile', [AdminProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');

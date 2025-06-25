@@ -104,10 +104,16 @@
                             <select name="khuyen_mai_id" class="form-control">
                                 <option value="">-- Không áp dụng --</option>
                                 @foreach ($khuyenMaiList as $km)
-                                    <option value="{{ $km->id }}">{{ $km->ten }}</option>
+                                    <option value="{{ $km->id }}">{{ $km->ten }} ({{ $km->phan_tram_giam }}%)</option>
                                 @endforeach
                             </select>
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="dia_chi_giao_hang">Địa chỉ giao hàng</label>
+                            <textarea name="dia_chi_giao_hang" class="form-control" rows="3" required>{{ old('dia_chi_giao_hang', $order->dia_chi_giao_hang ?? '') }}</textarea>
+                        </div>
+
 
                         <input type="hidden" name="tong_tien" id="tong_tien_input">
                         <input type="hidden" name="tong_so_luong" id="tong_so_luong_input">
@@ -125,8 +131,19 @@
                         function calculateRow(row) {
                             const soLuong = parseInt(row.querySelector('.so_luong').value) || 0;
                             const donGia = parseFloat(row.querySelector('.don_gia').value) || 0;
-                            const thanhTien = soLuong > 0 ? soLuong * donGia : 0;
-                            row.querySelector('.thanh_tien').value = thanhTien;
+
+                            // Lấy % khuyến mãi đang chọn
+                            const selectKM = document.querySelector('select[name="khuyen_mai_id"]');
+                            const selectedOption = selectKM.options[selectKM.selectedIndex];
+                            const giamGia = parseInt(selectedOption?.textContent?.match(/\d+/)?.[0]) || 0;
+
+                            // Tính tiền sau giảm
+                            const thanhTienGoc = soLuong * donGia;
+                            const thanhTienGiam = thanhTienGoc - (thanhTienGoc * giamGia / 100);
+
+                            // Gán vào ô Thành tiền (hiển thị số sau giảm)
+                            row.querySelector('.thanh_tien').value = thanhTienGiam.toFixed(0);
+
                             updateTotals();
                         }
 
@@ -138,8 +155,18 @@
                                 total += qty * price;
                                 totalQty += qty;
                             });
-                            document.getElementById('tong_tien_input').value = total;
+
+                            const selectKM = document.querySelector('select[name="khuyen_mai_id"]');
+                            const selectedOption = selectKM.options[selectKM.selectedIndex];
+                            const giamGia = parseInt(selectedOption?.textContent?.match(/\d+/)?.[0]) || 0;
+                            const tongTienGiam = total - (total * giamGia / 100);
+
+                            document.getElementById('tong_tien_input').value = Math.round(tongTienGiam);
                             document.getElementById('tong_so_luong_input').value = totalQty;
+
+                            document.getElementById('tong_tien_display').innerText = total.toLocaleString();
+                            document.getElementById('giam_gia_display').innerText = giamGia;
+                            document.getElementById('tong_tien_giam_display').innerText = tongTienGiam.toLocaleString();
                         }
 
                         function attachRowEvents(row) {
@@ -194,6 +221,10 @@
 
                         document.querySelectorAll('#table-sach tbody tr').forEach(row => attachRowEvents(row));
                         document.querySelector('form').addEventListener('submit', updateTotals);
+                        document.querySelector('select[name="khuyen_mai_id"]').addEventListener('change', function () {
+                            document.querySelectorAll('#table-sach tbody tr').forEach(row => calculateRow(row));
+                        });
+
                     </script>
                     @endsection
 

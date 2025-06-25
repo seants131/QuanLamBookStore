@@ -92,6 +92,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('tong_tien')->default(0);
             $table->integer('tong_so_luong')->default(0);
             $table->foreignId('khuyen_mai_id')->nullable()->constrained('khuyen_mai')->nullOnDelete();
+            $table->text('dia_chi_giao_hang')->nullable();
             $table->timestamps();
         });
 

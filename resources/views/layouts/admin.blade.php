@@ -77,6 +77,7 @@
                   <li><a href="{{ route('admin.khachhang.index') }}"><i class="ri-record-circle-line"></i>Người Dùng</a></li>
                   <li><a href="{{ route('admin.lienhe.index') }}"><i class="ri-record-circle-line"></i>Liên Hệ</a></li>
                   <li><a href="{{ route('admin.phieunhap.index') }}"><i class="ri-record-circle-line"></i>Phiếu Nhập</a></li>
+                  <li><a href="{{ route('admin.khuyenmai.index') }}"><i class="ri-record-circle-line"></i>Khuyến Mãi</a></li>
                   <form action="{{ route('logout') }}" method="POST" class="d-inline-block w-100 text-center p-3">
                      @csrf
                      <button type="submit" class="bg-primary iq-sign-btn" style="border: none;">
@@ -264,36 +265,6 @@
                                           </div>
                                           <div class="media-body ml-3">
                                              <h6 class="mb-0 ">Tài khoản của tôi</h6>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Sổ địa chỉ</h6>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-account-box-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Đơn hàng của tôi</h6>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="wishlist.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-heart-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Yêu Thích</h6>
                                           </div>
                                        </div>
                                     </a>

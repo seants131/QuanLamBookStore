@@ -15,8 +15,8 @@
 
                     <div class="iq-card-body">
 
-                        {{-- Thông tin chung --}}
-                        <div class="card-header font-weight-bold text-center h5">Thông tin chung</div>
+                        {{-- Thông tin đơn hàng --}}
+                        <div class="card-header font-weight-bold text-center h5 mb-3">Thông tin chung</div>
                         <div class="table-responsive mb-4">
                             <table class="table table-bordered">
                                 <tbody>
@@ -46,27 +46,27 @@
                                     </tr>
                                     <tr>
                                         <th>Khuyến mãi</th>
-                                        <td>{{ $order->khuyenMai->ten ?? 'Không áp dụng' }}</td>
+                                        <td>{{ optional($order->khuyenMai)->ten ?? 'Không áp dụng' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Địa chỉ giao hàng</th>
+                                        <td>{{ $order->dia_chi_giao_hang ?? 'Không có' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Trạng thái</th>
                                         <td>
-                                            @switch($order->trang_thai)
-                                                @case('cho_xu_ly')
-                                                    <span class="badge badge-warning">Chờ xử lý</span>
-                                                    @break
-                                                @case('dang_giao')
-                                                    <span class="badge badge-info">Đang giao</span>
-                                                    @break
-                                                @case('hoan_thanh')
-                                                    <span class="badge badge-primary">Hoàn thành</span>
-                                                    @break
-                                                @case('huy')
-                                                    <span class="badge badge-danger">Đã hủy</span>
-                                                    @break
-                                                @default
-                                                    <span class="badge badge-secondary">{{ ucfirst(str_replace('_', ' ', $order->trang_thai)) }}</span>
-                                            @endswitch
+                                            @php
+                                                $badge = match($order->trang_thai) {
+                                                    'cho_xu_ly' => 'warning',
+                                                    'dang_giao' => 'info',
+                                                    'hoan_thanh' => 'primary',
+                                                    'huy' => 'danger',
+                                                    default => 'secondary',
+                                                };
+                                            @endphp
+                                            <span class="badge badge-{{ $badge }}">
+                                                {{ ucwords(str_replace('_', ' ', $order->trang_thai)) }}
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -78,7 +78,7 @@
                         </div>
 
                         {{-- Chi tiết sách --}}
-                        <div class="card-header font-weight-bold text-center h5">Chi tiết sách trong đơn hàng</div>
+                        <div class="card-header font-weight-bold text-center h5 mb-3">Chi tiết sách trong đơn hàng</div>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead class="thead-light">
@@ -86,30 +86,38 @@
                                         <th>#</th>
                                         <th>Tên sách</th>
                                         <th>Số lượng</th>
-                                        <th>Đơn giá (Giá bìa)</th>
-                                        <th>Thành tiền</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền sau giảm</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php $giam = $order->khuyenMai->phan_tram_giam ?? 0; @endphp
                                     @forelse ($order->chiTietDonHang as $index => $ct)
+                                        @php
+                                            $goc = $ct->so_luong * $ct->don_gia;
+                                            $sauGiam = $goc - ($goc * $giam / 100);
+                                        @endphp
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $ct->sach->TenSach ?? 'Đã xóa' }}</td>
                                             <td>{{ $ct->so_luong }}</td>
                                             <td>{{ number_format($ct->don_gia, 0, ',', '.') }} đ</td>
-                                            <td>{{ number_format($ct->thanh_tien, 0, ',', '.') }} đ</td>
+                                            <td>{{ number_format($sauGiam, 0, ',', '.') }} đ</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">Không có sách nào trong hóa đơn.</td>
+                                            <td colspan="5" class="text-center">Không có sách nào trong đơn hàng.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
 
+                        {{-- Nút chỉnh sửa --}}
                         <div class="text-right mt-4">
-                            <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-warning">✏️ Sửa đơn hàng</a>
+                            <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-warning">
+                                ✏️ Sửa đơn hàng
+                            </a>
                         </div>
 
                     </div>
