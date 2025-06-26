@@ -9,6 +9,7 @@ use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\LienHeController;
 use App\Http\Controllers\PhieuNhapController;
 use App\Http\Controllers\KhuyenMaiController;
+use App\Http\Controllers\ThongKeController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminAuthController;
@@ -72,6 +73,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/profile/change-password', [AdminProfileController::class, 'changePasswordForm'])->name('profile.password.form');
     Route::post('/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('profile.password');
 });
+
+Route::get('/admin/ajax-thong-ke-sach', [ThongKeController::class, 'thongKeSach']);
+Route::get('/ajax-thong-ke-sach', [ThongKeController::class, 'thongKeSach']);
+Route::get('/ajax-doanh-so-ngay', [ThongKeController::class, 'doanhSoTheoNgay']);
+Route::get('/ajax-thong-ke-trang-thai-don', [ThongKeController::class, 'thongKeTrangThaiDon']);
+Route::get('/ajax-ton-kho-va-ban', [ThongKeController::class, 'tonKhoVaBan']);
+Route::get('/ajax-tai-chinh', [ThongKeController::class, 'taiChinhTongQuat']);
 
 Route::get('/signup', [HomeController::class, 'dangKy'])->name('user.auth.dang_ky');
 // tạm thời ghi chú lại

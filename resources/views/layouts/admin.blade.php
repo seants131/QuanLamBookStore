@@ -174,10 +174,10 @@
                            </div>
                            </li>
                         <li class="nav-item nav-icon dropdown">
-                           <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                           <!-- <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-mail-line"></i>
                            <span class="bg-primary dots"></span>
-                           </a>
+                           </a> -->
                            <div class="iq-sub-dropdown">
                               <div class="iq-card shadow-none m-0">
                                  <div class="iq-card-body p-0 ">
