@@ -301,8 +301,8 @@
             <div class="row">
                <div class="col-lg-6">
                   <ul class="list-inline mb-0">
-                     <li class="list-inline-item"><a href="privacy-policy.html">Chính sách</a></li>
-                     <li class="list-inline-item"><a href="terms-of-service.html">Điều khoản</a></li>
+                     <li class="list-inline-item"><a href="{{ route('chinh-sach') }}">Chính sách</a></li>
+                     <li class="list-inline-item"><a href="{{ route('dieu-khoan') }}">Điều khoản</a></li>
                   </ul>
                </div>
             </div>

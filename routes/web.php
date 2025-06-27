@@ -81,6 +81,15 @@ Route::get('/ajax-thong-ke-trang-thai-don', [ThongKeController::class, 'thongKeT
 Route::get('/ajax-ton-kho-va-ban', [ThongKeController::class, 'tonKhoVaBan']);
 Route::get('/ajax-tai-chinh', [ThongKeController::class, 'taiChinhTongQuat']);
 
+Route::get('/chinh-sach', function () {
+    return view('admin.pages.chinh-sach');
+})->name('chinh-sach');
+
+Route::get('/dieu-khoan', function () {
+    return view('admin.pages.dieu-khoan');
+})->name('dieu-khoan');
+
+
 Route::get('/signup', [HomeController::class, 'dangKy'])->name('user.auth.dang_ky');
 // tạm thời ghi chú lại
 // Route::get('/login', [HomeController::class, 'dangNhap'])->name('user.auth.dang_nhap');

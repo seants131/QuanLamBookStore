@@ -344,7 +344,45 @@ VALUES
 ('Tin Học lớp 9', 'tin-hoc-lop-9', 'sach_tham_khao', 'Nhiều tác giả', 19000, 0, 2023, 'Sách Tin Học lớp 9 theo chương trình mới.', 1, 0, '1750129593_sgk-tin-hoc-lop-9.png', '9', 2, 10,  '2025-06-16 06:35:50', '2025-06-16 06:35:50'),
 ('Công Nghệ lớp 9', 'cong-nghe-lop-9', 'sach_giao_khoa', 'Nhiều tác giả', 20000, 0, 2022, 'Sách Công Nghệ lớp 9 theo chương trình mới.', 1, 0, '1750129617_sgk-cong-nghe-lop-9.png', '9', 3, 10, '2025-06-16 06:35:50', '2025-06-16 06:35:50'),
 ('Âm Nhạc lớp 9', 'am-nhac-lop-9', 'sach_tham_khao', 'Nhiều tác giả', 21000, 0, 2021, 'Sách Âm Nhạc lớp 9 theo chương trình mới.', 1, 0, '1750129634_sgk-am-nhac-lop-9.png', '9', 4, 10,  '2025-06-16 06:35:50', '2025-06-16 06:35:50');
-
+------------------------------------------------------------------------------------------
+INSERT INTO sach (TenSach, slug, LoaiSanPham, TacGia, GiaBia, SoLuong, NamXuatBan, MoTa, TrangThai, LuotMua, HinhAnh, Lop, nha_xuat_ban_id, chiet_khau, created_at, updated_at)
+VALUES
+('Toán lớp 10', 'toan-lop-10', 'sach_giao_khoa', 'Nhiều tác giả', 10000, 0, 2024, 'Sách Toán lớp 10 theo chương trình mới.', 1, 0, 'sgk_toan-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Ngữ Văn lớp 10', 'ngu-van-lop-10', 'sach_tham_khao', 'Nhiều tác giả', 11000, 0, 2024, 'Sách Ngữ Văn lớp 10 theo chương trình mới.', 1, 0, 'sgk_ngu-van-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Tiếng Anh lớp 10', 'tieng-anh-lop-10', 'sach_giao_khoa', 'Nhiều tác giả', 12000, 0, 2024, 'Sách Tiếng Anh lớp 10 theo chương trình mới.', 1, 0, 'sgk_tieng-anh-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Vật Lý lớp 10', 'vat-ly-lop-10', 'sach_tham_khao', 'Nhiều tác giả', 13000, 0, 2024, 'Sách Vật Lý lớp 10 theo chương trình mới.', 1, 0, 'sgk_vat-ly-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Hóa Học lớp 10', 'hoa-hoc-lop-10', 'sach_giao_khoa', 'Nhiều tác giả', 14000, 0, 2024, 'Sách Hóa Học lớp 10 theo chương trình mới.', 1, 0, 'sgk_hoa-hoc-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Sinh Học lớp 10', 'sinh-hoc-lop-10', 'sach_tham_khao', 'Nhiều tác giả', 15000, 0, 2024, 'Sách Sinh Học lớp 10 theo chương trình mới.', 1, 0, 'sgk_sinh-hoc-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Lịch Sử lớp 10', 'lich-su-lop-10', 'sach_giao_khoa', 'Nhiều tác giả', 16000, 0, 2024, 'Sách Lịch Sử lớp 10 theo chương trình mới.', 1, 0, 'sgk_lich-su-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Địa Lý lớp 10', 'ia-ly-lop-10', 'sach_tham_khao', 'Nhiều tác giả', 17000, 0, 2024, 'Sách Địa Lý lớp 10 theo chương trình mới.', 1, 0, 'sgk_ia-ly-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('GDCD lớp 10', 'gdcd-lop-10', 'sach_giao_khoa', 'Nhiều tác giả', 18000, 0, 2024, 'Sách GDCD lớp 10 theo chương trình mới.', 1, 0, 'sgk_gdcd-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Tin Học lớp 10', 'tin-hoc-lop-10', 'sach_tham_khao', 'Nhiều tác giả', 19000, 0, 2024, 'Sách Tin Học lớp 10 theo chương trình mới.', 1, 0, 'sgk_tin-hoc-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Công Nghệ lớp 10', 'cong-nghe-lop-10', 'sach_giao_khoa', 'Nhiều tác giả', 20000, 0, 2024, 'Sách Công Nghệ lớp 10 theo chương trình mới.', 1, 0, 'sgk_cong-nghe-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Âm Nhạc lớp 10', 'am-nhac-lop-10', 'sach_tham_khao', 'Nhiều tác giả', 21000, 0, 2024, 'Sách Âm Nhạc lớp 10 theo chương trình mới.', 1, 0, 'sgk_am-nhac-lop-10.png', '10', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Toán lớp 11', 'toan-lop-11', 'sach_giao_khoa', 'Nhiều tác giả', 10000, 0, 2024, 'Sách Toán lớp 11 theo chương trình mới.', 1, 0, 'sgk_toan-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Ngữ Văn lớp 11', 'ngu-van-lop-11', 'sach_tham_khao', 'Nhiều tác giả', 11000, 0, 2024, 'Sách Ngữ Văn lớp 11 theo chương trình mới.', 1, 0, 'sgk_ngu-van-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Tiếng Anh lớp 11', 'tieng-anh-lop-11', 'sach_giao_khoa', 'Nhiều tác giả', 12000, 0, 2024, 'Sách Tiếng Anh lớp 11 theo chương trình mới.', 1, 0, 'sgk_tieng-anh-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Vật Lý lớp 11', 'vat-ly-lop-11', 'sach_tham_khao', 'Nhiều tác giả', 13000, 0, 2024, 'Sách Vật Lý lớp 11 theo chương trình mới.', 1, 0, 'sgk_vat-ly-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Hóa Học lớp 11', 'hoa-hoc-lop-11', 'sach_giao_khoa', 'Nhiều tác giả', 14000, 0, 2024, 'Sách Hóa Học lớp 11 theo chương trình mới.', 1, 0, 'sgk_hoa-hoc-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Sinh Học lớp 11', 'sinh-hoc-lop-11', 'sach_tham_khao', 'Nhiều tác giả', 15000, 0, 2024, 'Sách Sinh Học lớp 11 theo chương trình mới.', 1, 0, 'sgk_sinh-hoc-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Lịch Sử lớp 11', 'lich-su-lop-11', 'sach_giao_khoa', 'Nhiều tác giả', 16000, 0, 2024, 'Sách Lịch Sử lớp 11 theo chương trình mới.', 1, 0, 'sgk_lich-su-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Địa Lý lớp 11', 'ia-ly-lop-11', 'sach_tham_khao', 'Nhiều tác giả', 17000, 0, 2024, 'Sách Địa Lý lớp 11 theo chương trình mới.', 1, 0, 'sgk_ia-ly-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('GDCD lớp 11', 'gdcd-lop-11', 'sach_giao_khoa', 'Nhiều tác giả', 18000, 0, 2024, 'Sách GDCD lớp 11 theo chương trình mới.', 1, 0, 'sgk_gdcd-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Tin Học lớp 11', 'tin-hoc-lop-11', 'sach_tham_khao', 'Nhiều tác giả', 19000, 0, 2024, 'Sách Tin Học lớp 11 theo chương trình mới.', 1, 0, 'sgk_tin-hoc-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Công Nghệ lớp 11', 'cong-nghe-lop-11', 'sach_giao_khoa', 'Nhiều tác giả', 20000, 0, 2024, 'Sách Công Nghệ lớp 11 theo chương trình mới.', 1, 0, 'sgk_cong-nghe-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Âm Nhạc lớp 11', 'am-nhac-lop-11', 'sach_tham_khao', 'Nhiều tác giả', 21000, 0, 2024, 'Sách Âm Nhạc lớp 11 theo chương trình mới.', 1, 0, 'sgk_am-nhac-lop-11.png', '11', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Toán lớp 12', 'toan-lop-12', 'sach_giao_khoa', 'Nhiều tác giả', 10000, 0, 2024, 'Sách Toán lớp 12 theo chương trình mới.', 1, 0, 'sgk_toan-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Ngữ Văn lớp 12', 'ngu-van-lop-12', 'sach_tham_khao', 'Nhiều tác giả', 11000, 0, 2024, 'Sách Ngữ Văn lớp 12 theo chương trình mới.', 1, 0, 'sgk_ngu-van-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Tiếng Anh lớp 12', 'tieng-anh-lop-12', 'sach_giao_khoa', 'Nhiều tác giả', 12000, 0, 2024, 'Sách Tiếng Anh lớp 12 theo chương trình mới.', 1, 0, 'sgk_tieng-anh-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Vật Lý lớp 12', 'vat-ly-lop-12', 'sach_tham_khao', 'Nhiều tác giả', 13000, 0, 2024, 'Sách Vật Lý lớp 12 theo chương trình mới.', 1, 0, 'sgk_vat-ly-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Hóa Học lớp 12', 'hoa-hoc-lop-12', 'sach_giao_khoa', 'Nhiều tác giả', 14000, 0, 2024, 'Sách Hóa Học lớp 12 theo chương trình mới.', 1, 0, 'sgk_hoa-hoc-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Sinh Học lớp 12', 'sinh-hoc-lop-12', 'sach_tham_khao', 'Nhiều tác giả', 15000, 0, 2024, 'Sách Sinh Học lớp 12 theo chương trình mới.', 1, 0, 'sgk_sinh-hoc-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Lịch Sử lớp 12', 'lich-su-lop-12', 'sach_giao_khoa', 'Nhiều tác giả', 16000, 0, 2024, 'Sách Lịch Sử lớp 12 theo chương trình mới.', 1, 0, 'sgk_lich-su-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Địa Lý lớp 12', 'ia-ly-lop-12', 'sach_tham_khao', 'Nhiều tác giả', 17000, 0, 2024, 'Sách Địa Lý lớp 12 theo chương trình mới.', 1, 0, 'sgk_ia-ly-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('GDCD lớp 12', 'gdcd-lop-12', 'sach_giao_khoa', 'Nhiều tác giả', 18000, 0, 2024, 'Sách GDCD lớp 12 theo chương trình mới.', 1, 0, 'sgk_gdcd-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Tin Học lớp 12', 'tin-hoc-lop-12', 'sach_tham_khao', 'Nhiều tác giả', 19000, 0, 2024, 'Sách Tin Học lớp 12 theo chương trình mới.', 1, 0, 'sgk_tin-hoc-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Công Nghệ lớp 12', 'cong-nghe-lop-12', 'sach_giao_khoa', 'Nhiều tác giả', 20000, 0, 2024, 'Sách Công Nghệ lớp 12 theo chương trình mới.', 1, 0, 'sgk_cong-nghe-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31'),
+('Âm Nhạc lớp 12', 'am-nhac-lop-12', 'sach_tham_khao', 'Nhiều tác giả', 21000, 0, 2024, 'Sách Âm Nhạc lớp 12 theo chương trình mới.', 1, 0, 'sgk_am-nhac-lop-12.png', '12', 1, 10, '2025-06-27 05:50:31', '2025-06-27 05:50:31');
 --
 -- Table structure for table `sessions`
 --

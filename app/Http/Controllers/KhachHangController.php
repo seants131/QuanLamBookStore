@@ -7,9 +7,23 @@ use Illuminate\Http\Request;
 
 class KhachHangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $khachhangs = KhachHang::paginate(10);
+        $query = KhachHang::query();
+
+        // Tìm theo tên, username hoặc email
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                ->orWhere('username', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Sắp xếp mới nhất lên đầu
+        $khachhangs = $query->orderBy('created_at', 'desc')->paginate(10);
+
         return view('admin.khachhang.index', compact('khachhangs'));
     }
 

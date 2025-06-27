@@ -28,11 +28,14 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $query->paginate(5);
+        // 👉 Sắp xếp hóa đơn mới nhất lên đầu
+        $orders = $query->orderBy('created_at', 'desc')->paginate(5);
+        
         $customers = KhachHang::all();
 
         return view('admin.orders.index', compact('orders', 'customers'));
     }
+
 
     public function show($id)
     {
