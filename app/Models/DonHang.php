@@ -18,11 +18,7 @@ class DonHang extends Model
         'tong_tien',
         'tong_so_luong',
         'khuyen_mai_id',
-        //địa chỉ giao hàng
-        'dia_chi',
-        'phuong_xa',
-        'quan_huyen',
-        'tinh_thanh_pho',
+        'dia_chi_giao_hang'
     ];
 
     protected $casts = [
@@ -39,14 +35,14 @@ class DonHang extends Model
     }
 
     // Quan hệ: đơn hàng có thể gắn với 1 khuyến mãi
-    // public function khuyenMai()
-    // {
-    //     return $this->belongsTo(KhuyenMai::class, 'khuyen_mai_id');
-    // }
+    public function khuyenMai()
+    {
+        return $this->belongsTo(KhuyenMai::class, 'khuyen_mai_id');
+    }
 
     // Nếu có bảng chi tiết đơn hàng
-    // public function chiTietDonHang()
-    // {
-    //     return $this->hasMany(ChiTietDonHang::class, 'hoa_don_id');
-    // }
+    public function chiTietDonHang()
+    {
+        return $this->hasMany(ChiTietHoaDon::class, 'hoa_don_id');
+    }
 }

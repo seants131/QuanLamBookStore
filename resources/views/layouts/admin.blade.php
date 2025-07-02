@@ -72,11 +72,12 @@
                <ul id="iq-sidebar-toggle" class="iq-menu">
                   <li><a href="{{ route('admin.index') }}"><i class="las la-home iq-arrow-left"></i>Bảng Điều Khiển</a></li>
                   
-                  <li><a href="{{ route('admin.orders.index') }}"><i class="ri-record-circle-line"></i>Đơn Hàng</a></li>
+                  <li><a href="{{ route('admin.orders.index') }}"><i class="ri-record-circle-line"></i>Hóa Đơn</a></li>
                   <li><a href="{{ route('admin.books.index') }}"><i class="ri-record-circle-line"></i>Sách</a></li>
                   <li><a href="{{ route('admin.khachhang.index') }}"><i class="ri-record-circle-line"></i>Người Dùng</a></li>
                   <li><a href="{{ route('admin.lienhe.index') }}"><i class="ri-record-circle-line"></i>Liên Hệ</a></li>
                   <li><a href="{{ route('admin.phieunhap.index') }}"><i class="ri-record-circle-line"></i>Phiếu Nhập</a></li>
+                  <li><a href="{{ route('admin.khuyenmai.index') }}"><i class="ri-record-circle-line"></i>Khuyến Mãi</a></li>
                   <form action="{{ route('logout') }}" method="POST" class="d-inline-block w-100 text-center p-3">
                      @csrf
                      <button type="submit" class="bg-primary iq-sign-btn" style="border: none;">
@@ -173,10 +174,10 @@
                            </div>
                            </li>
                         <li class="nav-item nav-icon dropdown">
-                           <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
+                           <!-- <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
                            <i class="ri-mail-line"></i>
                            <span class="bg-primary dots"></span>
-                           </a>
+                           </a> -->
                            <div class="iq-sub-dropdown">
                               <div class="iq-card shadow-none m-0">
                                  <div class="iq-card-body p-0 ">
@@ -267,36 +268,6 @@
                                           </div>
                                        </div>
                                     </a>
-                                    <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-profile-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Sổ địa chỉ</h6>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-account-box-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Đơn hàng của tôi</h6>
-                                          </div>
-                                       </div>
-                                    </a>
-                                    <a href="wishlist.html" class="iq-sub-card iq-bg-primary-hover">
-                                       <div class="media align-items-center">
-                                          <div class="rounded iq-card-icon iq-bg-primary">
-                                             <i class="ri-heart-line"></i>
-                                          </div>
-                                          <div class="media-body ml-3">
-                                             <h6 class="mb-0 ">Yêu Thích</h6>
-                                          </div>
-                                       </div>
-                                    </a>
                                     <div class="d-inline-block w-100 text-center p-3">
                                        <form action="{{ route('logout') }}" method="POST">
                                           @csrf
@@ -330,8 +301,8 @@
             <div class="row">
                <div class="col-lg-6">
                   <ul class="list-inline mb-0">
-                     <li class="list-inline-item"><a href="privacy-policy.html">Chính sách</a></li>
-                     <li class="list-inline-item"><a href="terms-of-service.html">Điều khoản</a></li>
+                     <li class="list-inline-item"><a href="{{ route('chinh-sach') }}">Chính sách</a></li>
+                     <li class="list-inline-item"><a href="{{ route('dieu-khoan') }}">Điều khoản</a></li>
                   </ul>
                </div>
             </div>
