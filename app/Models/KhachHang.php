@@ -19,12 +19,7 @@ class KhachHang extends Authenticatable
         'email',
         'so_dien_thoai',
         'role',
-
-        // Địa chỉ mặc định
         'dia_chi',
-        'phuong_xa',
-        'quan_huyen',
-        'tinh_thanh_pho',
     ];
 
     protected $hidden = [
@@ -42,6 +37,6 @@ class KhachHang extends Authenticatable
 
     public function getAuthIdentifierName()
     {
-        return 'username';
+        return 'id';
     }
 }

@@ -24,22 +24,42 @@ class UserAuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:nguoi_dung,username',
-            'email' => 'required|email|unique:nguoi_dung,email',
+            'username' => 'required|string|max:255',
+            'email' => 'required|email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $user = KhachHang::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'khach',
-        ]);
+        $user = KhachHang::where('email', $request->email)->first();
 
-        Auth::login($user);
-
-        return redirect()->route('user.home.index');
+        if ($user) {
+            // Nếu user đã có username thì báo lỗi
+            if (!empty($user->username)) {
+                return back()->withErrors(['username' => 'Tài khoản đã được tạo.'])->withInput();
+            }
+            // Nếu chưa có username thì cho cập nhật
+            $user->update([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+            ]);
+            Auth::guard('khach')->login($user);
+            return redirect()->route('user.home.index');
+        } else {
+            // Nếu email chưa tồn tại, tạo mới
+            // Kiểm tra username đã tồn tại ở user khác chưa
+            $userByUsername = KhachHang::where('username', $request->username)->first();
+            if ($userByUsername) {
+                return back()->withErrors(['username' => 'Tên đăng nhập đã tồn tại.'])->withInput();
+            }
+            $user = KhachHang::create([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'khach',
+            ]);
+            Auth::guard('khach')->login($user);
+            return redirect()->route('user.home.index');
+        }
     }
 
     // Hiển thị form đăng nhập
@@ -58,14 +78,10 @@ class UserAuthController extends Controller
 
         $credentials = $request->only('username', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.index');
-            }
+        if (Auth::guard('khach')->attempt($credentials)) {
             return redirect()->route('user.home.index');
         }
-        
+
         return back()->withErrors([
             'username' => 'Tài khoản hoặc mật khẩu không đúng.',
         ])->withInput();

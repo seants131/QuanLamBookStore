@@ -2,8 +2,8 @@
 <div class="iq-sidebar">
     <div class="iq-sidebar-logo d-flex justify-content-between">
         <a href="/" class="header-logo">
-            <img src="images/logo.png" class="img-fluid rounded-normal" alt="">
             <div class="logo-title">
+                <img src={{ asset('images/logo.png') }} class="img-fluid rounded-normal" alt="">
                 <span class="text-primary text-uppercase">NHASACHTV</span>
             </div>
         </a>
@@ -313,13 +313,17 @@
                    </div> --}}
                     </li>
                     <li class="line-height pt-3">
-                        @if (Auth::check())
+                        @php
+                            $khach = Auth::guard('khach')->user();
+                        @endphp
+
+                        @if ($khach)
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
                                 <img src="images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
                                 <div class="caption">
-                                    <h6 class="mb-1 line-height">{{ Auth::user()->name }}</h6>
+                                    <h6 class="mb-1 line-height">{{ $khach->name }}</h6>
                                     <p class="mb-0 text-primary">
-                                        {{ Auth::user()->role === 'admin' ? 'Quản trị viên' : 'Tài Khoản' }}
+                                        {{ $khach->role === 'admin' ? 'Quản trị viên' : 'Tài Khoản' }}
                                     </p>
                                 </div>
                             </a>
@@ -327,7 +331,7 @@
                                 <div class="iq-card shadow-none m-0">
                                     <div class="iq-card-body p-0 ">
                                         <div class="bg-primary p-3">
-                                            <h5 class="mb-0 text-white line-height">Xin Chào {{ Auth::user()->name }}
+                                            <h5 class="mb-0 text-white line-height">Xin Chào {{ $khach->name }}
                                             </h5>
                                         </div>
                                         <a href="{{ route('user.profile.index') }}"
@@ -366,7 +370,8 @@
                             </div>
                         @else
                             <a href="{{ route('user.sign-in') }}" class="iq-waves-effect d-flex align-items-center">
-                                <img src="images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
+                                <img src="{{ asset('images/user/1.jpg') }}" class="img-fluid rounded-circle mr-3"
+                                    alt="user">
                                 <div class="caption">
                                     <h6 class="mb-1 line-height">Khách</h6>
                                     <p class="mb-0 text-primary">Đăng nhập/Đăng ký</p>

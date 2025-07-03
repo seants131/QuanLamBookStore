@@ -14,7 +14,7 @@
         <h3 style="color: #3182ce;">Thông tin hóa đơn</h3>
         <ul style="list-style: none; padding: 0;">
             <li><strong>Mã đơn hàng:</strong> #{{ $order->id }}</li>
-            <li><strong>Ngày mua:</strong> {{ $order->ngay_mua->format('d/m/Y H:i') }}</li>
+            <li><strong>Ngày mua:</strong> {{ $order->ngay_mua->format('d/m/Y') }}</li>
             <li><strong>Hình thức thanh toán:</strong> {{ $order->hinh_thuc_thanh_toan }}</li>
             <li><strong>Trạng thái:</strong> {{ $order->trang_thai }}</li>
         </ul>

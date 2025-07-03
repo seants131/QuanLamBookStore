@@ -119,30 +119,8 @@ Route::prefix('thanh-toan')->name('thanh_toan.')->group(function () {
     Route::get('/gio-hang', [UserCheckoutController::class, 'gioHang'])->name('gio_hang');
     Route::get('/dia-chi', [UserCheckoutController::class, 'diaChi'])->name('dia_chi');
     Route::get('/phuong-thuc-thanh-toan', [UserCheckoutController::class, 'phuongThucThanhToan'])->name('pt_thanh_toan');
-    // Route::get('/xac-nhan', [UserCheckoutController::class, 'xacNhan'])->name('xac_nhan');
 });
 
-Route::get('/send-order-mail', function () {
-    $order = [
-        'id' => 1234,
-        'date' => now()->format('d/m/Y'),
-        'items' => [
-            ['name' => 'Sách toán 11 chân trờitrời', 'qty' => 2, 'price' => 50000],
-            ['name' => 'Sách ngữ văn chân trời', 'qty' => 1, 'price' => 75000],
-        ],
-        'total' => 2 * 50000 + 1 * 75000,
-    ];
-
-    Mail::to('hellotoilaquan@gmail.com')->send(new OrderConfirmationMail($order));
-
-    return 'Đã gửi email xác nhận đơn hàng!';
-});
-
-// use App\Http\Controllers\UserCartController;
-
-// Route::get('/gio-hang', [UserCartController::class, 'index'])->name('cart.index');
-// Route::post('/gio-hang/them', [UserCartController::class, 'add'])->name('cart.add');
-// Route::post('/gio-hang/xoa', [UserCartController::class, 'remove'])->name('cart.remove');
 
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -151,7 +129,7 @@ Route::post('/cart/remove-ajax', [CartController::class, 'removeAjax'])->name('c
 
 Route::get('/sach/{slug}', [HomeController::class, 'bookDetail'])->name('user.books.detail');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:khach'])->group(function () {
     Route::get('/profile', [UserController::class, 'index'])->name('user.profile.index');
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');
     Route::get('/orders/{id}', [UserController::class, 'orderDetail'])->name('user.orders.detail');
