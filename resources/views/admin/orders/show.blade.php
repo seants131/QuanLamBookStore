@@ -25,12 +25,28 @@
                                         <td>{{ $order->khachHang->name ?? 'Không xác định' }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Số điện thoại</th>
+                                        <td>{{ $order->sdt ?? 'Không có' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{ $order->email ?? 'Không có' }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Ngày mua</th>
                                         <td>{{ \Carbon\Carbon::parse($order->ngay_mua)->format('d/m/Y H:i') }}</td>
                                     </tr>
                                     <tr>
                                         <th>Hình thức thanh toán</th>
-                                        <td>{{ ucfirst(str_replace('_', ' ', $order->hinh_thuc_thanh_toan)) }}</td>
+                                        <td>
+                                            @php
+                                                $mapPayment = [
+                                                    'tien_mat' => 'Tiền mặt',
+                                                    'chuyen_khoan' => 'Chuyển khoản',
+                                                ];
+                                            @endphp
+                                            {{ $mapPayment[$order->hinh_thuc_thanh_toan] ?? $order->hinh_thuc_thanh_toan }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Giảm giá</th>
@@ -63,9 +79,16 @@
                                                     'huy' => 'danger',
                                                     default => 'secondary',
                                                 };
+
+                                                $statusText = [
+                                                    'cho_xu_ly' => 'Chờ xử lý',
+                                                    'dang_giao' => 'Đang giao',
+                                                    'hoan_thanh' => 'Hoàn thành',
+                                                    'huy' => 'Hủy',
+                                                ];
                                             @endphp
                                             <span class="badge badge-{{ $badge }}">
-                                                {{ ucwords(str_replace('_', ' ', $order->trang_thai)) }}
+                                                {{ $statusText[$order->trang_thai] ?? $order->trang_thai }}
                                             </span>
                                         </td>
                                     </tr>

@@ -18,7 +18,9 @@ class DonHang extends Model
         'tong_tien',
         'tong_so_luong',
         'khuyen_mai_id',
-        'dia_chi_giao_hang'
+        'dia_chi_giao_hang',
+        'sdt',
+        'email',
     ];
 
     protected $casts = [

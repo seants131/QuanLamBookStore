@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\PhieuNhap;
 use App\Models\ChiTietNhapSach;
 use App\Models\Sach;
-use App\Models\NhaXuatBan;
 use App\Models\KhachHang;
+use App\Models\DanhMuc;
 use Illuminate\Support\Facades\Auth;
 
 class PhieuNhapController extends Controller
@@ -35,8 +35,9 @@ class PhieuNhapController extends Controller
     public function create()
     {
         $sachs = Sach::all();
-        $nhaXuatBans = NhaXuatBan::all();
-        return view('admin.phieunhap.create', compact('sachs', 'nhaXuatBans'));
+        // $nhaXuatBans = NhaXuatBan::all();
+        $danhMucs = DanhMuc::all();
+        return view('admin.phieunhap.create', compact('sachs', 'danhMucs'));
     }
 
    public function store(Request $request)
@@ -102,15 +103,14 @@ class PhieuNhapController extends Controller
         return view('admin.phieunhap.show', compact('phieunhap'));
     }
 
-   public function edit($id)
+  public function edit($id)
     {
         $phieunhap = PhieuNhap::with('chiTietNhapSach.sach')->findOrFail($id);
-        $sachs = Sach::all(); // Tất cả sách
-        $nhaXuatBans = NhaXuatBan::all(); // ✅ Thêm dòng này
+        $sachs = Sach::all(); // ✅ Toàn bộ sách
+        $danhMucs = DanhMuc::all(); // ✅ Danh mục để chọn theo bộ sách
 
-        return view('admin.phieunhap.edit', compact('phieunhap', 'sachs', 'nhaXuatBans'));
+        return view('admin.phieunhap.edit', compact('phieunhap', 'sachs', 'danhMucs'));
     }
-
 
     public function update(Request $request, $id)
     {

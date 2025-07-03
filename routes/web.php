@@ -66,9 +66,11 @@ Route::get('/admin/books', [BookController::class, 'index'])->name('admin.books'
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders');
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    
     Route::resource('books', BookController::class);
     Route::resource('orders', OrderController::class);
+    Route::post('/orders/approve', [OrderController::class, 'approve'])->name('orders.approve');
+    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/orders/{id}/print', [OrderController::class, 'print'])->name('orders.print');
     Route::resource('khachhang', KhachHangController::class);
     Route::resource('lienhe', LienHeController::class);
     Route::resource('phieunhap',PhieuNhapController::class);

@@ -56,7 +56,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Tên sách</th>
-                                        <th>Nhà xuất bản</th>
+                                        <th>Danh mục</th>
                                         <th>Số lượng</th>
                                         <th>Giá bìa</th>
                                         <th>Chiết khấu (%)</th>
@@ -68,7 +68,7 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $ct->sach->TenSach ?? 'Đã xóa' }}</td>
-                                            <td>{{ $ct->sach->nhaXuatBan->ten ?? 'Không xác định' }}</td>
+                                            <td>{{ $ct->sach->danhMuc->ten ?? 'Không xác định' }}</td>
                                             <td>{{ $ct->so_luong }}</td>
                                             <td>{{ number_format($ct->sach->GiaBia ?? 0, 0, ',', '.') }} đ</td>
                                             <td>{{ $ct->chiet_khau ?? $ct->sach->chiet_khau ?? 0 }}%</td>

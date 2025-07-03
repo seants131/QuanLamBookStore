@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sach;
-use App\Models\NhaXuatBan;
+use App\Models\DanhMuc;
 use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Sach::with('nhaXuatBan');
+        $query = Sach::with('danhMuc');
 
         if ($request->filled('ten_sach')) {
             $query->where('TenSach', 'LIKE', '%' . $request->ten_sach . '%');
@@ -25,23 +25,31 @@ class BookController extends Controller
             $query->whereDate('created_at', $request->ngay_tao);
         }
 
-        $books = $query->orderByDesc('created_at')->paginate(10);
-        $lopOptions = range(1, 12);
+        if ($request->filled('danh_muc_id')) {
+            $query->where('danh_muc_id', $request->danh_muc_id);
+        }
 
-        return view('admin.books.index', compact('books', 'lopOptions'));
+        $books = $query->orderByDesc('created_at')
+                    ->paginate(10)
+                    ->appends($request->query()); // GIỮ THAM SỐ TRÊN LINK PHÂN TRANG
+
+        $lopOptions = range(1, 12);
+        $danhMucs = DanhMuc::all();
+
+        return view('admin.books.index', compact('books', 'lopOptions', 'danhMucs'));
     }
 
     public function show($id)
     {
-        $book = Sach::with('nhaXuatBan')->findOrFail($id);
+        $book = Sach::with('danhmuc')->findOrFail($id);
         return view('admin.books.show', compact('book'));
     }
 
     public function create()
     {
         $lopOptions = range(1, 12);
-        $nhaXuatBans = NhaXuatBan::all();
-        return view('admin.books.create', compact('lopOptions', 'nhaXuatBans'));
+        $danhMucs = DanhMuc::all();
+        return view('admin.books.create', compact('lopOptions', 'danhMucs'));
     }
 
     public function store(Request $request)
@@ -57,12 +65,12 @@ class BookController extends Controller
             'NamXuatBan' => 'required|integer',
             'MoTa' => 'nullable|string',
             'TrangThai' => 'required|boolean',
-            'nha_xuat_ban_id' => 'required|exists:nha_xuat_ban,id',
+            'danh_muc_id' => 'required|exists:danh_muc,id',
             'HinhAnh' => 'nullable|image|max:2048',
         ], [
             'TenSach.unique' => 'Tên sách đã tồn tại.',
-            'nha_xuat_ban_id.required' => 'Vui lòng chọn nhà xuất bản.',
-            'nha_xuat_ban_id.exists' => 'Nhà xuất bản không hợp lệ.',
+            'danh_muc_id.required' => 'Vui lòng chọn danh mục.',
+            'danh_muc_id.exists' => 'Danh mục không hợp lệ.',
         ]);
 
         $data = $request->except('SoLuong');
@@ -84,9 +92,9 @@ class BookController extends Controller
     {
         $book = Sach::findOrFail($id);
         $lopOptions = range(1, 12);
-        $nhaXuatBans = NhaXuatBan::all();
+        $danhMucs = DanhMuc::all();
 
-        return view('admin.books.edit', compact('book', 'lopOptions', 'nhaXuatBans'));
+        return view('admin.books.edit', compact('book', 'lopOptions', 'danhMucs'));
     }
 
     public function update(Request $request, $id)
@@ -107,12 +115,12 @@ class BookController extends Controller
             'NamXuatBan' => 'required|integer',
             'MoTa' => 'nullable|string',
             'TrangThai' => 'required|boolean',
-            'nha_xuat_ban_id' => 'required|exists:nha_xuat_ban,id',
+            'danh_muc_id' => 'required|exists:danh_muc,id',
             'HinhAnh' => 'nullable|image|max:2048',
         ], [
             'TenSach.unique' => 'Tên sách đã tồn tại.',
-            'nha_xuat_ban_id.required' => 'Vui lòng chọn nhà xuất bản.',
-            'nha_xuat_ban_id.exists' => 'Nhà xuất bản không hợp lệ.',
+            'danh_muc_id.required' => 'Vui lòng chọn danh mục.',
+            'danh_muc_id.exists' => 'Danh mục không hợp lệ.',
         ]);
 
         $book = Sach::findOrFail($id);

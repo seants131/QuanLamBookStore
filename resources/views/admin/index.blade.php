@@ -150,7 +150,7 @@
                                  <input type="date" id="sach_tu_ngay" class="form-control mr-2">
                                  <label class="mr-2">Đến ngày:</label>
                                  <input type="date" id="sach_den_ngay" class="form-control mr-2">
-                                 <button type="submit" class="btn btn-sm btn-primary">Thống kê</button>
+                                 <button type="button" id="btn-export-csv" class="btn btn-sm btn-success ml-2">Xuất Excel</button>
                               </form>
                         </div>
                         <div class="iq-card-body">
@@ -177,7 +177,7 @@
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
                            <div class="iq-header-title">
-                              <h4 class="card-title mb-0">Thống kê trạng thái đơn hàng</h4>
+                              <h4 class="card-title mb-0">Thống kê đơn hàng theo trạng thái</h4>
                            </div>
                         </div>
                         <div class="iq-card-body">
@@ -191,7 +191,7 @@
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
                            <div class="iq-header-title">
-                              <h4 class="card-title mb-0">Tồn kho và sách đã bán</h4>
+                              <h4 class="card-title mb-0">Thống kê tồn kho và đã bán - 10 sách nổi bật</h4>
                            </div>
                         </div>
                         <div class="iq-card-body">
@@ -217,98 +217,6 @@
                         </div>
                      </div>
                   </div>
-                  <!-- Bảng hóa đơn -->
-                  <div class="col-sm-12">
-                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                        <div class="iq-card-header d-flex justify-content-between">
-                           <div class="iq-header-title">
-                              <h4 class="card-title">Mở hóa đơn</h4>
-                           </div>
-                           <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
-                              <div class="dropdown">
-                                 <span class="dropdown-toggle text-primary" id="dropdownMenuButton5" data-toggle="dropdown">
-                                 <i class="ri-more-fill"></i>
-                                 </span>
-                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton5">
-                                    <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>Xem</a>
-                                    <a class="dropdown-item" href="#"><i class="ri-delete-bin-6-fill mr-2"></i>Xoá</a>
-                                    <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Sửa</a>
-                                    <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>In</a>
-                                    <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Tải xuống</a>
-                                 </div>
-                              </div>
-                           </div> -->
-                        </div>
-                        <div class="iq-card-body">
-                           <div class="order-info">
-                           <div class="table-responsive">
-                               <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Mã đơn</th>
-                                            <th>Khách hàng</th>
-                                            <th>Ngày mua</th>
-                                            <th>Hình thức thanh toán</th>
-                                            <th>Giảm giá</th>
-                                            <th>Tổng tiền</th>
-                                            <th>Số lượng</th>
-                                            <th>Khuyến mãi</th>
-                                            <th>Trạng thái</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($orders as $index => $order)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $order->id }}</td>
-                                            <td>{{ $order->khachHang->name ?? 'N/A' }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($order->ngay_mua)->format('d/m/Y') }}</td>
-                                            <td>{{ ucfirst(str_replace('_', ' ', $order->hinh_thuc_thanh_toan)) }}</td>
-                                            <td>{{ $order->giam_gia }}%</td>
-                                            <td>{{ number_format($order->tong_tien, 0, ',', '.') }} đ</td>
-                                            <td>{{ $order->tong_so_luong }}</td>
-                                            <td>{{ $order->khuyenMai->ten_khuyen_mai ?? 'Không có' }}</td>
-                                            <td>
-                                                @if ($order->trang_thai == 'cho_xu_ly')
-                                                    <span class="badge badge-warning">Chờ xử lý</span>
-                                                @elseif ($order->trang_thai == 'dang_giao')
-                                                    <span class="badge badge-info">Đang giao</span>
-                                                @elseif ($order->trang_thai == 'hoan_thanh')
-                                                    <span class="badge badge-success">Hoàn thành</span>
-                                                @elseif ($order->trang_thai == 'huy')
-                                                    <span class="badge badge-danger">Hủy</span>
-                                                @else
-                                                    <span class="badge badge-secondary">{{ $order->trang_thai }}</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center" style="gap: 6px;">
-                                                    <a href="{{ route('admin.orders.edit', $order->id) }}"
-                                                       class="action-btn" data-toggle="tooltip" title="Sửa">
-                                                        <i class="ri-pencil-line"></i>
-                                                    </a>
-
-                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}"
-                                                          method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="action-btn" data-toggle="tooltip" title="Xóa">
-                                                            <i class="ri-delete-bin-line"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                           </div>
-                        </div>
-                        </div>
-                     </div>
-                  </div>
                </div>
             </div>
          </div>
@@ -319,46 +227,57 @@
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>
 <script>
+   function formatNgayDMY(dateStr) {
+    const [y, m, d] = dateStr.split("-");
+    return `${parseInt(d)}/${parseInt(m)}/${y}`; // Không có số 0 đầu
+   }
+
+
     let chartSachBan = null;
     let chartDoanhSo = null;
     let chartTrangThai = null;
     let chartTonKho = null;
 
     async function loadChart() {
-        const tuNgay = document.getElementById('sach_tu_ngay').value;
-        const denNgay = document.getElementById('sach_den_ngay').value;
+            const tuNgay = document.getElementById('sach_tu_ngay').value;
+            const denNgay = document.getElementById('sach_den_ngay').value;
 
-        document.querySelector("#chart-sach-ban").innerHTML = "Đang tải dữ liệu...";
-        const response = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
-        const data = await response.json();
+            document.querySelector("#chart-sach-ban").innerHTML = "Đang tải dữ liệu...";
 
-        const tenSach = data.map(item => item.ten_sach || 'Không rõ');
-        const soLuong = data.map(item => Number(item.tong_so_luong || 0));
+            const response = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+            const data = await response.json();
 
-        if (chartSachBan) chartSachBan.destroy();
+            const tenSach = data.map(item => item.ten_sach || 'Không rõ');
+            const soLuong = data.map(item => Number(item.tong_so_luong || 0));
 
-        chartSachBan = new ApexCharts(document.querySelector("#chart-sach-ban"), {
-            chart: { type: 'bar', height: 400 },
-            series: [{ name: "Số lượng bán", data: soLuong }],
-            title: { text: 'Thống kê sách bán ra', align: 'center' },
-            subtitle: { text: `Từ ${tuNgay} đến ${denNgay}`, align: 'center' },
-            xaxis: {
-                categories: tenSach,
-                labels: { rotate: -45, style: { fontSize: '13px' } }
-            },
-            plotOptions: { bar: { dataLabels: { position: 'top' } } },
-            dataLabels: {
-                enabled: true, offsetY: -20,
-                style: { fontSize: '13px', colors: ['#2d3436'] }
-            },
-            tooltip: {
-                y: { formatter: val => `${val} quyển` }
-            },
-            colors: ['#00b894', '#0984e3', '#fd79a8', '#6c5ce7', '#e17055'],
-            noData: { text: 'Không có dữ liệu' }
-        });
-        chartSachBan.render();
-    }
+            if (chartSachBan) chartSachBan.destroy();
+
+            chartSachBan = new ApexCharts(document.querySelector("#chart-sach-ban"), {
+               chart: { type: 'bar', height: 400 },
+               series: [{ name: "Số lượng bán", data: soLuong }],
+               title: { text: 'Thống kê sách bán ra', align: 'center' },
+               subtitle: {
+            text: `Từ ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`,
+            align: 'center'
+         },
+
+         xaxis: {
+               categories: tenSach,
+               labels: { rotate: -45, style: { fontSize: '13px' } }
+         },
+         plotOptions: { bar: { dataLabels: { position: 'top' } } },
+         dataLabels: {
+               enabled: true, offsetY: -20,
+               style: { fontSize: '13px', colors: ['#2d3436'] }
+         },
+         tooltip: {
+               y: { formatter: val => `${val} quyển` }
+         },
+         colors: ['#00b894', '#0984e3', '#fd79a8', '#6c5ce7', '#e17055'],
+         noData: { text: 'Không có dữ liệu' }
+      });
+      chartSachBan.render();
+   }
 
     async function loadChartDoanhSoNgay() {
         const tuNgay = document.getElementById('sach_tu_ngay').value;
@@ -368,7 +287,11 @@
         const res = await fetch(`/ajax-doanh-so-ngay?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
         const data = await res.json();
 
-        const labels = data.map(d => d.ngay);
+        const labels = data.map(d => {
+            const [year, month, day] = d.ngay.split('-');
+            return `${day}/${month}/${year}`;
+        });
+
         const values = data.map(d => d.doanh_so);
 
         if (chartDoanhSo) chartDoanhSo.destroy();
@@ -387,7 +310,15 @@
         const res = await fetch('/ajax-thong-ke-trang-thai-don');
         const data = await res.json();
 
-        const labels = data.map(d => d.trang_thai);
+        const statusMap = {
+            'cho_xu_ly': 'Chờ xử lý',
+            'dang_giao': 'Đang giao',
+            'hoan_thanh': 'Hoàn thành',
+            'huy': 'Hủy'
+         };
+
+        const labels = data.map(d => statusMap[d.trang_thai] || d.trang_thai);
+
         const values = data.map(d => d.so_luong);
 
         if (chartTrangThai) chartTrangThai.destroy();
@@ -396,7 +327,7 @@
             chart: { type: 'donut', height: 400 },
             series: values,
             labels: labels,
-            title: { text: 'Trạng thái đơn hàng', align: 'center' }
+            title: { text: 'Đơn hàng theo trạng thái', align: 'center' }
         });
         chartTrangThai.render();
     }
@@ -419,7 +350,7 @@
                 { name: 'Đã bán', data: daBan }
             ],
             xaxis: { categories: labels },
-            title: { text: 'Tồn kho và đã bán', align: 'center' },
+            title: { text: 'Top 10 sách có tồn kho lớn và số lượng bán ra', align: 'center' },
             colors: ['#00cec9', '#fdcb6e']
         });
         chartTonKho.render();
@@ -476,5 +407,37 @@
         loadChartTonKho();
         loadTaiChinhTongQuat();
     }
+    document.getElementById('btn-export-csv').addEventListener('click', async function () {
+    const tuNgay = document.getElementById('sach_tu_ngay').value;
+    const denNgay = document.getElementById('sach_den_ngay').value;
+
+    const res = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+    const data = await res.json();
+
+    if (!data || data.length === 0) {
+        alert("Không có dữ liệu để xuất.");
+        return;
+    }
+
+    // ✅ Sử dụng tab để phân cột
+    let csv = "DANH SÁCH THỐNG KÊ SÁCH BÁN RA\n";
+    csv += `Từ ngày: ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}\n\n`;
+    csv += "Tên sách\tTổng số lượng bán\n";
+
+   data.forEach(row => {
+      const tenSach = (row.ten_sach || '').replace(/\t/g, ' ');
+      const soLuong = row.tong_so_luong;
+      csv += `${tenSach}\t${soLuong}\n`; // KHÔNG thêm dấu ngoặc kép!
+   });
+
+    const blob = new Blob(["\uFEFF" + csv], { type: 'text/plain;charset=utf-8;' }); // text/plain để mở tốt hơn
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `thong_ke_sach_${tuNgay}_den_${denNgay}..txt`); // dùng .xls để Excel tự mở
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
 </script>
 @endsection

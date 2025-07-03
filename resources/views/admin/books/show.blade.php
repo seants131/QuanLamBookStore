@@ -64,7 +64,7 @@
                                     </tr>
                                     <tr>
                                         <th>Chiết khấu</th>
-                                        <td>{{ $book->ChietKhau ?? 0 }}%</td>
+                                        <td>{{ $book->chiet_khau ?? 0 }}%</td>
                                     </tr>
                                     <tr>
                                         <th>Số lượng</th>
@@ -93,16 +93,16 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Nhà xuất bản (NXB)</th>
-                                        <td>{{ $book->nhaXuatBan->ten ?? 'Không có' }}</td>
+                                        <th>Danh mục (Bộ sách)</th>
+                                        <td>{{ $book->danhMuc->ten ?? 'Không có' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Ngày tạo</th>
-                                        <td>{{ $book->created_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ $book->created_at ? $book->created_at->format('d/m/Y H:i') : 'Không rõ' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Ngày cập nhật</th>
-                                        <td>{{ $book->updated_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ $book->updated_at ? $book->updated_at->format('d/m/Y H:i') : 'Không rõ' }}</td>
                                     </tr>
                                 </table>
                             </div>

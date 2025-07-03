@@ -22,13 +22,12 @@ return new class extends Migration {
             $table->index('so_dien_thoai');
         });
 
-        // Bảng nhà xuất bản
-        Schema::create('nha_xuat_ban', function (Blueprint $table) {
+        // Bảng danh mục (bộ sách)
+        Schema::create('danh_muc', function (Blueprint $table) {
             $table->id();
             $table->string('ten')->unique();
-            $table->string('dia_chi')->nullable();
-            $table->string('so_dien_thoai')->nullable();
-            $table->string('email')->nullable();
+            $table->string('slug')->nullable();
+            $table->text('mo_ta')->nullable();
             $table->timestamps();
         });
 
@@ -49,8 +48,9 @@ return new class extends Migration {
             $table->enum('Lop', ['1','2','3','4','5','6','7','8','9','10','11','12'])->nullable();
             $table->unsignedTinyInteger('chiet_khau')->default(0);
 
-            $table->unsignedBigInteger('nha_xuat_ban_id')->nullable();
-            $table->foreign('nha_xuat_ban_id')->references('id')->on('nha_xuat_ban')->nullOnDelete();
+            // Thêm khóa ngoại đến danh mục
+            $table->unsignedBigInteger('danh_muc_id')->nullable();
+            $table->foreign('danh_muc_id')->references('id')->on('danh_muc')->nullOnDelete();
 
             $table->timestamps();
 
@@ -104,6 +104,8 @@ return new class extends Migration {
             $table->integer('tong_so_luong')->default(0);
             $table->foreignId('khuyen_mai_id')->nullable()->constrained('khuyen_mai')->nullOnDelete();
             $table->text('dia_chi_giao_hang')->nullable();
+            $table->string('sdt')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
 
