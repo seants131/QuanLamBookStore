@@ -5,6 +5,7 @@
     <div id="content-page" class="content-page">
             <div class="container-fluid">
                <div class="row">
+                  <!-- Tổng Người Dùng -->
                   <div class="col-md-6 col-lg-3">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-body">
@@ -18,6 +19,7 @@
                         </div>
                      </div>
                   </div>
+                  <!-- Tổng Sách -->
                   <div class="col-md-6 col-lg-3">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-body">
@@ -31,6 +33,7 @@
                         </div>
                      </div>
                   </div>
+                  <!-- Tổng Đơn Hàng -->
                   <div class="col-md-6 col-lg-3">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-body">
@@ -44,6 +47,7 @@
                         </div>
                      </div>
                   </div>
+                  <!-- Đơn Chờ -->
                   <div class="col-md-6 col-lg-3">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-body">
@@ -57,7 +61,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="col-md-4">
+                  <!-- <div class="col-md-4">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
                            <div class="iq-header-title">
@@ -133,14 +137,94 @@
                               <div id="wave-chart-7"></div>
                            </div>
                         </div>
+                  </div> -->
+                  <!-- Thống kê sách bán ra -->
+                  <div class="col-md-12">
+                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                              <div class="iq-header-title">
+                                 <h4 class="card-title mb-0">Thống kê sách bán ra</h4>
+                              </div>
+                              <form id="form-thong-ke-sach" class="form-inline">
+                                 <label class="mr-2">Từ ngày:</label>
+                                 <input type="date" id="sach_tu_ngay" class="form-control mr-2">
+                                 <label class="mr-2">Đến ngày:</label>
+                                 <input type="date" id="sach_den_ngay" class="form-control mr-2">
+                                 <button type="submit" class="btn btn-sm btn-primary">Thống kê</button>
+                              </form>
+                        </div>
+                        <div class="iq-card-body">
+                              <div id="chart-sach-ban" style="height: 400px;"></div>
+                        </div>
+                     </div>
                   </div>
+                  <!-- Doanh số theo ngày -->
+                  <div class="col-md-12">
+                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                           <div class="iq-header-title">
+                              <h4 class="card-title mb-0">Doanh số theo ngày</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <div id="chart-doanh-so-ngay" style="height: 400px;"></div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Thống kê trạng thái đơn hàng -->
+                  <div class="col-md-12">
+                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                           <div class="iq-header-title">
+                              <h4 class="card-title mb-0">Thống kê trạng thái đơn hàng</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <div id="chart-trang-thai" style="height: 400px;"></div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Tồn kho và đã bán -->
+                  <div class="col-md-12">
+                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                           <div class="iq-header-title">
+                              <h4 class="card-title mb-0">Tồn kho và sách đã bán</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <div id="chart-ton-kho" style="height: 400px;"></div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Tài chính tổng quát -->
+                  <div class="col-md-12">
+                     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                        <div class="iq-card-header d-flex justify-content-between align-items-center">
+                           <div class="iq-header-title">
+                              <h4 class="card-title mb-0">Tài chính tổng quát</h4>
+                           </div>
+                        </div>
+                        <div class="iq-card-body">
+                           <ul>
+                              <li><strong>Doanh thu:</strong> <span id="doanh-thu">...</span> đ</li>
+                              <li><strong>Chi phí:</strong> <span id="chi-phi">...</span> đ</li>
+                              <li><strong>Lợi nhuận:</strong> <span id="loi-nhuan">...</span> đ</li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  <!-- Bảng hóa đơn -->
                   <div class="col-sm-12">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-header d-flex justify-content-between">
                            <div class="iq-header-title">
                               <h4 class="card-title">Mở hóa đơn</h4>
                            </div>
-                           <div class="iq-card-header-toolbar d-flex align-items-center">
+                           <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                               <div class="dropdown">
                                  <span class="dropdown-toggle text-primary" id="dropdownMenuButton5" data-toggle="dropdown">
                                  <i class="ri-more-fill"></i>
@@ -153,7 +237,7 @@
                                     <a class="dropdown-item" href="#"><i class="ri-file-download-fill mr-2"></i>Tải xuống</a>
                                  </div>
                               </div>
-                           </div>
+                           </div> -->
                         </div>
                         <div class="iq-card-body">
                            <div class="order-info">
@@ -230,4 +314,167 @@
          </div>
       </div>
       <!-- Wrapper END -->
+@endsection
+
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>
+<script>
+    let chartSachBan = null;
+    let chartDoanhSo = null;
+    let chartTrangThai = null;
+    let chartTonKho = null;
+
+    async function loadChart() {
+        const tuNgay = document.getElementById('sach_tu_ngay').value;
+        const denNgay = document.getElementById('sach_den_ngay').value;
+
+        document.querySelector("#chart-sach-ban").innerHTML = "Đang tải dữ liệu...";
+        const response = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+        const data = await response.json();
+
+        const tenSach = data.map(item => item.ten_sach || 'Không rõ');
+        const soLuong = data.map(item => Number(item.tong_so_luong || 0));
+
+        if (chartSachBan) chartSachBan.destroy();
+
+        chartSachBan = new ApexCharts(document.querySelector("#chart-sach-ban"), {
+            chart: { type: 'bar', height: 400 },
+            series: [{ name: "Số lượng bán", data: soLuong }],
+            title: { text: 'Thống kê sách bán ra', align: 'center' },
+            subtitle: { text: `Từ ${tuNgay} đến ${denNgay}`, align: 'center' },
+            xaxis: {
+                categories: tenSach,
+                labels: { rotate: -45, style: { fontSize: '13px' } }
+            },
+            plotOptions: { bar: { dataLabels: { position: 'top' } } },
+            dataLabels: {
+                enabled: true, offsetY: -20,
+                style: { fontSize: '13px', colors: ['#2d3436'] }
+            },
+            tooltip: {
+                y: { formatter: val => `${val} quyển` }
+            },
+            colors: ['#00b894', '#0984e3', '#fd79a8', '#6c5ce7', '#e17055'],
+            noData: { text: 'Không có dữ liệu' }
+        });
+        chartSachBan.render();
+    }
+
+    async function loadChartDoanhSoNgay() {
+        const tuNgay = document.getElementById('sach_tu_ngay').value;
+        const denNgay = document.getElementById('sach_den_ngay').value;
+
+        document.querySelector("#chart-doanh-so-ngay").innerHTML = "Đang tải dữ liệu...";
+        const res = await fetch(`/ajax-doanh-so-ngay?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+        const data = await res.json();
+
+        const labels = data.map(d => d.ngay);
+        const values = data.map(d => d.doanh_so);
+
+        if (chartDoanhSo) chartDoanhSo.destroy();
+
+        chartDoanhSo = new ApexCharts(document.querySelector("#chart-doanh-so-ngay"), {
+            chart: { type: 'line', height: 400 },
+            series: [{ name: 'Doanh số', data: values }],
+            xaxis: { categories: labels },
+            title: { text: 'Doanh số theo ngày', align: 'center' }
+        });
+        chartDoanhSo.render();
+    }
+
+    async function loadChartTrangThai() {
+        document.querySelector("#chart-trang-thai").innerHTML = "Đang tải dữ liệu...";
+        const res = await fetch('/ajax-thong-ke-trang-thai-don');
+        const data = await res.json();
+
+        const labels = data.map(d => d.trang_thai);
+        const values = data.map(d => d.so_luong);
+
+        if (chartTrangThai) chartTrangThai.destroy();
+
+        chartTrangThai = new ApexCharts(document.querySelector("#chart-trang-thai"), {
+            chart: { type: 'donut', height: 400 },
+            series: values,
+            labels: labels,
+            title: { text: 'Trạng thái đơn hàng', align: 'center' }
+        });
+        chartTrangThai.render();
+    }
+
+    async function loadChartTonKho() {
+        document.querySelector("#chart-ton-kho").innerHTML = "Đang tải dữ liệu...";
+        const res = await fetch('/ajax-ton-kho-va-ban');
+        const data = await res.json();
+
+        const labels = data.map(d => d.ten_sach);
+        const tonKho = data.map(d => d.ton_kho);
+        const daBan = data.map(d => d.da_ban);
+
+        if (chartTonKho) chartTonKho.destroy();
+
+        chartTonKho = new ApexCharts(document.querySelector("#chart-ton-kho"), {
+            chart: { type: 'bar', height: 400 },
+            series: [
+                { name: 'Tồn kho', data: tonKho },
+                { name: 'Đã bán', data: daBan }
+            ],
+            xaxis: { categories: labels },
+            title: { text: 'Tồn kho và đã bán', align: 'center' },
+            colors: ['#00cec9', '#fdcb6e']
+        });
+        chartTonKho.render();
+    }
+
+    async function loadTaiChinhTongQuat() {
+    const tuNgay = document.getElementById('sach_tu_ngay').value;
+    const denNgay = document.getElementById('sach_den_ngay').value;
+
+    try {
+        const res = await fetch(`/ajax-tai-chinh?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+        const data = await res.json();
+
+        if (data.error) {
+            console.error("Lỗi từ API:", data.message);
+            return;
+        }
+
+        document.getElementById('doanh-thu').textContent = number_format(data.doanh_thu);
+        document.getElementById('chi-phi').textContent = number_format(data.chi_phi);
+        document.getElementById('loi-nhuan').textContent = number_format(data.loi_nhuan);
+    } catch (err) {
+        console.error("Lỗi khi gọi API tài chính:", err);
+    }
+}
+
+
+    function number_format(x) {
+        return Number(x).toLocaleString('vi-VN');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form-thong-ke-sach');
+        const tuNgayInput = document.getElementById('sach_tu_ngay');
+        const denNgayInput = document.getElementById('sach_den_ngay');
+
+        const today = new Date().toISOString().slice(0, 10);
+        const firstDay = new Date(); firstDay.setDate(1);
+        tuNgayInput.value = firstDay.toISOString().slice(0, 10);
+        denNgayInput.value = today;
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            loadAllCharts();
+        });
+
+        loadAllCharts();
+    });
+
+    function loadAllCharts() {
+        loadChart();
+        loadChartDoanhSoNgay();
+        loadChartTrangThai();
+        loadChartTonKho();
+        loadTaiChinhTongQuat();
+    }
+</script>
 @endsection

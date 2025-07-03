@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'khach' => [
+        'driver' => 'session',
+        'provider' => 'khachhangs', // Khách hàng đăng nhập
+    ],
     ],
 
     /*
@@ -60,16 +64,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\KhachHang::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class, // Admin
     ],
+    'khachhangs' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\KhachHang::class, // Khách
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------

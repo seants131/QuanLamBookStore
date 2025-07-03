@@ -24,6 +24,23 @@
                @endif
 
                <div class="iq-card-body">
+                  <!-- Form tìm kiếm -->
+                  <div class="user-filter">
+                  <div class="w-100 p-3 bg-light rounded mb-3 border">
+                     <form action="{{ route('admin.khachhang.index') }}" method="GET">
+                        <div class="d-flex justify-content-center align-items-center mb-3 flex-wrap">
+                           <div class="form-group mb-0 mr-2 flex-grow-1" style="max-width: 300px;">
+                              <input type="text" name="search" class="form-control w-100" placeholder="Nhập tên, username hoặc email"
+                                    value="{{ request('search') }}">
+                           </div>
+                           <div class="form-group mb-0">
+                              <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                              <a href="{{ route('admin.khachhang.index') }}" class="btn btn-secondary ml-2">Reset</a>
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
                   <div class="table-responsive">
                      <table class="table table-bordered table-striped">
                         <thead>

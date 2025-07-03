@@ -9,6 +9,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\LienHeController;
 use App\Http\Controllers\PhieuNhapController;
+use App\Http\Controllers\KhuyenMaiController;
+use App\Http\Controllers\ThongKeController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminAuthController;
@@ -70,13 +72,30 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('khachhang', KhachHangController::class);
     Route::resource('lienhe', LienHeController::class);
-    Route::resource('phieunhap', PhieuNhapController::class);
+    Route::resource('phieunhap',PhieuNhapController::class);
+    Route::resource('khuyenmai', KhuyenMaiController::class);
     Route::get('/profile', [AdminProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/change-password', [AdminProfileController::class, 'changePasswordForm'])->name('profile.password.form');
     Route::post('/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('profile.password');
 });
+
+Route::get('/admin/ajax-thong-ke-sach', [ThongKeController::class, 'thongKeSach']);
+Route::get('/ajax-thong-ke-sach', [ThongKeController::class, 'thongKeSach']);
+Route::get('/ajax-doanh-so-ngay', [ThongKeController::class, 'doanhSoTheoNgay']);
+Route::get('/ajax-thong-ke-trang-thai-don', [ThongKeController::class, 'thongKeTrangThaiDon']);
+Route::get('/ajax-ton-kho-va-ban', [ThongKeController::class, 'tonKhoVaBan']);
+Route::get('/ajax-tai-chinh', [ThongKeController::class, 'taiChinhTongQuat']);
+
+Route::get('/chinh-sach', function () {
+    return view('admin.pages.chinh-sach');
+})->name('chinh-sach');
+
+Route::get('/dieu-khoan', function () {
+    return view('admin.pages.dieu-khoan');
+})->name('dieu-khoan');
+
 
 Route::get('/signup', [HomeController::class, 'dangKy'])->name('user.auth.dang_ky');
 // tạm thời ghi chú lại
