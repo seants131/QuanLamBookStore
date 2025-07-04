@@ -17,21 +17,20 @@ class UserCheckoutController extends Controller
 {
     public function showAddressForm()
     {
-        $user = Auth::user();
+        $user = Auth::guard('khach')->user();
         $address = null;
+        $dia_chi = null;
 
         if ($user) {
             $address = [
-                'fname' => $user->ho_va_ten,
+                'fname' => $user->name,
                 'email' => $user->email,
                 'mno' => $user->so_dien_thoai,
-                'houseno' => $user->dia_chi,
-                'city' => $user->thanh_pho,
-                'state' => $user->phuong,
             ];
+            $dia_chi = $user->dia_chi; // Lấy địa chỉ đầy đủ từ DB
         }
 
-        return view('user.checkout.address', compact('address'));
+        return view('user.checkout.address', compact('address', 'dia_chi'));
     }
 
     public function submitAddress(Request $request)
@@ -42,11 +41,37 @@ class UserCheckoutController extends Controller
             'mno' => 'required|string|max:20',
             'houseno' => 'required|string',
             'city' => 'required|string',
-            'district' => 'required|string', // BỔ SUNG DÒNG NÀY
+            'district' => 'required|string',
             'state' => 'required|string',
         ]);
-        // Lưu vào session cho cả khách vãng lai và đã đăng nhập
+
+        // Nối địa chỉ thành 1 chuỗi
+        $fullAddress = $validated['houseno'] . ', ' . $validated['state'] . ', ' . $validated['district'] . ', ' . $validated['city'];
+
+        // Kiểm tra email đã tồn tại chưa
+        $user = KhachHang::where('email', $validated['email'])->first();
+        if ($user) {
+            // Update thông tin
+            $user->update([
+                'name' => $validated['fname'],
+                'so_dien_thoai' => $validated['mno'],
+                'dia_chi' => $fullAddress,
+            ]);
+        } else {
+            // Tạo mới
+            $user = KhachHang::create([
+                'name' => $validated['fname'],
+                'email' => $validated['email'],
+                'so_dien_thoai' => $validated['mno'],
+                'role' => 'khach',
+                'dia_chi' => $fullAddress,
+            ]);
+        }
+
+        // Lưu vào session cho các bước sau
         session(['shipping_address' => $validated]);
+        session(['user_id_checkout' => $user->id]);
+
         return redirect()->route('checkout.payment')->with('success', 'Đã lưu địa chỉ thành công.');
     }
 
@@ -69,37 +94,20 @@ class UserCheckoutController extends Controller
         DB::beginTransaction();
 
         try {
-            // Lấy thông tin địa chỉ từ session
+            // Lấy thông tin địa chỉ và user từ session
             $address = session('shipping_address');
-            if (!$address) {
+            $userId = session('user_id_checkout');
+            if (!$address || !$userId) {
                 return redirect()->route('checkout.address')->with('error', 'Vui lòng nhập địa chỉ giao hàng.');
             }
 
-            // Tìm hoặc tạo khách hàng theo email
-            $user = KhachHang::where('email', $address['email'])->first();
-            if ($user) {
-                // Nếu đã có user, cập nhật thông tin mới nhất
-                $user->update([
-                    'name' => $address['fname'],
-                    'so_dien_thoai' => $address['mno'],
-                    'dia_chi' => $address['houseno'],
-                    'phuong_xa' => $address['state'],
-                    'quan_huyen' => $address['district'],
-                    'tinh_thanh_pho' => $address['city'],
-                ]);
-            } else {
-                // Nếu chưa có user, tạo mới
-                $user = KhachHang::create([
-                    'name' => $address['fname'],
-                    'email' => $address['email'],
-                    'so_dien_thoai' => $address['mno'],
-                    'role' => 'khach',
-                    'dia_chi' => $address['houseno'],
-                    'phuong_xa' => $address['state'],
-                    'quan_huyen' => $address['district'],
-                    'tinh_thanh_pho' => $address['city'],
-                ]);
+            $user = KhachHang::find($userId);
+            if (!$user) {
+                return redirect()->route('checkout.address')->with('error', 'Không tìm thấy thông tin khách hàng.');
             }
+
+            // Nối chuỗi địa chỉ
+            $fullAddress = $user->dia_chi;
 
             // Lấy giỏ hàng
             $cart = session('cart', []);
@@ -120,10 +128,7 @@ class UserCheckoutController extends Controller
                 'tong_tien' => $tong_tien,
                 'tong_so_luong' => $tong_so_luong,
                 'khuyen_mai_id' => null,
-                'dia_chi' => $address['houseno'],
-                'phuong_xa' => $address['state'],
-                'quan_huyen' => $address['district'],
-                'tinh_thanh_pho' => $address['city'],
+                'dia_chi_giao_hang' => $fullAddress,
             ]);
 
             // Thêm chi tiết hóa đơn
@@ -138,7 +143,7 @@ class UserCheckoutController extends Controller
             }
 
             // Gửi email xác nhận đơn hàng
-            Mail::to($address['email'])->send(new OrderPlacedMail($donHang, $cart));
+            Mail::to($user->email)->send(new OrderPlacedMail($donHang, $cart));
 
             // Xóa giỏ hàng
             session()->forget('cart');

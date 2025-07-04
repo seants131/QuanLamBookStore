@@ -140,7 +140,7 @@
 
                                         <div class="col-md-6 d-flex align-items-end">
                                             <button type="submit" class="btn btn-primary mt-4">
-                                                {{ Auth::check() ? 'Lưu và giao tại đây' : 'Tiếp tục' }}
+                                                {{ Auth::guard('khach')->check() ? 'Lưu và giao tại đây' : 'Tiếp tục' }}
                                             </button>
                                         </div>
                                     </div>
@@ -159,14 +159,13 @@
                     </div>
 
                     <div class="col-lg-4">
-                        @if (Auth::check() && isset($address))
+                        @if (Auth::guard('khach')->check() && !empty($dia_chi))
                             <div class="iq-card">
                                 <div class="iq-card-body">
                                     <h4 class="mb-2">{{ $address['fname'] }}</h4>
                                     <div class="shipping-address">
-                                        <p class="mb-0">{{ $address['houseno'] }}</p>
-                                        <p>{{ $address['city'] }}</p>
-                                        <p>{{ $address['mno'] }}</p>
+                                        <p class="mb-0"> <b>Địa chỉ mặc định:</b> {{ $dia_chi }}</p>
+                                        <p><b>Số điện thoại:</b> {{ $address['mno'] }}</p>
                                     </div>
                                     <hr>
                                     <a href="{{ route('checkout.payment') }}" class="btn btn-primary d-block mt-1">Tiếp
