@@ -10,21 +10,21 @@ class UserController extends Controller
     // Trang thông tin cá nhân
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::guard('khach');
         return view('user.profile.index', compact('user'));
     }
 
     // Danh sách đơn hàng
     public function orders()
     {
-        $orders = DonHang::where('khach_hang_id', Auth::id())->orderByDesc('ngay_mua')->get();
+        $orders = DonHang::where('user_id', Auth::id())->orderByDesc('ngay_mua')->get();
         return view('user.orders.index', compact('orders'));
     }
 
     // Chi tiết đơn hàng
     public function orderDetail($id)
     {
-        $order = DonHang::where('khach_hang_id', Auth::id())->where('id', $id)->firstOrFail();
+        $order = DonHang::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
         return view('user.orders.detail', compact('order'));
     }
 }

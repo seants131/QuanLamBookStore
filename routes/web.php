@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
@@ -15,7 +16,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminProfileController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\UserCheckoutController ;
+use App\Http\Controllers\UserCheckoutController;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\CartController;
@@ -66,7 +67,7 @@ Route::get('/admin/books', [BookController::class, 'index'])->name('admin.books'
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders');
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    
+
     Route::resource('books', BookController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('khachhang', KhachHangController::class);
@@ -109,48 +110,33 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('user.contact.i
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('user.contact.send');
 Route::get('/about', [HomeController::class, 'about'])->name('user.about.index');
 Route::get('/cart', [HomeController::class, 'cart'])->name('user.cart.index');
-Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('user.cart.add');  
-Route::get('/profile',[UserController::class,'index'])->name('user.profile.index');
-Route::get('/books/pdf',[HomeController::class,'bookPDF'])->name('user.book.pdf');
+Route::post('/cart/add', [HomeController::class, 'addToCart'])->name('user.cart.add');
+Route::get('/profile', [UserController::class, 'index'])->name('user.profile.index');
+Route::get('/books/pdf', [HomeController::class, 'bookPDF'])->name('user.book.pdf');
 
 Route::prefix('thanh-toan')->name('thanh_toan.')->group(function () {
     Route::get('/test', [UserCheckoutController::class, 'test'])->name('test');
     Route::get('/gio-hang', [UserCheckoutController::class, 'gioHang'])->name('gio_hang');
     Route::get('/dia-chi', [UserCheckoutController::class, 'diaChi'])->name('dia_chi');
     Route::get('/phuong-thuc-thanh-toan', [UserCheckoutController::class, 'phuongThucThanhToan'])->name('pt_thanh_toan');
-    // Route::get('/xac-nhan', [UserCheckoutController::class, 'xacNhan'])->name('xac_nhan');
 });
 
-Route::get('/send-order-mail', function () {
-    $order = [
-        'id' => 1234,
-        'date' => now()->format('d/m/Y'),
-        'items' => [
-            ['name' => 'Sách toán 11 chân trờitrời', 'qty' => 2, 'price' => 50000],
-            ['name' => 'Sách ngữ văn chân trời', 'qty' => 1, 'price' => 75000],
-        ],
-        'total' => 2 * 50000 + 1 * 75000,
-    ];
-
-    Mail::to('hellotoilaquan@gmail.com')->send(new OrderConfirmationMail($order));
-
-    return 'Đã gửi email xác nhận đơn hàng!';
-});
-
-// use App\Http\Controllers\UserCartController;
-
-// Route::get('/gio-hang', [UserCartController::class, 'index'])->name('cart.index');
-// Route::post('/gio-hang/them', [UserCartController::class, 'add'])->name('cart.add');
-// Route::post('/gio-hang/xoa', [UserCartController::class, 'remove'])->name('cart.remove');
 
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update-ajax', [CartController::class, 'updateAjax'])->name('cart.update.ajax');
+Route::post('/cart/remove-ajax', [CartController::class, 'removeAjax'])->name('cart.remove.ajax');
 
 Route::get('/sach/{slug}', [HomeController::class, 'bookDetail'])->name('user.books.detail');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:khach'])->group(function () {
     Route::get('/profile', [UserController::class, 'index'])->name('user.profile.index');
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');
     Route::get('/orders/{id}', [UserController::class, 'orderDetail'])->name('user.orders.detail');
+});
+Route::middleware(['web'])->group(function () {
+    Route::get('/checkout/address', [UserCheckoutController::class, 'showAddressForm'])->name('checkout.address');
+    Route::post('/checkout/submit', [UserCheckoutController::class, 'submitAddress'])->name('checkout.submit');
+    Route::get('/checkout/payment', [UserCheckoutController::class, 'goToPayment'])->name('checkout.payment'); // Tùy vào flow bạn
+    Route::post('/checkout/place-order', [UserCheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 });
