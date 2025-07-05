@@ -59,6 +59,19 @@
                                     value="{{ request('ngay_tao') }}">
                               </div>
 
+                           <div class="form-group mb-2 mr-2">
+   <label for="danh_muc_id">Danh mục</label>
+   <select name="danh_muc_id" id="danh_muc_id" class="form-control">
+      <option value="">-- Tất cả --</option>
+      @foreach ($danhMucs as $dm)
+         <option value="{{ $dm->id }}" {{ request('danh_muc_id') == $dm->id ? 'selected' : '' }}>
+            {{ $dm->ten }}
+         </option>
+      @endforeach
+   </select>
+</div>
+
+
                               <div class="form-group mb-2">
                                  <label class="d-block">&nbsp;</label>
                                  <button type="submit" class="btn btn-success">Tìm nâng cao</button>
@@ -83,7 +96,7 @@
                                  <th>Tác giả</th>
                                  <th>Giá bìa</th>
                                  <th>Chiết khấu (%)</th> {{-- thêm mới --}}
-                                 <th>Nhà Xuất Bản</th> {{-- thêm mới --}}
+                                 <th>Danh mục</th>
                                  <th>Số lượng</th>
                                  <th>Lượt Mua</th>
                                  <th>Ngày tạo</th>
@@ -108,7 +121,7 @@
                                     <td>{{ $book->TacGia }}</td>
                                     <td>{{ number_format($book->GiaBia, 0, ',', '.') }} đ</td>
                                     <td>{{ $book->chiet_khau ?? 0 }}%</td> {{-- chiết khấu --}}
-                                    <td>{{ $book->nhaxuatban->ten ?? 'Không rõ' }}</td> {{-- nhà xuất bản --}}
+                                    <td>{{ $book->danhMuc->ten ?? 'Không rõ' }}</td>
                                     <td>{{ $book->SoLuong }}</td>
                                     <td>{{ $book->LuotMua }}</td>
                                     <td>{{ $book->created_at }}</td>

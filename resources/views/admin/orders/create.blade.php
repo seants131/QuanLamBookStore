@@ -68,7 +68,7 @@
                         <table class="table table-bordered" id="table-sach">
                             <thead>
                                 <tr>
-                                    <th>Nhà xuất bản</th>
+                                    <th>Danh mục</th>
                                     <th>Sách</th>
                                     <th>Số lượng</th>
                                     <th>Đơn Giá</th>
@@ -79,10 +79,10 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select class="form-control nxb-select" required>
-                                            <option value="">-- Chọn NXB --</option>
-                                            @foreach ($nhaXuatBans as $nxb)
-                                                <option value="{{ $nxb->id }}">{{ $nxb->ten }}</option>
+                                        <select class="form-control danh-muc-select" required>
+                                            <option value="">-- Chọn danh mục --</option>
+                                            @foreach ($danhMucs as $dm)
+                                                <option value="{{ $dm->id }}">{{ $dm->ten }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -108,12 +108,21 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
+                        <div class="form-group">
+                            <label for="sdt">Số điện thoại</label>
+                            <input type="text" name="sdt" class="form-control" value="{{ old('sdt') }}" placeholder="Nhập số điện thoại">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="Nhập email">
+                        </div>
+
                         <div class="form-group">
                             <label for="dia_chi_giao_hang">Địa chỉ giao hàng</label>
                             <textarea name="dia_chi_giao_hang" class="form-control" rows="3" required>{{ old('dia_chi_giao_hang', $order->dia_chi_giao_hang ?? '') }}</textarea>
                         </div>
-
 
                         <input type="hidden" name="tong_tien" id="tong_tien_input">
                         <input type="hidden" name="tong_so_luong" id="tong_so_luong_input">
@@ -170,13 +179,13 @@
                         }
 
                         function attachRowEvents(row) {
-                            const nxbSelect = row.querySelector('.nxb-select');
+                            const danhMucSelect = row.querySelector('.danh-muc-select');
                             const sachSelect = row.querySelector('.sach-select');
                             const donGiaInput = row.querySelector('.don_gia');
 
-                            nxbSelect.addEventListener('change', function () {
-                                const nxbId = this.value;
-                                const filteredBooks = allBooks.filter(book => book.nha_xuat_ban_id == nxbId);
+                            danhMucSelect.addEventListener('change', function () {
+                                const dmId = this.value;
+                                const filteredBooks = allBooks.filter(book => book.danh_muc_id == dmId);
                                 const options = filteredBooks.map(book =>
                                     `<option value="${book.MaSach}" data-dongia="${book.GiaBia}">${book.TenSach}</option>`
                                 );
@@ -202,7 +211,7 @@
                             row.querySelectorAll('input').forEach(input => input.value = input.classList.contains('so_luong') ? 0 : '');
                             row.querySelector('.don_gia').value = '';
                             row.querySelector('.thanh_tien').value = '';
-                            row.querySelector('.nxb-select').selectedIndex = 0;
+                            row.querySelector('.danh-muc-select').selectedIndex = 0;
                             const sachSelect = row.querySelector('.sach-select');
                             sachSelect.innerHTML = '<option value="">-- Chọn sách --</option>';
                             sachSelect.disabled = true;

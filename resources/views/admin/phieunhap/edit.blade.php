@@ -38,7 +38,7 @@
                   <table class="table table-bordered" id="table-sach">
                      <thead class="thead-light">
                         <tr>
-                           <th>Nhà xuất bản</th>
+                           <th>Danh mục (bộ sách)</th>
                            <th>Sách</th>
                            <th>Số lượng</th>
                            <th>Giá bìa</th>
@@ -53,10 +53,10 @@
                         @foreach ($phieunhap->chiTietNhapSach as $ct)
                         <tr>
                            <td>
-                              <select name="nha_xuat_ban_id[]" class="form-control nxb-select" required>
-                                 <option value="">-- Chọn NXB --</option>
-                                 @foreach ($nhaXuatBans as $nxb)
-                                 <option value="{{ $nxb->id }}" {{ $nxb->id == $ct->sach->nha_xuat_ban_id ? 'selected' : '' }}>{{ $nxb->ten }}</option>
+                              <select class="form-control danh-muc-select" required>
+                                 <option value="">-- Chọn danh mục --</option>
+                                 @foreach ($danhMucs as $dm)
+                                 <option value="{{ $dm->id }}" {{ $dm->id == $ct->sach->danh_muc_id ? 'selected' : '' }}>{{ $dm->ten }}</option>
                                  @endforeach
                               </select>
                            </td>
@@ -64,13 +64,13 @@
                               <select name="sach_id[]" class="form-control sach-select" required>
                                  <option value="">-- Chọn sách --</option>
                                  @foreach ($sachs as $sach)
-                                 <option value="{{ $sach->MaSach }}" data-giabia="{{ $sach->GiaBia }}" data-nxb="{{ $sach->nha_xuat_ban_id }}" data-chietkhau="{{ $sach->chiet_khau }}" {{ $sach->MaSach == $ct->sach_id ? 'selected' : '' }}>{{ $sach->TenSach }}</option>
+                                 <option value="{{ $sach->MaSach }}" data-giabia="{{ $sach->GiaBia }}" data-danhmuc="{{ $sach->danh_muc_id }}" data-chietkhau="{{ $sach->chiet_khau }}" {{ $sach->MaSach == $ct->sach_id ? 'selected' : '' }}>{{ $sach->TenSach }}</option>
                                  @endforeach
                               </select>
                            </td>
                            <td><input type="number" name="so_luong[]" class="form-control so_luong" min="1" value="{{ $ct->so_luong }}" required></td>
                            <td><input type="number" name="gia_nhap[]" class="form-control gia_nhap" readonly></td>
-                           <td><input type="number" name="chiet_khau[]" class="form-control chiet_khau" min="0" max="100"value="{{ old('chiet_khau.' . $loop->index, $ct->chiet_khau ?? $ct->sach->chiet_khau ?? 0) }}"></td>
+                           <td><input type="number" name="chiet_khau[]" class="form-control chiet_khau" min="0" max="100" value="{{ old('chiet_khau.' . $loop->index, $ct->chiet_khau ?? $ct->sach->chiet_khau ?? 0) }}"></td>
                            <td><input type="text" class="form-control thanh_tien" readonly value="0"></td>
                            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">-</button></td>
                         </tr>
@@ -97,21 +97,21 @@
                }
 
                function attachEventHandlers(row) {
-                  const nxbSelect = row.querySelector('.nxb-select');
+                  const danhMucSelect = row.querySelector('.danh-muc-select');
                   const sachSelect = row.querySelector('.sach-select');
                   const giaInput = row.querySelector('.gia_nhap');
                   const ckInput = row.querySelector('.chiet_khau');
 
-                  nxbSelect.addEventListener('change', function () {
-                     const selectedNXB = this.value;
+                  danhMucSelect.addEventListener('change', function () {
+                     const selectedDM = this.value;
                      sachSelect.innerHTML = '<option value="">-- Chọn sách --</option>';
                      allBooks.forEach(book => {
-                        if (book.nha_xuat_ban_id == selectedNXB) {
+                        if (book.danh_muc_id == selectedDM) {
                            const option = document.createElement('option');
                            option.value = book.MaSach;
                            option.textContent = book.TenSach;
                            option.setAttribute('data-giabia', book.GiaBia);
-                           option.setAttribute('data-nxb', book.nha_xuat_ban_id);
+                           option.setAttribute('data-danhmuc', book.danh_muc_id);
                            option.setAttribute('data-chietkhau', book.chiet_khau);
                            sachSelect.appendChild(option);
                         }
@@ -138,11 +138,11 @@
                   const table = document.querySelector('#table-sach tbody');
                   const row = table.rows[0].cloneNode(true);
 
-                  row.querySelectorAll('input').forEach(input => input.value = input.name.includes('so_luong') ? 1 : 0);
+                  row.querySelectorAll('input').forEach(input => input.value = 0);
                   row.querySelector('.thanh_tien').value = '0';
                   row.querySelector('.gia_nhap').value = '';
                   row.querySelector('.sach-select').innerHTML = '<option value="">-- Chọn sách --</option>';
-                  row.querySelector('.nxb-select').selectedIndex = 0;
+                  row.querySelector('.danh-muc-select').selectedIndex = 0;
 
                   table.appendChild(row);
                   attachEventHandlers(row);

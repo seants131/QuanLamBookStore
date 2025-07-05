@@ -28,6 +28,7 @@ class Sach extends Model
         'Lop',
         'chiet_khau',
         'nha_xuat_ban_id',
+        'danh_muc_id',
     ];
  /**
      * Auto generate slug from TenSach if not provided
@@ -56,8 +57,8 @@ class Sach extends Model
         return $this->hasMany(ChiTietNhapSach::class, 'sach_id', 'MaSach');
     }
 
-    public function nhaXuatBan()
+    public function danhMuc()
     {
-        return $this->belongsTo(NhaXuatBan::class, 'nha_xuat_ban_id');
+        return $this->belongsTo(DanhMuc::class, 'danh_muc_id', 'id');
     }
 }

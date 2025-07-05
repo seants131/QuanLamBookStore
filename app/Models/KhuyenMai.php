@@ -20,4 +20,16 @@ class KhuyenMai extends Model
     {
         return $this->hasMany(DonHang::class, 'khuyen_mai_id');
     }
+   
+    public function getTrangThaiHienThiAttribute()
+    {
+        $today = \Carbon\Carbon::today();
+        $ngayKetThuc = \Carbon\Carbon::parse($this->ngay_ket_thuc);
+
+        if ($today->gt($ngayKetThuc)) return 'Tạm dừng';
+        if ($this->trang_thai === 'kich_hoat') return 'Kích hoạt';
+
+        return 'Tạm dừng';
+    }
+
 }

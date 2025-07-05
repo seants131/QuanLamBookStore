@@ -43,7 +43,7 @@
                   <table class="table table-bordered" id="table-sach">
                      <thead class="thead-light">
                         <tr>
-                           <th>Nhà xuất bản</th>
+                           <th>Danh mục</th>
                            <th>Sách</th>
                            <th>Số lượng</th>
                            <th>Giá bìa</th>
@@ -57,10 +57,10 @@
                      <tbody>
                         <tr>
                            <td>
-                              <select class="form-control nxb-select" required>
-                                 <option value="">-- Chọn NXB --</option>
-                                 @foreach ($nhaXuatBans as $nxb)
-                                 <option value="{{ $nxb->id }}">{{ $nxb->ten }}</option>
+                              <select class="form-control danh-muc-select" required>
+                                 <option value="">-- Chọn danh mục --</option>
+                                 @foreach ($danhMucs as $dm)
+                                 <option value="{{ $dm->id }}">{{ $dm->ten }}</option>
                                  @endforeach
                               </select>
                            </td>
@@ -99,20 +99,20 @@
                   }
 
                   function attachEventHandlers(row) {
-                     const nxbSelect = row.querySelector('.nxb-select');
+                     const dmSelect = row.querySelector('.danh-muc-select');
                      const sachSelect = row.querySelector('.sach-select');
                      const giaInput = row.querySelector('.gia_nhap');
                      const ckInput = row.querySelector('.chiet_khau');
 
-                     nxbSelect.addEventListener('change', function () {
-                        const nxbId = this.value;
-                        if (!nxbId) {
+                     dmSelect.addEventListener('change', function () {
+                        const dmId = this.value;
+                        if (!dmId) {
                            sachSelect.innerHTML = '<option value="">-- Chọn sách --</option>';
                            sachSelect.disabled = true;
                            return;
                         }
 
-                        const filteredBooks = allBooks.filter(book => book.nha_xuat_ban_id == nxbId);
+                        const filteredBooks = allBooks.filter(book => book.danh_muc_id == dmId);
                         const options = filteredBooks.map(book =>
                            `<option value="${book.MaSach}" data-giabia="${book.GiaBia}" data-chietkhau="${book.chiet_khau}">
                               ${book.TenSach}
@@ -139,15 +139,14 @@
                      const table = document.querySelector('#table-sach tbody');
                      const row = table.rows[0].cloneNode(true);
 
-                     // Reset input fields
                      row.querySelectorAll('input').forEach(input => {
-                        input.value = (input.classList.contains('so_luong') ? 1 : 0);
+                        input.value = 0;
                      });
                      row.querySelector('.thanh_tien').value = '0';
                      row.querySelector('.gia_nhap').value = '';
                      row.querySelector('.chiet_khau').value = '0';
 
-                     row.querySelector('.nxb-select').selectedIndex = 0;
+                     row.querySelector('.danh-muc-select').selectedIndex = 0;
                      const sachSelect = row.querySelector('.sach-select');
                      sachSelect.innerHTML = '<option value="">-- Chọn sách --</option>';
                      sachSelect.disabled = true;

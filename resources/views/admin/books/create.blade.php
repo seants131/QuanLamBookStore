@@ -71,8 +71,8 @@
                   </div>
 
                   <div class="form-group">
-                     <label for="ChietKhau">Chiết khấu (%):</label>
-                     <input type="number" name="ChietKhau" id="ChietKhau" value="{{ old('ChietKhau', 0) }}" min="0" max="100">
+                     <label for="chiet_khau">Chiết khấu (%):</label>
+                     <input type="number" name="chiet_khau" id="Chiet_Khau" value="{{ old('chiet_khau', 0) }}" min="0" max="100">
                   </div>
 
                   <div class="form-group">
@@ -99,11 +99,13 @@
                   </div>
 
                   <div class="form-group">
-                     <label for="nha_xuat_ban_id">Nhà xuất bản:</label>
-                     <select name="nha_xuat_ban_id" id="nha_xuat_ban_id" class="form-control" required>
-                        <option value="">-- Chọn NXB --</option>
-                        @foreach($nhaXuatBans as $nxb)
-                           <option value="{{ $nxb->id }}" {{ old('nha_xuat_ban_id') == $nxb->id ? 'selected' : '' }}>{{ $nxb->ten }}</option>
+                     <label for="danh_muc_id">Danh mục (Bộ sách):</label>
+                     <select name="danh_muc_id" id="danh_muc_id" class="form-control" required>
+                        <option value="">-- Chọn danh mục --</option>
+                       @foreach($danhMucs as $dm)
+                           <option value="{{ $dm->id }}" {{ old('danh_muc_id', $book->danh_muc_id ?? '') == $dm->id ? 'selected' : '' }}>
+                              {{ $dm->ten }}
+                           </option>
                         @endforeach
                      </select>
                   </div>
