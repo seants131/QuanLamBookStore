@@ -140,3 +140,5 @@ Route::middleware(['web'])->group(function () {
     Route::get('/checkout/payment', [UserCheckoutController::class, 'goToPayment'])->name('checkout.payment'); // Tùy vào flow bạn
     Route::post('/checkout/place-order', [UserCheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 });
+Route::get('/vnpay-payment', [UserCheckoutController::class, 'createVnpayPayment'])->name('vnpay.payment');
+Route::get('/vnpay-return', [UserCheckoutController::class, 'vnpayReturn'])->name('vnpay.return');

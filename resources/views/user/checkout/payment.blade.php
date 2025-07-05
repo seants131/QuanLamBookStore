@@ -47,27 +47,55 @@
                                 </div>
                             </div>
                             <div class="iq-card-body">
+
                                 @if (session('success'))
                                     <div class="alert alert-success">{{ session('success') }}</div>
                                 @endif
+
+                                @if (session('error'))
+                                    <div class="alert alert-danger">{{ session('error') }}</div>
+                                @endif
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
                                 <form action="{{ route('checkout.placeOrder') }}" method="POST">
                                     @csrf
                                     <div class="form-group">
-                                        <div>
-                                            <input type="radio" id="credit" name="hinh_thuc_thanh_toan" value="chuyen_khoan" required>
-                                            <label for="credit">Thẻ Tín dụng / Ghi nợ / ATM</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="vnpay"
+                                                name="hinh_thuc_thanh_toan" value="vnpay" required>
+                                            <label class="form-check-label" for="vnpay">
+                                                Thanh toán VNPay
+                                            </label>
                                         </div>
-                                        <div>
-                                            <input type="radio" id="momo" name="hinh_thuc_thanh_toan" value="momo_zalopay">
-                                            <label for="momo">Momo/ZaloPay</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="momo"
+                                                name="hinh_thuc_thanh_toan" value="momo_zalopay">
+                                            <label class="form-check-label" for="momo">
+                                                Momo/ZaloPay
+                                            </label>
                                         </div>
-                                        <div>
-                                            <input type="radio" id="installment" name="hinh_thuc_thanh_toan" value="installment">
-                                            <label for="installment">Trả góp</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="installment"
+                                                name="hinh_thuc_thanh_toan" value="installment">
+                                            <label class="form-check-label" for="installment">
+                                                Trả góp
+                                            </label>
                                         </div>
-                                        <div>
-                                            <input type="radio" id="cod" name="hinh_thuc_thanh_toan" value="tien_mat">
-                                            <label for="tien_mat">Thanh toán khi giao hàng (COD)</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" id="cod"
+                                                name="hinh_thuc_thanh_toan" value="tien_mat">
+                                            <label class="form-check-label" for="cod">
+                                                Thanh toán khi giao hàng (COD)
+                                            </label>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary mt-3">Tiếp tục</button>
@@ -79,26 +107,27 @@
                         <div class="iq-card">
                             <div class="iq-card-body">
                                 <h4 class="mb-2">Chi tiết đơn hàng</h4>
+
                                 @php
                                     $address = session('shipping_address');
                                 @endphp
 
-                                @if($address)
+                                @if ($address)
                                     <div class="mb-2" style="background: #f8f9fa; border-radius: 6px; padding: 12px;">
                                         <strong>Địa chỉ giao hàng:</strong><br>
                                         {{ $address['fname'] ?? '' }}<br>
                                         {{ $address['houseno'] ?? '' }},
-                                        {{ $address['phuong'] ?? $address['state'] ?? '' }},
-                                        {{ $address['quan'] ?? $address['district'] ?? '' }},
+                                        {{ $address['phuong'] ?? ($address['state'] ?? '') }},
+                                        {{ $address['quan'] ?? ($address['district'] ?? '') }},
                                         {{ $address['city'] ?? '' }}<br>
                                         SĐT: {{ $address['mno'] ?? '' }}<br>
                                         Email: {{ $address['email'] ?? '' }}
                                     </div>
                                 @endif
+
                                 <div class="d-flex justify-content-between">
                                     <span>Giá sản phẩm</span>
-                                    <span><strong>{{ isset($cart_total) ? number_format($cart_total, 0, ',', '.') : '0' }}đ</strong>
-                                    </span>
+                                    <span><strong>{{ number_format($cart_total, 0, ',', '.') }}đ</strong></span>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <span>Phí vận chuyển</span>
@@ -107,8 +136,7 @@
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Số tiền phải trả</span>
-                                    <span><strong>{{ isset($cart_total) ? number_format($cart_total, 0, ',', '.') : '0' }}đ</strong>
-                                    </span>
+                                    <span><strong>{{ number_format($cart_total, 0, ',', '.') }}đ</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -124,8 +152,8 @@
             <div class="row">
                 <div class="col-lg-6">
                     <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="privacy-policy.html">Chính sách bảo mật</a></li>
-                        <li class="list-inline-item"><a href="terms-of-service.html">Điều khoản sử dụng</a></li>
+                        <li class="list-inline-item"><a href="#">Chính sách bảo mật</a></li>
+                        <li class="list-inline-item"><a href="#">Điều khoản sử dụng</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-6 text-right">
@@ -135,7 +163,7 @@
         </div>
     </footer>
     <!-- Footer END -->
-    <!-- Optional JavaScript -->
+
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
