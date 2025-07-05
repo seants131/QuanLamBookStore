@@ -102,11 +102,12 @@ return new class extends Migration {
 
             $table->date('ngay_mua');
             $table->enum('trang_thai', ['cho_xu_ly', 'dang_giao', 'hoan_thanh', 'huy'])->default('cho_xu_ly');
-            $table->enum('hinh_thuc_thanh_toan', ['tien_mat', 'chuyen_khoan'])->default('tien_mat');
+            $table->text('hinh_thuc_thanh_toan')->default('tien_mat');
 
             $table->unsignedTinyInteger('giam_gia')->default(0);       // Mặc định 0%
             $table->unsignedBigInteger('tong_tien')->default(0);
             $table->unsignedInteger('tong_so_luong')->default(0);
+            $table->string('transaction_no')->nullable();
 
             $table->foreignId('khuyen_mai_id')->nullable()->constrained('khuyen_mai')->nullOnDelete();
             $table->text('dia_chi_giao_hang')->nullable();
