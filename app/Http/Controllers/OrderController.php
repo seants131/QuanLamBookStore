@@ -25,7 +25,7 @@ class OrderController extends Controller
 
         if ($request->filled('khach_hang')) {
             $query->whereHas('khachHang', function ($q) use ($request) {
-                $q->where('ho_ten', 'like', '%' . $request->khach_hang . '%');
+                $q->where('name', 'like', '%' . $request->khach_hang . '%');
             });
         }
 
