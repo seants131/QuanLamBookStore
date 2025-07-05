@@ -33,7 +33,7 @@ class DonHang extends Model
     // Quan hệ: đơn hàng thuộc về người dùng
     public function khachHang()
     {
-        return $this->belongsTo(khachHang::class, 'user_id');
+        return $this->belongsTo(KhachHang::class, 'user_id');
     }
 
     // Quan hệ: đơn hàng có thể gắn với 1 khuyến mãi

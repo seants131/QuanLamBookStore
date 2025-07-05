@@ -13,10 +13,11 @@ class NguoiDungSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'username' => 'admin',
-                'password' => bcrypt('admin123'), // Có thể bỏ bcrypt nếu Minh không cần hash
+                'password' => bcrypt('admin123'),
                 'role' => 'admin',
                 'email' => 'admin@example.com',
                 'so_dien_thoai' => '0900000000',
+                'dia_chi' => '123 Đường Nguyễn Trãi, Phường 1, Quận 5, TP. Hồ Chí Minh',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -27,6 +28,7 @@ class NguoiDungSeeder extends Seeder
                 'role' => 'khach',
                 'email' => 'khach1@example.com',
                 'so_dien_thoai' => '0911111111',
+                'dia_chi' => '456 Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
