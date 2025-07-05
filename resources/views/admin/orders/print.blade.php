@@ -157,7 +157,7 @@
             </ul>
 
             <p class="section-title">Phiếu bảo hành sản phẩm:</p>
-            <p>Sản phẩm được bảo hành theo chính sách tại tất cả các trung tâm bảo hành của nhà cung cấp hoặc tại cửa hàng QuanTuanShop.</p>
+            <p>Sản phẩm được bảo hành theo chính sách tại tất cả các trung tâm bảo hành của nhà cung cấp hoặc tại cửa hàng.</p>
         </div>
 
         <div class="footer" style="text-align: center; margin-top: 30px;">
