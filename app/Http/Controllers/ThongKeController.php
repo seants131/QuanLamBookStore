@@ -9,21 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class ThongKeController extends Controller
 {
-    public function thongKeSach(Request $request)
+  public function thongKeSach(Request $request)
     {
         $tuNgay = $request->input('tu_ngay');
         $denNgay = $request->input('den_ngay');
 
-        $data = DB::table('hoa_don')
-            ->join('chi_tiet_hoa_don', 'hoa_don.id', '=', 'chi_tiet_hoa_don.hoa_don_id')
-            ->join('sach', 'chi_tiet_hoa_don.sach_id', '=', 'sach.MaSach')
-            ->select('sach.TenSach as ten_sach', DB::raw('SUM(chi_tiet_hoa_don.so_luong) as tong_so_luong'))
-            ->whereBetween('hoa_don.ngay_mua', [$tuNgay, $denNgay])
-            ->groupBy('sach.TenSach')
-            ->orderByDesc('tong_so_luong')
-            ->limit(10)
-            ->get();
-
+    $data = DB::table('hoa_don')
+        ->join('chi_tiet_hoa_don', 'hoa_don.id', '=', 'chi_tiet_hoa_don.hoa_don_id')
+        ->join('sach', 'chi_tiet_hoa_don.sach_id', '=', 'sach.MaSach')
+        ->leftJoin('danh_muc', 'sach.danh_muc_id', '=', 'danh_muc.id')
+        ->select(
+            'sach.MaSach as ma_sach',
+            'sach.TenSach as ten_sach',
+            'sach.GiaBia as gia_ban',
+            'danh_muc.ten as ten_danh_muc',
+            DB::raw('SUM(chi_tiet_hoa_don.so_luong) as tong_so_luong')
+        )
+        ->whereBetween('hoa_don.ngay_mua', [$tuNgay, $denNgay])
+        ->groupBy('sach.MaSach', 'sach.TenSach', 'sach.GiaBia', 'danh_muc.ten')
+        ->orderByDesc('tong_so_luong')
+        ->limit(10)
+        ->get();
         return response()->json($data);
     }
 

@@ -139,22 +139,23 @@
                         </div>
                   </div> -->
                   <!-- Thống kê sách bán ra -->
+                  <!-- Thống kê sách bán ra -->
                   <div class="col-md-12">
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
-                              <div class="iq-header-title">
-                                 <h4 class="card-title mb-0">Thống kê sách bán ra</h4>
-                              </div>
-                              <form id="form-thong-ke-sach" class="form-inline">
-                                 <label class="mr-2">Từ ngày:</label>
-                                 <input type="date" id="sach_tu_ngay" class="form-control mr-2">
-                                 <label class="mr-2">Đến ngày:</label>
-                                 <input type="date" id="sach_den_ngay" class="form-control mr-2">
-                                 <button type="button" id="btn-export-csv" class="btn btn-sm btn-success ml-2">Xuất Excel</button>
-                              </form>
+                           <div class="iq-header-title">
+                              <h4 class="card-title mb-0">Thống kê sách bán ra theo thời gian</h4>
+                           </div>
+                           <form id="form-thong-ke-sach" class="form-inline">
+                              <label class="mr-2">Từ ngày:</label>
+                              <input type="date" id="sach_tu_ngay" class="form-control mr-2">
+                              <label class="mr-2">Đến ngày:</label>
+                              <input type="date" id="sach_den_ngay" class="form-control mr-2">
+                              <button type="button" id="btn-export-csv" class="btn btn-sm btn-success ml-2">Xuất Excel</button>
+                           </form>
                         </div>
                         <div class="iq-card-body">
-                              <div id="chart-sach-ban" style="height: 400px;"></div>
+                           <div id="chart-sach-ban" style="height: 400px;"></div>
                         </div>
                      </div>
                   </div>
@@ -222,6 +223,7 @@
          </div>
       </div>
       <!-- Wrapper END -->
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 @endsection
 
 @section('scripts')
@@ -239,45 +241,45 @@
     let chartTonKho = null;
 
     async function loadChart() {
-            const tuNgay = document.getElementById('sach_tu_ngay').value;
-            const denNgay = document.getElementById('sach_den_ngay').value;
+         const tuNgay = document.getElementById('sach_tu_ngay').value;
+         const denNgay = document.getElementById('sach_den_ngay').value;
 
-            document.querySelector("#chart-sach-ban").innerHTML = "Đang tải dữ liệu...";
+         document.querySelector("#chart-sach-ban").innerHTML = "Đang tải dữ liệu...";
 
-            const response = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
-            const data = await response.json();
+         const response = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+         const data = await response.json();
 
-            const tenSach = data.map(item => item.ten_sach || 'Không rõ');
-            const soLuong = data.map(item => Number(item.tong_so_luong || 0));
+         const tenSach = data.map(item => item.ten_sach || 'Không rõ');
+         const soLuong = data.map(item => Number(item.tong_so_luong || 0));
 
-            if (chartSachBan) chartSachBan.destroy();
+         if (chartSachBan) chartSachBan.destroy();
 
-            chartSachBan = new ApexCharts(document.querySelector("#chart-sach-ban"), {
-               chart: { type: 'bar', height: 400 },
-               series: [{ name: "Số lượng bán", data: soLuong }],
-               title: { text: 'Thống kê sách bán ra', align: 'center' },
-               subtitle: {
-            text: `Từ ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`,
-            align: 'center'
-         },
-
-         xaxis: {
+         chartSachBan = new ApexCharts(document.querySelector("#chart-sach-ban"), {
+            chart: { type: 'bar', height: 400 },
+            series: [{ name: "Số lượng bán", data: soLuong }],
+            title: { text: 'Top 10 sách bán chạy nhất trong khoảng thời gian được chọn', align: 'center' },
+            subtitle: {
+               text: `Từ ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`,
+               align: 'center'
+            },
+            xaxis: {
                categories: tenSach,
                labels: { rotate: -45, style: { fontSize: '13px' } }
-         },
-         plotOptions: { bar: { dataLabels: { position: 'top' } } },
-         dataLabels: {
+            },
+            plotOptions: { bar: { dataLabels: { position: 'top' } } },
+            dataLabels: {
                enabled: true, offsetY: -20,
                style: { fontSize: '13px', colors: ['#2d3436'] }
-         },
-         tooltip: {
+            },
+            tooltip: {
                y: { formatter: val => `${val} quyển` }
-         },
-         colors: ['#00b894', '#0984e3', '#fd79a8', '#6c5ce7', '#e17055'],
-         noData: { text: 'Không có dữ liệu' }
-      });
-      chartSachBan.render();
-   }
+            },
+            colors: ['#00b894', '#0984e3', '#fd79a8', '#6c5ce7', '#e17055'],
+            noData: { text: 'Không có dữ liệu' }
+         });
+
+         chartSachBan.render();
+      }
 
     async function loadChartDoanhSoNgay() {
         const tuNgay = document.getElementById('sach_tu_ngay').value;
@@ -350,7 +352,7 @@
                 { name: 'Đã bán', data: daBan }
             ],
             xaxis: { categories: labels },
-            title: { text: 'Top 10 sách có tồn kho lớn và số lượng bán ra', align: 'center' },
+            title: { text: 'Top 10 sách có số lượng bán ra cao nhất, kèm theo thông tin tồn kho', align: 'center' },
             colors: ['#00cec9', '#fdcb6e']
         });
         chartTonKho.render();
@@ -419,25 +421,42 @@
         return;
     }
 
-    // ✅ Sử dụng tab để phân cột
-    let csv = "DANH SÁCH THỐNG KÊ SÁCH BÁN RA\n";
-    csv += `Từ ngày: ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}\n\n`;
-    csv += "Tên sách\tTổng số lượng bán\n";
+    const rows = data.map(item => {
+        const soLuong = Number(item.tong_so_luong || 0);
+        const giaBan = Number(item.gia_ban || 0);
+        return {
+            "Mã sách": item.ma_sach || '',
+            "Tên sách": item.ten_sach || '',
+            "Danh mục": item.ten_danh_muc || '',
+            "Giá bán (đ)": giaBan.toLocaleString('vi-VN'),
+            "Số lượng bán": soLuong,
+            "Tổng doanh thu (đ)": (soLuong * giaBan).toLocaleString('vi-VN')
+        };
+    });
 
-   data.forEach(row => {
-      const tenSach = (row.ten_sach || '').replace(/\t/g, ' ');
-      const soLuong = row.tong_so_luong;
-      csv += `${tenSach}\t${soLuong}\n`; // KHÔNG thêm dấu ngoặc kép!
-   });
+    // === Tạo mảng sheet dữ liệu (gồm thông báo đầu và dữ liệu sau đó) ===
+    const sheetData = [
+        [`DANH SÁCH THỐNG KÊ SÁCH BÁN RA`],
+        [`Từ ngày: ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`],
+        [`Thời gian xuất: ${new Date().toLocaleString('vi-VN')}`],
+        [], // dòng trống
+        Object.keys(rows[0]), // header
+        ...rows.map(Object.values), // dữ liệu
+    ];
 
-    const blob = new Blob(["\uFEFF" + csv], { type: 'text/plain;charset=utf-8;' }); // text/plain để mở tốt hơn
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `thong_ke_sach_${tuNgay}_den_${denNgay}..txt`); // dùng .xls để Excel tự mở
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const ws = XLSX.utils.aoa_to_sheet(sheetData); // dùng aoa_to_sheet để tạo từ mảng 2 chiều
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "ThongKeSach");
+
+    const fileName = `ThongKeSach_${tuNgay}_den_${denNgay}.xlsx`;
+    XLSX.writeFile(wb, fileName);
 });
+
+// Hàm format ngày từ yyyy-mm-dd sang dd/mm/yyyy
+function formatNgayDMY(dateStr) {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    return `${d}/${m}/${y}`;
+}
 </script>
 @endsection
