@@ -20,8 +20,8 @@
               <input type="text" name="ten" class="form-control mr-2" placeholder="Tên" value="{{ request('ten') }}">
               <select name="trang_thai" class="form-control mr-2">
                 <option value="">-- Trạng thái --</option>
-                <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Kích hoạt</option>
-                <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Tạm dừng</option>
+                <option value="kich_hoat" {{ request('trang_thai') === 'kich_hoat' ? 'selected' : '' }}>Kích hoạt</option>
+                <option value="tat" {{ request('trang_thai') === 'tat' ? 'selected' : '' }}>Tạm dừng</option>
               </select>
               <button type="submit" class="btn btn-success">Tìm</button>
               <a href="{{ route('admin.khuyenmai.index') }}" class="btn btn-secondary ml-2">Reset</a>

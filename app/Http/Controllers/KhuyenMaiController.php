@@ -15,8 +15,18 @@ class KhuyenMaiController extends Controller
             $query->where('ten', 'like', '%' . $request->ten . '%');
         }
 
-        if ($request->filled('trang_thai')) {
-            $query->where('trang_thai', $request->trang_thai);
+        if ($request->has('trang_thai') && $request->trang_thai !== '') {
+            if ($request->trang_thai === 'tat') {
+                // Lọc những cái trạng thái là kich_hoat nhưng đã hết hạn
+                $query->where(function ($q) {
+                    $q->where('trang_thai', 'kich_hoat')
+                    ->whereDate('ngay_ket_thuc', '<', \Carbon\Carbon::today());
+                })->orWhere('trang_thai', 'tat');
+            } else {
+                // Trạng thái đang còn hiệu lực
+                $query->where('trang_thai', $request->trang_thai)
+                    ->whereDate('ngay_ket_thuc', '>=', \Carbon\Carbon::today());
+            }
         }
 
         $khuyenmai = $query->orderByDesc('created_at')->paginate(10);
@@ -36,11 +46,12 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam'  => 'required|numeric|min:0|max:100',
             'ngay_bat_dau'    => 'required|date',
             'ngay_ket_thuc'   => 'required|date|after_or_equal:ngay_bat_dau',
-            'trang_thai'      => 'required|boolean',
+            'trang_thai'      => 'required|in:0,1',
         ]);
 
-        KhuyenMai::create($request->all());
-
+        $data = $request->all();
+        $data['trang_thai'] = $data['trang_thai'] == '1' ? 'kich_hoat' : 'tat';
+        KhuyenMai::create($data);
         return redirect()->route('admin.khuyenmai.index')->with('success', 'Khuyến mãi đã được thêm.');
     }
 
@@ -57,14 +68,18 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam'  => 'required|numeric|min:0|max:100',
             'ngay_bat_dau'    => 'required|date',
             'ngay_ket_thuc'   => 'required|date|after_or_equal:ngay_bat_dau',
-            'trang_thai'      => 'required|boolean',
+            'trang_thai'      => 'required|in:0,1', // Vì form gửi 1 hoặc 0
         ]);
 
+        $data = $request->all();
+        $data['trang_thai'] = $data['trang_thai'] == '1' ? 'kich_hoat' : 'tat';
+
         $item = KhuyenMai::findOrFail($id);
-        $item->update($request->all());
+        $item->update($data);
 
         return redirect()->route('admin.khuyenmai.index')->with('success', 'Khuyến mãi đã được cập nhật.');
     }
+
 
     public function destroy($id)
     {
