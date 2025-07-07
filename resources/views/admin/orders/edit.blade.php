@@ -21,6 +21,11 @@
                             </ul>
                         </div>
                     @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
                     <form method="POST" action="{{ route('admin.orders.update', $order->id) }}">
                         @csrf
@@ -29,7 +34,7 @@
 
                         <div class="form-group">
                             <label for="user_id">Khách hàng:</label>
-                            <select name="user_id" id="user_id" required class="form-control">
+                            <select name="user_id" id="user_id" required class="form-control" disabled>
                                 <option value="">-- Chọn khách hàng --</option>
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}" {{ $order->user_id == $customer->id ? 'selected' : '' }}>
@@ -41,13 +46,13 @@
 
                         <div class="form-group">
                             <label for="ngay_mua">Ngày mua:</label>
-                            <input type="datetime-local" name="ngay_mua" id="ngay_mua" class="form-control" required
+                            <input type="datetime-local" name="ngay_mua" id="ngay_mua" class="form-control" required disabled
                                 value="{{ old('ngay_mua', \Carbon\Carbon::parse($order->ngay_mua)->format('Y-m-d\TH:i')) }}">
                         </div>
 
                         <div class="form-group">
                             <label for="trang_thai">Trạng thái:</label>
-                            <select name="trang_thai" id="trang_thai" required class="form-control">
+                            <select name="trang_thai" id="trang_thai" required class="form-control" disabled>
                                 <option value="cho_xu_ly" {{ $order->trang_thai == 'cho_xu_ly' ? 'selected' : '' }}>Chờ xử lý</option>
                                 <option value="dang_giao" {{ $order->trang_thai == 'dang_giao' ? 'selected' : '' }}>Đang giao</option>
                                 <option value="hoan_thanh" {{ $order->trang_thai == 'hoan_thanh' ? 'selected' : '' }}>Hoàn thành</option>
@@ -57,7 +62,7 @@
 
                         <div class="form-group">
                             <label for="hinh_thuc_thanh_toan">Hình thức thanh toán:</label>
-                            <select name="hinh_thuc_thanh_toan" id="hinh_thuc_thanh_toan" required class="form-control">
+                            <select name="hinh_thuc_thanh_toan" id="hinh_thuc_thanh_toan" required class="form-control" disabled>
                                 <option value="tien_mat" {{ $order->hinh_thuc_thanh_toan == 'tien_mat' ? 'selected' : '' }}>Tiền mặt</option>
                                 <option value="chuyen_khoan" {{ $order->hinh_thuc_thanh_toan == 'chuyen_khoan' ? 'selected' : '' }}>Chuyển khoản</option>
                             </select>
@@ -65,7 +70,7 @@
 
                         <div class="form-group">
                             <label for="khuyen_mai_id">Khuyến mãi (nếu có):</label>
-                            <select name="khuyen_mai_id" id="khuyen_mai_id" class="form-control">
+                            <select name="khuyen_mai_id" id="khuyen_mai_id" class="form-control" disabled>
                                 <option value="">-- Không áp dụng --</option>
                                 @foreach ($khuyenMaiList as $km)
                                     <option value="{{ $km->id }}" data-phantram="{{ $km->phan_tram_giam }}"
@@ -77,8 +82,18 @@
                         </div>
                         
                         <div class="form-group">
+                            <label for="sdt">Số điện thoại</label>
+                            <input type="text" name="sdt" class="form-control" value="{{ old('sdt', $order->khachHang->so_dien_thoai ?? '') }}" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" class="form-control" value="{{ old('email', $order->khachHang->email ?? '') }}" readonly>
+                        </div>
+
+                        <div class="form-group">
                             <label for="dia_chi_giao_hang">Địa chỉ giao hàng</label>
-                            <textarea name="dia_chi_giao_hang" class="form-control" rows="3" required>{{ old('dia_chi_giao_hang', $order->dia_chi_giao_hang ?? '') }}</textarea>
+                            <textarea name="dia_chi_giao_hang" class="form-control" rows="2" required>{{ old('dia_chi_giao_hang', $order->dia_chi_giao_hang ?? '') }}</textarea>
                         </div>
 
                         <hr>
@@ -107,7 +122,7 @@
                                     @endphp
                                     <tr>
                                         <td>{{ $item->sach->TenSach ?? 'Không tìm thấy sách' }}</td>
-                                        <td>{{ $item->so_luong }}</td>
+                                        <td><input type="number" name="so_luong[{{ $item->id }}]" class="form-control so_luong" value="{{ $item->so_luong }}" min="1" required></td>
                                         <td>{{ number_format($item->don_gia, 0, ',', '.') }} VND</td>
                                         <td>{{ number_format($daGiam, 0, ',', '.') }} VND</td>
                                     </tr>

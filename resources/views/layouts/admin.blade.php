@@ -78,6 +78,7 @@
                   <li><a href="{{ route('admin.lienhe.index') }}"><i class="ri-record-circle-line"></i>Liên Hệ</a></li>
                   <li><a href="{{ route('admin.phieunhap.index') }}"><i class="ri-record-circle-line"></i>Phiếu Nhập</a></li>
                   <li><a href="{{ route('admin.khuyenmai.index') }}"><i class="ri-record-circle-line"></i>Khuyến Mãi</a></li>
+                  <li><a href="{{ route('admin.danhmuc.index') }}"><i class="ri-record-circle-line"></i>Danh Mục</a></li>
                   <form action="{{ route('logout') }}" method="POST" class="d-inline-block w-100 text-center p-3">
                      @csrf
                      <button type="submit" class="bg-primary iq-sign-btn" style="border: none;">

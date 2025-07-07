@@ -30,12 +30,16 @@
 
             <div class="form-group">
               <label for="ngay_bat_dau">Ngày bắt đầu:</label>
-              <input type="date" name="ngay_bat_dau" class="form-control" value="{{ old('ngay_bat_dau') }}" required>
+              <input type="date" name="ngay_bat_dau"
+       value="{{ old('ngay_bat_dau', \Carbon\Carbon::parse($item->ngay_bat_dau ?? now())->format('Y-m-d')) }}"
+       class="form-control" required>
+
             </div>
 
             <div class="form-group">
               <label for="ngay_ket_thuc">Ngày kết thúc:</label>
-              <input type="date" name="ngay_ket_thuc" class="form-control" value="{{ old('ngay_ket_thuc') }}" required>
+              <input type="date" name="ngay_ket_thuc" class="form-control"
+                    value="{{ old('ngay_ket_thuc') ?? date('dd/MM/yyyy') }}" required>
             </div>
 
             <div class="form-group">

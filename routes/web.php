@@ -10,6 +10,7 @@ use App\Http\Controllers\KhachHangController;
 use App\Http\Controllers\LienHeController;
 use App\Http\Controllers\PhieuNhapController;
 use App\Http\Controllers\KhuyenMaiController;
+use App\Http\Controllers\DanhMucController;
 use App\Http\Controllers\ThongKeController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserController;
@@ -67,13 +68,16 @@ Route::get('/admin/books', [BookController::class, 'index'])->name('admin.books'
 Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders');
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-
     Route::resource('books', BookController::class);
     Route::resource('orders', OrderController::class);
+    Route::post('/orders/approve', [OrderController::class, 'approve'])->name('orders.approve');
+    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/orders/{id}/print', [OrderController::class, 'print'])->name('orders.print');
     Route::resource('khachhang', KhachHangController::class);
     Route::resource('lienhe', LienHeController::class);
     Route::resource('phieunhap',PhieuNhapController::class);
     Route::resource('khuyenmai', KhuyenMaiController::class);
+    Route::resource('danhmuc', DanhMucController::class);
     Route::get('/profile', [AdminProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');

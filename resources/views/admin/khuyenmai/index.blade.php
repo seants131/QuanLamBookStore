@@ -20,8 +20,8 @@
               <input type="text" name="ten" class="form-control mr-2" placeholder="Tên" value="{{ request('ten') }}">
               <select name="trang_thai" class="form-control mr-2">
                 <option value="">-- Trạng thái --</option>
-                <option value="1" {{ request('trang_thai') == '1' ? 'selected' : '' }}>Kích hoạt</option>
-                <option value="0" {{ request('trang_thai') == '0' ? 'selected' : '' }}>Tạm dừng</option>
+                <option value="kich_hoat" {{ request('trang_thai') === 'kich_hoat' ? 'selected' : '' }}>Kích hoạt</option>
+                <option value="tat" {{ request('trang_thai') === 'tat' ? 'selected' : '' }}>Tạm dừng</option>
               </select>
               <button type="submit" class="btn btn-success">Tìm</button>
               <a href="{{ route('admin.khuyenmai.index') }}" class="btn btn-secondary ml-2">Reset</a>
@@ -33,7 +33,8 @@
                   <th>ID</th>
                   <th>Tên</th>
                   <th>Giảm (%)</th>
-                  <th>Ngày áp dụng</th>
+                  <th>Ngày bắt đầu</th>
+                  <th>Ngày kết thúc</th>
                   <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
@@ -44,8 +45,15 @@
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->ten }}</td>
                     <td>{{ $item->phan_tram_giam }}%</td>
-                    <td>{{ $item->ngay_bat_dau }} - {{ $item->ngay_ket_thuc }}</td>
-                    <td>{{ $item->trang_thai ? 'Kích hoạt' : 'Tạm dừng' }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->ngay_bat_dau)->format('d/m/Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->ngay_ket_thuc)->format('d/m/Y') }}</td>
+                    <td>
+  <span class="badge 
+    {{ $item->trang_thai_hien_thi === 'Kích hoạt' ? 'badge-success' : 'badge-secondary' }}">
+    {{ $item->trang_thai_hien_thi }}
+  </span>
+</td>
+
                     <td>
                       <a href="{{ route('admin.khuyenmai.edit', $item->id) }}" class="btn btn-sm btn-warning">Sửa</a>
                       <form action="{{ route('admin.khuyenmai.destroy', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Xóa khuyến mãi này?')">

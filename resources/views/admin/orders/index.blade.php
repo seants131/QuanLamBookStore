@@ -22,9 +22,9 @@
                             </div>
                         @endif
 
-                        <div class="iq-card-header-toolbar d-flex align-items-center">
+                        <!-- <div class="iq-card-header-toolbar d-flex align-items-center">
                             <a href="{{ route('admin.orders.create') }}" class="btn btn-primary">Thêm Hóa Đơn</a>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="iq-card-body">
                         <div class="order-info">
@@ -48,6 +48,12 @@
                             </form>
 
                             <div class="table-responsive">
+                                 @php
+                                    $hinhThucThanhToanMap = [
+                                        'tien_mat' => 'Tiền mặt',
+                                        'chuyen_khoan' => 'Chuyển khoản',
+                                    ];
+                                @endphp
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -71,7 +77,7 @@
                                             <td>{{ $order->id }}</td>
                                             <td>{{ optional($order->khachHang)->name ?? 'Không có' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($order->ngay_mua)->format('d/m/Y') }}</td>
-                                            <td>{{ ucfirst(str_replace('_', ' ', $order->hinh_thuc_thanh_toan)) }}</td>
+                                            <td>{{ $hinhThucThanhToanMap[$order->hinh_thuc_thanh_toan] ?? $order->hinh_thuc_thanh_toan }}</td>
                                             <td>{{ $order->giam_gia }}%</td>
                                             <td>{{ number_format($order->tong_tien, 0, ',', '.') }} đ</td>
                                             <td>{{ $order->tong_so_luong }}</td>
@@ -91,22 +97,35 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center" style="gap: 6px;">
-                                                    <a href="{{ route('admin.orders.edit', $order->id) }}"
-                                                       class="action-btn" data-toggle="tooltip" title="Sửa">
-                                                        <i class="ri-pencil-line"></i>
-                                                    </a>
+                                                    @if ($order->trang_thai == 'cho_xu_ly' || $order->trang_thai == 'dang_giao')
+                                                        <button type="button"
+                                                                class="action-btn btn-duyet"
+                                                                data-id="{{ $order->id }}"
+                                                                data-trangthai="{{ $order->trang_thai }}"
+                                                                data-toggle="tooltip" title="Duyệt đơn hàng">
+                                                            <i class="ri-check-double-line text-success"></i>
+                                                        </button>
+                                                    @else
+                                                        <span class="text-muted">--</span>
+                                                    @endif
                                                     <a href="{{ route('admin.orders.show', $order->id) }}"
                                                        class="action-btn" data-toggle="tooltip" title="Xem chi tiết">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
-                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}"
-                                                          method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+                                                    <form action="{{ route('admin.orders.cancel', ['id' => $order->id]) }}"
+                                                        method="POST" onsubmit="return confirm('Bạn có chắc muốn HỦY đơn hàng này?');">
                                                         @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="action-btn" data-toggle="tooltip" title="Xóa">
-                                                            <i class="ri-delete-bin-line"></i>
+                                                        <button type="submit" class="action-btn" data-toggle="tooltip" title="Hủy đơn hàng">
+                                                            <i class="ri-close-circle-line text-danger"></i>
                                                         </button>
                                                     </form>
+                                                    <a href="{{ route('admin.orders.print', $order->id) }}"
+                                                    target="_blank"
+                                                    class="action-btn"
+                                                    data-toggle="tooltip"
+                                                    title="In hóa đơn">
+                                                        <i class="ri-printer-line text-primary"></i>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -126,4 +145,96 @@
         </div>
      </div>
 </div>
+<!-- Modal duyệt đơn -->
+<div class="modal fade" id="duyetDonModal" tabindex="-1" role="dialog" aria-labelledby="duyetDonLabel" aria-hidden="true">
+  <div class="modal-dialog custom-right-modal" role="document">
+
+    <form method="POST" action="{{ route('admin.orders.approve') }}">
+        @csrf
+        <input type="hidden" name="order_id" id="modal_order_id">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Duyệt đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Chọn trạng thái mới cho đơn hàng:</p>
+                <div class="form-group">
+                    <select name="new_status" id="modal_new_status" class="form-control" required>
+                        <!-- Options sẽ được JS xử lý tùy theo trạng thái hiện tại -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
 @endsection
+
+@section('styles')
+<style>
+    /* Modal nằm bên phải */
+    #duyetDonModal .modal-dialog {
+        margin-left: auto;
+        margin-right: 500px; /* cách lề phải một chút */
+        width: auto;
+        max-width: 450px; /* độ rộng mong muốn */
+    }
+
+    /* Nội dung modal */
+    #duyetDonModal .modal-content {
+        padding: 20px;
+        border-radius: 10px;
+        width: 100%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #duyetDonModal .modal-header h5 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #duyetDonModal .form-group select {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    #duyetDonModal .modal-footer {
+        justify-content: flex-end;
+    }
+</style>
+@endsection
+
+@section('scripts')
+<script>
+    document.querySelectorAll('.btn-duyet').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const id = this.dataset.id;
+            const currentStatus = this.dataset.trangthai;
+
+            const statusSelect = document.getElementById('modal_new_status');
+            statusSelect.innerHTML = ''; // Clear cũ
+
+            // Thêm trạng thái tiếp theo dựa theo trạng thái hiện tại
+            if (currentStatus === 'cho_xu_ly') {
+                statusSelect.innerHTML += `<option value="dang_giao">Đang giao</option>`;
+            } else if (currentStatus === 'dang_giao') {
+                statusSelect.innerHTML += `<option value="hoan_thanh">Hoàn thành</option>`;
+            }
+
+            document.getElementById('modal_order_id').value = id;
+            $('#duyetDonModal').modal('show');
+        });
+    });
+</script>
+@endsection
+
