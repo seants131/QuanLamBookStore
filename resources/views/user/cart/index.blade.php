@@ -19,9 +19,12 @@
                             <div class="col-lg-8">
                                 <div class="iq-card">
                                     <div class="iq-card-header d-flex justify-content-between iq-border-bottom mb-0">
-                                        <div class="iq-header-title">
+                                        @if (session('success'))
+                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                @endif
+                                        {{-- <div class="iq-header-title">
                                             <h4 class="card-title">Giỏ hàng</h4>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="iq-card-body">
                                         @if (count($cart) > 0)
