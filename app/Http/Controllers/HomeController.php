@@ -86,4 +86,25 @@ class HomeController extends Controller
     {
         return view('user.home.book-pdf');
     }
+
+    public function searchSachAjax(Request $request)
+    {
+        $q = $request->input('q');
+        $books = \App\Models\Sach::where('TenSach', 'like', '%' . $q . '%')
+            ->orWhere('TacGia', 'like', '%' . $q . '%')
+            ->limit(10)
+            ->get(['MaSach', 'TenSach', 'TacGia', 'HinhAnh', 'slug', 'GiaBia']);
+
+        return response()->json($books);
+    }
+
+    public function searchPage(Request $request)
+    {
+        $q = $request->input('q');
+        $books = \App\Models\Sach::where('TenSach', 'like', '%' . $q . '%')
+            ->orWhere('TacGia', 'like', '%' . $q . '%')
+            ->paginate(16);
+
+        return view('user.home.search', compact('books', 'q'));
+    }
 }

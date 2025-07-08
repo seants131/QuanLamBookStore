@@ -101,12 +101,13 @@
                                                 <div class="text-primary mb-4">Tác giả: <span
                                                         class="text-body">{{ $book->TacGia }}</span></div>
                                                 <div class="mb-4 d-flex align-items-center">
-                                                    <form action="{{ route('cart.add') }}" method="POST"
-                                                        class="mr-2">
+                                                    <form id="add-to-cart-form" class="mr-2">
                                                         @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $book->MaSach }}">
-                                                        <button type="submit" class="btn btn-primary view-more">Thêm
+                                                        <input type="hidden" name="id" value="{{ $book->MaSach }}">
+                                                        <input type="hidden" name="name" value="{{ $book->TenSach }}">
+                                                        <input type="hidden" name="price" value="{{ $book->GiaBia }}">
+                                                        <input type="hidden" name="image" value="{{ $book->HinhAnh }}">
+                                                        <button type="submit" class="btn btn-primary view-more btn-add-to-cart">Thêm
                                                             vào giỏ hàng</button>
                                                     </form>
                                                     <a href="#" class="btn btn-primary view-more mr-2">Mua

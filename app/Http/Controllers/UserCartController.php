@@ -44,7 +44,15 @@ class UserCartController extends Controller
 
         session()->put('cart', $cart);
 
-        return redirect()->route('cart.index')->with('success', 'Đã thêm vào giỏ hàng!');
+        // Đếm tổng số lượng sản phẩm trong giỏ hàng
+        $cartCount = collect($cart)->sum('quantity');
+
+        // Trả về JSON cho AJAX
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã thêm vào giỏ hàng!',
+            'cart_count' => $cartCount
+        ]);
     }
 
 

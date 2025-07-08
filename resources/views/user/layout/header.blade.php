@@ -99,10 +99,11 @@
             <div class="navbar-breadcrumb">
                 <h5 class="mb-0">{{ $trang ?? 'Web bán sách' }}</h5>
             </div>
-            <div class="iq-search-bar">
-                <form action="#" class="searchbox">
-                    <input type="text" class="text search-input" placeholder="Tìm kiếm sản phẩm...">
-                    <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+            <div class="iq-search-bar position-relative" style="z-index:1000;">
+                <form action="{{ route('search.page') }}" class="searchbox" autocomplete="off" method="get" id="main-search-form">
+                    <input type="text" class="text search-input" id="search-sach-input" name="q" placeholder="Tìm kiếm sách, tác giả..." value="{{ request('q') }}">
+                    <a class="search-link" href="#" onclick="$('#main-search-form').submit();return false;"><i class="ri-search-line"></i></a>
+                    <div id="search-sach-result" class="bg-white border rounded shadow-sm position-absolute w-100" style="display:none;max-height:350px;overflow-y:auto;top:100%;left:0;z-index:9999;"></div>
                 </form>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -271,7 +272,9 @@
                             {{-- <a href="{{ route('cart.index') }}" class="search-toggle iq-waves-effect text-gray rounded"> --}}
                             <i class="ri-shopping-cart-2-line"></i>
                             {{-- dòng dưới giúp hiện thị số lượng sản phẩm trong giỏ hàng --}}
-                            {{-- <span class="badge badge-danger count-cart rounded-circle">2</span> --}}
+                            <span class="badge badge-danger count-cart rounded-circle">
+                                {{ collect(session('cart', []))->sum('quantity') ?: '' }}
+                            </span>
                         </a>
                         {{-- dòng dưới giúp hiển thị một vài sách trong giỏ hàng --}}
                         {{-- <div class="iq-sub-dropdown">
@@ -385,3 +388,84 @@
     </div>
 </div>
 <!-- TOP Nav Bar END -->
+<script>
+    // Hiển thị số lượng sản phẩm trong giỏ hàng
+    document.addEventListener('DOMContentLoaded', function () {
+        const countCart = document.querySelector('.count-cart');
+        if (countCart) {
+            const cartCount = {{ collect(session('cart', []))->sum('quantity') }};
+            countCart.textContent = cartCount > 0 ? cartCount : '';
+        }
+    });
+
+$(document).ready(function() {
+    let timer = null;
+    $('#search-sach-input').on('input', function() {
+        clearTimeout(timer);
+        let q = $(this).val().trim();
+        if (q.length < 2) {
+            $('#search-sach-result').hide().empty();
+            return;
+        }
+        timer = setTimeout(function() {
+            $.get('{{ route('search.sach.ajax') }}', {q: q}, function(data) {
+                let html = '';
+                if (data.length) {
+                    html = '<ul class="list-group">';
+                    data.forEach(function(book) {
+                        html += `<li class="list-group-item d-flex align-items-center">
+                            <img src="${book.HinhAnh ? book.HinhAnh : '/images/no-image.png'}" width="40" class="mr-2 rounded" alt="">
+                            <div>
+                                <a href="/sach/${book.slug}" class="font-weight-bold text-dark">${book.TenSach}</a>
+                                <div class="small text-muted">${book.TacGia ? book.TacGia : ''}</div>
+                                <div class="small text-danger">${book.GiaBia ? book.GiaBia.toLocaleString() + ' đ' : ''}</div>
+                            </div>
+                        </li>`;
+                    });
+                    html += `<li class="list-group-item text-center"><a href="#" id="see-all-search">Xem tất cả kết quả</a></li>`;
+                    $('#search-sach-result').html(html).show();
+                } else {
+                    html = '<div class="p-2 text-muted">Không tìm thấy sách phù hợp.</div>';
+                    $('#search-sach-result').html(html).show();
+                }
+            });
+        }, 250);
+    });
+
+    // Ẩn gợi ý khi click ngoài
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#search-sach-input, #search-sach-result').length) {
+            $('#search-sach-result').hide();
+        }
+    });
+
+    // Xem tất cả kết quả
+    $(document).on('click', '#see-all-search', function(e) {
+        e.preventDefault();
+        $('#main-search-form').submit();
+    });
+
+    $('#add-to-cart-form').on('submit', function(e) {
+        e.preventDefault();
+        let form = $(this);
+        $.ajax({
+            url: '{{ route('cart.add') }}',
+            method: 'POST',
+            data: form.serialize(),
+            success: function(res) {
+                if (res.success) {
+                    // Cập nhật số lượng sản phẩm trên icon giỏ hàng
+                    $('.count-cart').text(res.cart_count > 0 ? res.cart_count : '');
+                    // Có thể dùng toast/thông báo nhỏ thay alert nếu muốn
+                    alert(res.message);
+                } else {
+                    alert('Có lỗi xảy ra!');
+                }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra!');
+            }
+        });
+    });
+});
+</script>
