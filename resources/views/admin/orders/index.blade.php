@@ -112,6 +112,16 @@
                                                        class="action-btn" data-toggle="tooltip" title="Xem chi tiết">
                                                         <i class="ri-eye-line"></i>
                                                     </a>
+                                                    @if ($order->trang_thai == 'huy') {{-- Chỉ xóa được đơn đã hủy --}}
+                                                    <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA vĩnh viễn đơn hàng này?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="action-btn text-danger" data-toggle="tooltip" title="Xóa vĩnh viễn">
+                                                            <i class="ri-delete-bin-line"></i>
+                                                        </button>
+                                                    </form>
+                                                    @endif
+                                                    @if (!in_array($order->trang_thai, ['hoan_thanh', 'huy']))
                                                     <form action="{{ route('admin.orders.cancel', ['id' => $order->id]) }}"
                                                         method="POST" onsubmit="return confirm('Bạn có chắc muốn HỦY đơn hàng này?');">
                                                         @csrf
@@ -119,6 +129,7 @@
                                                             <i class="ri-close-circle-line text-danger"></i>
                                                         </button>
                                                     </form>
+                                                    @endif
                                                     <a href="{{ route('admin.orders.print', $order->id) }}"
                                                     target="_blank"
                                                     class="action-btn"
@@ -135,7 +146,8 @@
 
                                 <!-- Phân trang -->
                                 <div class="d-flex justify-content-center">
-                                    {{ $orders->appends(request()->query())->links('pagination::bootstrap-4') }}
+                                   
+                                    {{ $orders->links('pagination::bootstrap-4') }} 
                                 </div>
                             </div>
                         </div>

@@ -107,6 +107,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
+                                        <th>Danh mục</th>
                                         <th>Tên sách</th>
                                         <th>Số lượng</th>
                                         <th>Đơn giá</th>
@@ -122,6 +123,7 @@
                                         @endphp
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
+                                            <td>{{ $ct->sach->danhMuc->ten ?? 'Không rõ' }}</td> {{-- ✅ Thêm dòng này --}}
                                             <td>{{ $ct->sach->TenSach ?? 'Đã xóa' }}</td>
                                             <td>{{ $ct->so_luong }}</td>
                                             <td>{{ number_format($ct->don_gia, 0, ',', '.') }} đ</td>
@@ -141,12 +143,131 @@
                             <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-warning">
                                 ✏️ Sửa đơn hàng
                             </a>
+                            @if ($order->trang_thai == 'cho_xu_ly' || $order->trang_thai == 'dang_giao')
+                                                        <button type="button"
+                                                                class="action-btn btn-duyet"
+                                                                data-id="{{ $order->id }}"
+                                                                data-trangthai="{{ $order->trang_thai }}"
+                                                                data-toggle="tooltip" title="Duyệt đơn hàng">
+                                                            <i class="ri-check-double-line text-success"></i>
+                                                        </button>
+                             @endif
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal duyệt đơn -->
+<div class="modal fade" id="duyetDonModal" tabindex="-1" role="dialog" aria-labelledby="duyetDonLabel" aria-hidden="true">
+  <div class="modal-dialog custom-right-modal" role="document">
+
+    <form method="POST" action="{{ route('admin.orders.approve') }}">
+        @csrf
+        <input type="hidden" name="order_id" id="modal_order_id">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Duyệt đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Chọn trạng thái mới cho đơn hàng:</p>
+                <div class="form-group">
+                    <select name="new_status" id="modal_new_status" class="form-control" required>
+                        <!-- Options sẽ được JS xử lý tùy theo trạng thái hiện tại -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+@endsection
+
+@section('styles')
+<style>
+    .btn-duyet {
+        background-color: #2EE59D; /* xanh lá đẹp */
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-duyet:hover {
+        background-color: #22cc88;
+        transform: translateY(-2px);
+    }
+
+    .btn-warning {
+        padding: 10px 16px;
+        font-size: 16px;
+        border-radius: 12px !important;
+    }
+    /* Modal nằm bên phải */
+    #duyetDonModal .modal-dialog {
+        margin-left: auto;
+        margin-right: 500px; /* cách lề phải một chút */
+        width: auto;
+        max-width: 450px; /* độ rộng mong muốn */
+    }
+
+    /* Nội dung modal */
+    #duyetDonModal .modal-content {
+        padding: 20px;
+        border-radius: 10px;
+        width: 100%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #duyetDonModal .modal-header h5 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #duyetDonModal .form-group select {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    #duyetDonModal .modal-footer {
+        justify-content: flex-end;
+    }
+</style>
+@endsection
+
+@section('scripts')
+<script>
+    document.querySelectorAll('.btn-duyet').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const id = this.dataset.id;
+            const currentStatus = this.dataset.trangthai;
+
+            const statusSelect = document.getElementById('modal_new_status');
+            statusSelect.innerHTML = ''; // Clear cũ
+
+            // Thêm trạng thái tiếp theo dựa theo trạng thái hiện tại
+            if (currentStatus === 'cho_xu_ly') {
+                statusSelect.innerHTML += `<option value="dang_giao">Đang giao</option>`;
+            } else if (currentStatus === 'dang_giao') {
+                statusSelect.innerHTML += `<option value="hoan_thanh">Hoàn thành</option>`;
+            }
+
+            document.getElementById('modal_order_id').value = id;
+            $('#duyetDonModal').modal('show');
+        });
+    });
+</script>
 @endsection

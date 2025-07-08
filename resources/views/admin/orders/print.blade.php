@@ -21,14 +21,16 @@
 
         .invoice-box::after {
             content: '';
-            background-image: url('/path/to/logo.png'); /* thay bằng logo nền nếu có */
+            background-image: url('/path/to/logo.png'); 
             background-size: 300px;
             background-position: center;
             background-repeat: no-repeat;
             opacity: 0.05;
             position: absolute;
-            top: 0; left: 0;
-            bottom: 0; right: 0;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
             z-index: 0;
         }
 
@@ -37,25 +39,52 @@
             z-index: 1;
         }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .meta-info {
-            margin-top: 5px;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
         }
 
-        .meta-info p {
-            margin: 3px 0;
+        .header h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .header img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-info {
+            text-align: right;
             font-size: 14px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 25px;
+            font-size: 16px;
+        }
+
+        ul {
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        ul li {
+            margin-bottom: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 10px;
             margin-bottom: 20px;
         }
 
@@ -63,6 +92,7 @@
             border: 1px solid #ccc;
             padding: 8px;
             font-size: 14px;
+            text-align: center;
         }
 
         th {
@@ -72,96 +102,115 @@
         .totals td {
             border: none;
             text-align: right;
+            font-size: 15px;
+            padding: 6px;
+        }
+
+        .totals tr td:first-child {
             font-weight: bold;
+            text-align: left;
         }
 
-        .totals td:last-child {
-            font-weight: normal;
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
         }
 
-        .section-title {
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        ul {
-            padding-left: 20px;
+        .footer strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 15px;
         }
     </style>
 </head>
 <body>
     <div class="invoice-box">
+        <!-- Logo + Tiêu đề + Mã đơn -->
+         <!-- Tiêu đề trung tâm -->
+    <h2 style="text-align: center; font-size: 24px; margin-bottom: 10px;">HÓA ĐƠN MUA SÁCH</h2>
         <div class="header">
-            <h2>HÓA ĐƠN MUA SÁCH</h2>
-            <p class="meta-info">
-                Mã hóa đơn: <strong>HD{{ $order->id }}</strong><br>
-                Ngày tạo: {{ \Carbon\Carbon::parse($order->ngay_mua)->format('d/m/Y') }}
-            </p>
+            <div class="brand">
+                <img src="{{ asset('uploads/books/logo.png') }}" alt="Logo Nhà Sách TV">
+                <h2>NHASACHTV</h2>
+            </div>
+            <div class="meta-info">
+                <p><strong>Mã hóa đơn:</strong> HD{{ $order->id }}</p>
+                <p><strong>Ngày tạo:</strong> {{ \Carbon\Carbon::parse($order->ngay_mua)->format('d/m/Y') }}</p>
+            </div>
         </div>
 
-        <div class="content">
-            <p class="section-title">Tên sản phẩm / Số lượng / Giá:</p>
-            <table>
-                <thead>
+        <!-- Thông tin người nhận -->
+        <p class="section-title">Thông tin người nhận:</p>
+        <ul>
+            <li>👤 Tên khách hàng: <strong>{{ $order->khachHang->name ?? '---' }}</strong></li>
+            <li>📞 Số điện thoại: {{ $order->sdt ?? '---' }}</li>
+            <li>🏠 Địa chỉ nhận hàng: {{ $order->dia_chi_giao_hang ?? '---' }}</li>
+            <li>✉️ Email: {{ $order->email ?? '---' }}</li>
+            <li>💳 Thanh toán: {{ $order->hinh_thuc_thanh_toan == 'tien_mat' ? 'Tiền mặt' : 'Chuyển khoản' }}</li>
+            <li>📦 Trạng thái:
+                @switch($order->trang_thai)
+                    @case('cho_xu_ly') Chờ xử lý @break
+                    @case('dang_giao') Đang giao @break
+                    @case('hoan_thanh') Hoàn thành @break
+                    @case('huy') Đã hủy @break
+                    @default {{ $order->trang_thai }}
+                @endswitch
+            </li>
+        </ul>
+
+        <!-- Danh sách sản phẩm -->
+        <p class="section-title">Danh sách sản phẩm mua:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Danh mục (Bộ sách)</th>
+                    <th>Tên sách</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($order->chiTietDonHang as $index => $ct)
                     <tr>
-                        <th>#</th>
-                        <th>Tên sách</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $ct->sach->danhMuc->ten ?? 'Không rõ' }}</td>
+                        <td>{{ $ct->sach->TenSach ?? 'Không rõ' }}</td>
+                        <td>{{ number_format($ct->don_gia, 0, ',', '.') }} đ</td>
+                        <td>{{ $ct->so_luong }}</td>
+                        <td>{{ number_format($ct->thanh_tien, 0, ',', '.') }} đ</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($order->chiTietDonHang as $index => $ct)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $ct->sach->TenSach ?? 'Không rõ' }}</td>
-                            <td>{{ number_format($ct->don_gia, 0, ',', '.') }} đ</td>
-                            <td>{{ $ct->so_luong }}</td>
-                            <td>{{ number_format($ct->thanh_tien, 0, ',', '.') }} đ</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
 
-            <table class="totals">
-                <tr>
-                    <td>Giảm giá:</td>
-                    <td>{{ $order->giam_gia }}%</td>
-                </tr>
-                <tr>
-                    <td>Tổng tiền:</td>
-                    <td>{{ number_format($order->tong_tien, 0, ',', '.') }} đ</td>
-                </tr>
-                <tr>
-                    <td><strong>Cần thu:</strong></td>
-                    <td><strong>{{ number_format($order->tong_tien, 0, ',', '.') }} đ</strong></td>
-                </tr>
-            </table>
+        <!-- Tổng tiền -->
+        <table class="totals">
+            <tr>
+                <td>Giảm giá:</td>
+                <td>{{ $order->giam_gia }}%</td>
+            </tr>
+            <tr>
+                <td>Tổng tiền:</td>
+                <td>{{ number_format($order->tong_tien, 0, ',', '.') }} đ</td>
+            </tr>
+            <tr>
+                <td><strong>Cần thu:</strong></td>
+                <td><strong>{{ number_format($order->tong_tien * (1 - $order->giam_gia / 100), 0, ',', '.') }} đ</strong></td>
+            </tr>
+        </table>
 
-            <p class="section-title">Địa chỉ và thông tin người nhận hàng:</p>
-            <ul>
-                <li><strong>{{ $order->khachHang->name ?? '---' }}</strong> - {{ $order->sdt ?? '---' }}</li>
-                <li>Địa chỉ nhận hàng: {{ $order->dia_chi_giao_hang ?? '---' }}</li>
-                <li>Email: {{ $order->email ?? '---' }}</li>
-                <li>Hình thức thanh toán: {{ $order->hinh_thuc_thanh_toan == 'tien_mat' ? 'Tiền mặt' : 'Chuyển khoản' }}</li>
-                <li>Trạng thái:
-                    @switch($order->trang_thai)
-                        @case('cho_xu_ly') Chờ xử lý @break
-                        @case('dang_giao') Đang giao @break
-                        @case('hoan_thanh') Hoàn thành @break
-                        @case('huy') Đã hủy @break
-                        @default {{ $order->trang_thai }}
-                    @endswitch
-                </li>
-            </ul>
-
-            <p class="section-title">Phiếu bảo hành sản phẩm:</p>
-            <p>Sản phẩm được bảo hành theo chính sách tại tất cả các trung tâm bảo hành của nhà cung cấp hoặc tại cửa hàng.</p>
-        </div>
-
-        <div class="footer" style="text-align: center; margin-top: 30px;">
+        <!-- Footer -->
+        <div class="footer">
             <p>Xin cảm ơn quý khách đã tin tưởng và mua hàng tại hệ thống của chúng tôi!</p>
+            <strong>THÔNG TIN LIÊN HỆ CỬA HÀNG:</strong>
+            <p>
+                📍 123 Đường Sách, Phường Học Tập, Quận Tri Thức, TP. Giáo Dục<br>
+                ☎️ 0909 123 456 – ✉️ lienhe@quanglambookstore.vn<br>
+                🌐 www.quanglambookstore.vn
+            </p>
         </div>
     </div>
 

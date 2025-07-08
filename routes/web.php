@@ -85,7 +85,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('profile.password');
 });
 
-Route::get('/admin/ajax-thong-ke-sach', [ThongKeController::class, 'thongKeSach']);
+Route::get('/admin/ajax-thong-ke-hoa-don', [ThongKeController::class, 'thongKeHoaDon']);
+Route::get('admin/xuat-du-lieu-hoa-don', [ThongKeController::class, 'xuatDuLieuHoaDon']);
 Route::get('/ajax-thong-ke-sach', [ThongKeController::class, 'thongKeSach']);
 Route::get('/ajax-doanh-so-ngay', [ThongKeController::class, 'doanhSoTheoNgay']);
 Route::get('/ajax-thong-ke-trang-thai-don', [ThongKeController::class, 'thongKeTrangThaiDon']);
