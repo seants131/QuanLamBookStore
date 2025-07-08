@@ -19,10 +19,12 @@ class SachSeeder extends Seeder
         ];
 
         $monHocList = ['Toán', 'Tiếng Việt', 'Ngữ văn', 'Tiếng Anh', 'Khoa học', 'Lịch sử', 'Địa lý'];
-
         $lopList = ['1', '2', '3', '4', '5', '6'];
 
-        $nhaXuatBanIds = DB::table('nha_xuat_ban')->pluck('id')->toArray();
+        // Đổi TenDanhMuc → ten
+        $danhMucList = DB::table('danh_muc')
+            ->whereIn('ten', $boSachList)
+            ->pluck('id', 'ten');
 
         foreach ($boSachList as $boSach) {
             foreach ($lopList as $lop) {
@@ -34,7 +36,7 @@ class SachSeeder extends Seeder
                         'slug' => Str::slug($tenSach),
                         'LoaiSanPham' => 'sach_giao_khoa',
                         'TacGia' => 'Nhiều tác giả',
-                        'GiaBia' => rand(18, 35)*1000,
+                        'GiaBia' => rand(18, 35) * 1000,
                         'SoLuong' => rand(50, 300),
                         'NamXuatBan' => 2024,
                         'MoTa' => "Sách $monHoc lớp $lop thuộc bộ '$boSach', theo chương trình GDPT mới.",
@@ -43,7 +45,7 @@ class SachSeeder extends Seeder
                         'HinhAnh' => '/1750125879_sgk_ngu-van-lop-6.png',
                         'Lop' => $lop,
                         'chiet_khau' => rand(0, 15),
-                        'nha_xuat_ban_id' => $nhaXuatBanIds[array_rand($nhaXuatBanIds)],
+                        'danh_muc_id' => $danhMucList[$boSach] ?? null,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
