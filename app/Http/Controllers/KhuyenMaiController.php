@@ -4,28 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\KhuyenMai;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class KhuyenMaiController extends Controller
 {
     public function index(Request $request)
     {
         $query = KhuyenMai::query();
+        $today = \Carbon\Carbon::today();
 
         if ($request->filled('ten')) {
             $query->where('ten', 'like', '%' . $request->ten . '%');
         }
 
-        if ($request->has('trang_thai') && $request->trang_thai !== '') {
-            if ($request->trang_thai === 'tat') {
-                // Lọc những cái trạng thái là kich_hoat nhưng đã hết hạn
-                $query->where(function ($q) {
-                    $q->where('trang_thai', 'kich_hoat')
-                    ->whereDate('ngay_ket_thuc', '<', \Carbon\Carbon::today());
-                })->orWhere('trang_thai', 'tat');
-            } else {
-                // Trạng thái đang còn hiệu lực
-                $query->where('trang_thai', $request->trang_thai)
-                    ->whereDate('ngay_ket_thuc', '>=', \Carbon\Carbon::today());
+        if ($request->filled('trang_thai')) {
+            switch ($request->trang_thai) {
+                case 'kich_hoat':
+                    $query->where('trang_thai', 'kich_hoat')
+                        ->whereDate('ngay_bat_dau', '<=', $today)
+                        ->whereDate('ngay_ket_thuc', '>=', $today);
+                    break;
+                case 'chua_bat_dau':
+                    $query->where('trang_thai', 'kich_hoat')
+                        ->whereDate('ngay_bat_dau', '>', $today);
+                    break;
+                case 'het_han':
+                    $query->where('trang_thai', 'kich_hoat')
+                        ->whereDate('ngay_ket_thuc', '<', $today);
+                    break;
+                case 'tat':
+                    $query->where('trang_thai', 'tat');
+                    break;
             }
         }
 
@@ -46,12 +55,11 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam'  => 'required|numeric|min:0|max:100',
             'ngay_bat_dau'    => 'required|date',
             'ngay_ket_thuc'   => 'required|date|after_or_equal:ngay_bat_dau',
-            'trang_thai'      => 'required|in:0,1',
+            'trang_thai'      => 'required|in:kich_hoat,tat',
         ]);
 
-        $data = $request->all();
-        $data['trang_thai'] = $data['trang_thai'] == '1' ? 'kich_hoat' : 'tat';
-        KhuyenMai::create($data);
+        KhuyenMai::create($request->all());
+
         return redirect()->route('admin.khuyenmai.index')->with('success', 'Khuyến mãi đã được thêm.');
     }
 
@@ -68,18 +76,14 @@ class KhuyenMaiController extends Controller
             'phan_tram_giam'  => 'required|numeric|min:0|max:100',
             'ngay_bat_dau'    => 'required|date',
             'ngay_ket_thuc'   => 'required|date|after_or_equal:ngay_bat_dau',
-            'trang_thai'      => 'required|in:0,1', // Vì form gửi 1 hoặc 0
+            'trang_thai'      => 'required|in:kich_hoat,tat',
         ]);
 
-        $data = $request->all();
-        $data['trang_thai'] = $data['trang_thai'] == '1' ? 'kich_hoat' : 'tat';
-
         $item = KhuyenMai::findOrFail($id);
-        $item->update($data);
+        $item->update($request->all());
 
         return redirect()->route('admin.khuyenmai.index')->with('success', 'Khuyến mãi đã được cập nhật.');
     }
-
 
     public function destroy($id)
     {

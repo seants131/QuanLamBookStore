@@ -101,6 +101,7 @@
                         <table class="table table-bordered" id="bang-chitiet">
                             <thead>
                                 <tr>
+                                    <th>Danh mục</th>
                                     <th>Tên sách</th>
                                     <th>Số lượng</th>
                                     <th>Đơn giá (Giá bìa)</th>
@@ -121,6 +122,7 @@
                                         $tongTien += $daGiam;
                                     @endphp
                                     <tr>
+                                        <td>{{ $item->sach->danhMuc->ten ?? 'Không rõ' }}</td> {{-- ✅ Thêm dòng này --}}
                                         <td>{{ $item->sach->TenSach ?? 'Không tìm thấy sách' }}</td>
                                         <td><input type="number" name="so_luong[{{ $item->id }}]" class="form-control so_luong" value="{{ $item->so_luong }}" min="1" required></td>
                                         <td>{{ number_format($item->don_gia, 0, ',', '.') }} VND</td>

@@ -32,14 +32,18 @@ class KhachHangController extends Controller
         return view('admin.khachhang.create');
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|unique:nguoi_dung,username',
             'email' => 'required|email|unique:nguoi_dung,email',
             'password' => 'required|string|min:6|confirmed',
-            'so_dien_thoai' => 'required|string|unique:nguoi_dung,so_dien_thoai',
+            'so_dien_thoai' => ['required', 'regex:/^0[0-9]{9}$/', 'unique:nguoi_dung,so_dien_thoai'],
+        ], [
+            'so_dien_thoai.required' => 'Vui lòng nhập số điện thoại.',
+            'so_dien_thoai.regex' => 'Số điện thoại phải gồm 10 chữ số và bắt đầu bằng số 0.',
+            'so_dien_thoai.unique' => 'Số điện thoại đã tồn tại.',
         ]);
 
         KhachHang::create($request->all());
@@ -58,7 +62,11 @@ class KhachHangController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|unique:nguoi_dung,username,' . $khachhang->id,
             'email' => 'required|email|unique:nguoi_dung,email,' . $khachhang->id,
-            'so_dien_thoai' => 'required|string|unique:nguoi_dung,so_dien_thoai,' . $khachhang->id,
+             'so_dien_thoai' => ['required', 'regex:/^0[0-9]{9}$/', 'unique:nguoi_dung,so_dien_thoai'],
+        ], [
+            'so_dien_thoai.required' => 'Vui lòng nhập số điện thoại.',
+            'so_dien_thoai.regex' => 'Số điện thoại phải gồm 10 chữ số và bắt đầu bằng số 0.',
+            'so_dien_thoai.unique' => 'Số điện thoại đã tồn tại.',
         ]);
 
         $data = $request->only(['name', 'username', 'email', 'so_dien_thoai']);

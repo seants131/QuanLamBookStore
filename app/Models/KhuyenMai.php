@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class KhuyenMai extends Model
 {
     protected $table = 'khuyen_mai';
@@ -23,13 +23,21 @@ class KhuyenMai extends Model
    
     public function getTrangThaiHienThiAttribute()
     {
-        $today = \Carbon\Carbon::today();
-        $ngayKetThuc = \Carbon\Carbon::parse($this->ngay_ket_thuc);
+       $now = Carbon::now();
 
-        if ($today->gt($ngayKetThuc)) return 'Tạm dừng';
-        if ($this->trang_thai === 'kich_hoat') return 'Kích hoạt';
-
+    if ($this->trang_thai === 'tat') {
         return 'Tạm dừng';
+    }
+
+    if ($now < $this->ngay_bat_dau) {
+        return 'Chưa bắt đầu';
+    }
+
+    if ($now > $this->ngay_ket_thuc) {
+        return 'Hết hạn';
+    }
+
+    return 'Kích hoạt';
     }
 
 }

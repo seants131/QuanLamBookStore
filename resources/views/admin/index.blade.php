@@ -144,18 +144,18 @@
                      <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                         <div class="iq-card-header d-flex justify-content-between align-items-center">
                            <div class="iq-header-title">
-                              <h4 class="card-title mb-0">Thống kê sách bán ra theo thời gian</h4>
+                              <h4 class="card-title mb-0">Thống kê hóa đơn theo thời gian</h4>
                            </div>
                            <form id="form-thong-ke-sach" class="form-inline">
                               <label class="mr-2">Từ ngày:</label>
                               <input type="date" id="sach_tu_ngay" class="form-control mr-2">
                               <label class="mr-2">Đến ngày:</label>
                               <input type="date" id="sach_den_ngay" class="form-control mr-2">
-                              <button type="button" id="btn-export-csv" class="btn btn-sm btn-success ml-2">Xuất Excel</button>
+                              <button type="button" id="btn-export-hoa-don" class="btn btn-sm btn-success ml-2">Xuất Excel</button>
                            </form>
                         </div>
                         <div class="iq-card-body">
-                           <div id="chart-sach-ban" style="height: 400px;"></div>
+                           <div id="chart-hoa-don" style="height: 400px;"></div>
                         </div>
                      </div>
                   </div>
@@ -240,45 +240,53 @@
     let chartTrangThai = null;
     let chartTonKho = null;
 
-    async function loadChart() {
-         const tuNgay = document.getElementById('sach_tu_ngay').value;
-         const denNgay = document.getElementById('sach_den_ngay').value;
+    async function loadChartHoaDon() {
+      const tuNgay = document.getElementById('sach_tu_ngay').value;
+      const denNgay = document.getElementById('sach_den_ngay').value;
 
-         document.querySelector("#chart-sach-ban").innerHTML = "Đang tải dữ liệu...";
+      document.querySelector("#chart-hoa-don").innerHTML = "Đang tải dữ liệu...";
 
-         const response = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
-         const data = await response.json();
+      const response = await fetch(`/admin/ajax-thong-ke-hoa-don?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+      const data = await response.json();
 
-         const tenSach = data.map(item => item.ten_sach || 'Không rõ');
-         const soLuong = data.map(item => Number(item.tong_so_luong || 0));
+      const ngay = data.map(item => item.ngay || '');
+      const tongTien = data.map(item => Number(item.tong_tien) || 0);
+      const sachBan = data.map(item => item.sach_ban || '');
 
-         if (chartSachBan) chartSachBan.destroy();
+      if (chartSachBan) chartSachBan.destroy();
 
-         chartSachBan = new ApexCharts(document.querySelector("#chart-sach-ban"), {
-            chart: { type: 'bar', height: 400 },
-            series: [{ name: "Số lượng bán", data: soLuong }],
-            title: { text: 'Top 10 sách bán chạy nhất trong khoảng thời gian được chọn', align: 'center' },
-            subtitle: {
-               text: `Từ ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`,
-               align: 'center'
-            },
-            xaxis: {
-               categories: tenSach,
-               labels: { rotate: -45, style: { fontSize: '13px' } }
-            },
-            plotOptions: { bar: { dataLabels: { position: 'top' } } },
-            dataLabels: {
-               enabled: true, offsetY: -20,
-               style: { fontSize: '13px', colors: ['#2d3436'] }
-            },
-            tooltip: {
-               y: { formatter: val => `${val} quyển` }
-            },
-            colors: ['#00b894', '#0984e3', '#fd79a8', '#6c5ce7', '#e17055'],
-            noData: { text: 'Không có dữ liệu' }
-         });
+      chartSachBan = new ApexCharts(document.querySelector("#chart-hoa-don"), {
+         chart: { type: 'bar', height: 400 },
+         series: [{ name: "Tổng tiền", data: tongTien }],
+         title: { text: 'Thống kê hóa đơn theo ngày', align: 'center' },
+         subtitle: {
+            text: `Từ ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`,
+            align: 'center'
+         },
+         xaxis: {
+            categories: ngay,
+            labels: { rotate: -45, style: { fontSize: '13px' } }
+         },
+         plotOptions: { bar: { dataLabels: { position: 'top' } } },
+         dataLabels: {
+            enabled: true, offsetY: -20,
+            style: { fontSize: '13px', colors: ['#2d3436'] }
+         },
+         tooltip: {
+            custom: function({ series, seriesIndex, dataPointIndex }) {
+               const tong = series[seriesIndex][dataPointIndex];
+               const sach = sachBan[dataPointIndex];
+               return `<div class="px-2 py-1 text-left">
+                        <strong>Tổng tiền:</strong> ${number_format(tong)} đ<br>
+                        <strong>Sách bán:</strong><br> ${sach.replace(/, /g, '<br>')}
+                        </div>`;
+            }
+         },
+         colors: ['#00b894'],
+         noData: { text: 'Không có dữ liệu' }
+      });
 
-         chartSachBan.render();
+      chartSachBan.render();
       }
 
     async function loadChartDoanhSoNgay() {
@@ -352,7 +360,7 @@
                 { name: 'Đã bán', data: daBan }
             ],
             xaxis: { categories: labels },
-            title: { text: 'Top 10 sách có số lượng bán ra cao nhất, kèm theo thông tin tồn kho', align: 'center' },
+            title: { text: 'Top 10 sách có số lượng bán ra cao nhất', align: 'center' },
             colors: ['#00cec9', '#fdcb6e']
         });
         chartTonKho.render();
@@ -403,17 +411,17 @@
     });
 
     function loadAllCharts() {
-        loadChart();
+        loadChartHoaDon();
         loadChartDoanhSoNgay();
         loadChartTrangThai();
         loadChartTonKho();
         loadTaiChinhTongQuat();
     }
-    document.getElementById('btn-export-csv').addEventListener('click', async function () {
+    document.getElementById('btn-export-hoa-don').addEventListener('click', async function () {
     const tuNgay = document.getElementById('sach_tu_ngay').value;
     const denNgay = document.getElementById('sach_den_ngay').value;
 
-    const res = await fetch(`/admin/ajax-thong-ke-sach?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+    const res = await fetch(`/admin/xuat-du-lieu-hoa-don?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
     const data = await res.json();
 
     if (!data || data.length === 0) {
@@ -421,34 +429,50 @@
         return;
     }
 
-    const rows = data.map(item => {
-        const soLuong = Number(item.tong_so_luong || 0);
-        const giaBan = Number(item.gia_ban || 0);
-        return {
-            "Mã sách": item.ma_sach || '',
-            "Tên sách": item.ten_sach || '',
-            "Danh mục": item.ten_danh_muc || '',
-            "Giá bán (đ)": giaBan.toLocaleString('vi-VN'),
-            "Số lượng bán": soLuong,
-            "Tổng doanh thu (đ)": (soLuong * giaBan).toLocaleString('vi-VN')
-        };
-    });
-
-    // === Tạo mảng sheet dữ liệu (gồm thông báo đầu và dữ liệu sau đó) ===
-    const sheetData = [
-        [`DANH SÁCH THỐNG KÊ SÁCH BÁN RA`],
-        [`Từ ngày: ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`],
-        [`Thời gian xuất: ${new Date().toLocaleString('vi-VN')}`],
-        [], // dòng trống
-        Object.keys(rows[0]), // header
-        ...rows.map(Object.values), // dữ liệu
+    const header = [
+        "Mã hóa đơn",
+        "Khách hàng",
+        "Số điện thoại",
+        "Email",
+        "Ngày mua",
+        "Danh mục",
+        "Tên sách",
+        "Giá bìa",
+        "Số lượng",
+        "Thành tiền"
     ];
 
-    const ws = XLSX.utils.aoa_to_sheet(sheetData); // dùng aoa_to_sheet để tạo từ mảng 2 chiều
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "ThongKeSach");
+    const bodyData = data.map(row => [
+        row["Mã hóa đơn"],
+        row["Khách hàng"],
+        row["Số điện thoại"],
+        row["Email"],
+        row["Ngày mua"],
+        row["Danh mục"],
+        row["Tên sách"],
+        row["Giá bìa"],
+        row["Số lượng"],
+        row["Thành tiền"]
+    ]);
 
-    const fileName = `ThongKeSach_${tuNgay}_den_${denNgay}.xlsx`;
+    const tongTien = data.reduce((sum, r) => sum + (parseFloat(r["Thành tiền"]) || 0), 0);
+
+    const sheetData = [
+        ["DANH SÁCH CHI TIẾT HÓA ĐƠN"],
+        [`Từ ngày: ${formatNgayDMY(tuNgay)} đến ${formatNgayDMY(denNgay)}`],
+        [`Xuất lúc: ${new Date().toLocaleString('vi-VN')}`],
+        [],
+        header,
+        ...bodyData,
+        [],
+        ["", "", "", "", "", "", "", "", "Tổng tiền hóa đơn:", tongTien]
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(sheetData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "ChiTietHoaDon");
+
+    const fileName = `ChiTietHoaDon_${tuNgay}_den_${denNgay}.xlsx`;
     XLSX.writeFile(wb, fileName);
 });
 

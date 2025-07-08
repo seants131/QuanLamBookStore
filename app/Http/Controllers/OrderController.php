@@ -17,7 +17,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = DonHang::with('khachHang')->where('trang_thai', '!=', 'huy');
+        $query = DonHang::with('khachHang');
 
         if ($request->filled('ma_don')) {
             $query->where('id', 'like', '%' . $request->ma_don . '%');
@@ -66,8 +66,11 @@ class OrderController extends Controller
             'sach_id' => 'required|array|min:1',
             'so_luong' => 'required|array|min:1',
             'dia_chi_giao_hang' => 'required|string|max:500',
-            'sdt' => 'nullable|string|max:20',
+            'sdt' => ['required', 'regex:/^0[0-9]{9}$/'],
             'email' => 'nullable|email|max:255',
+        ], [
+            'sdt.required' => 'Vui lòng nhập số điện thoại.',
+            'sdt.regex' => 'Số điện thoại phải gồm 10 chữ số và bắt đầu bằng số 0.',
         ]);
 
         DB::beginTransaction();
@@ -145,7 +148,7 @@ class OrderController extends Controller
 
     public function edit($id)
     {
-        $order = DonHang::with('chiTietDonHang')->findOrFail($id);
+        $order = DonHang::with('chiTietDonHang.sach.danhMuc')->findOrFail($id);
         $customers = KhachHang::all();
         $sachs = Sach::all();
         $khuyenMaiList = KhuyenMai::all();
@@ -222,6 +225,29 @@ class OrderController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $order = DonHang::with('chiTietDonHang')->findOrFail($id);
+
+            // Xóa chi tiết hóa đơn trước (nếu dùng foreign key ràng buộc)
+            foreach ($order->chiTietDonHang as $chiTiet) {
+                $chiTiet->delete();
+            }
+
+            // Xóa hóa đơn
+            $order->delete();
+
+            DB::commit();
+            return redirect()->route('admin.orders.index')->with('success', 'Đơn hàng đã được xóa vĩnh viễn.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Lỗi khi xóa đơn hàng: ' . $e->getMessage());
+        }
+    }
+
     public function approve(Request $request)
     {
         $request->validate([
@@ -281,9 +307,9 @@ class OrderController extends Controller
         }
     }
     public function print($id)
-{
-    $order = DonHang::with(['khachHang', 'chiTietDonHang.sach', 'khuyenMai'])->findOrFail($id);
+    {
+        $order = DonHang::with(['khachHang', 'chiTietDonHang.sach', 'khuyenMai'])->findOrFail($id);
 
-    return view('admin.orders.print', compact('order'));
-}
+        return view('admin.orders.print', compact('order'));
+    }
 }

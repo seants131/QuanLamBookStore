@@ -41,8 +41,8 @@
             <div class="form-group">
               <label for="trang_thai">Trạng thái:</label>
               <select name="trang_thai" class="form-control" required>
-                <option value="1" {{ old('trang_thai', $item->trang_thai) == '1' ? 'selected' : '' }}>Kích hoạt</option>
-                <option value="0" {{ old('trang_thai', $item->trang_thai) == '0' ? 'selected' : '' }}>Tạm dừng</option>
+                <option value="kich_hoat" {{ old('trang_thai') == 'kich_hoat' ? 'selected' : '' }}>Cho phép tự động theo lịch</option>
+                <option value="tat" {{ old('trang_thai') == 'tat' ? 'selected' : '' }}>Tạm dừng thủ công</option>
               </select>
             </div>
 
