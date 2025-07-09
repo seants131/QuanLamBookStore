@@ -29,12 +29,13 @@ class AdminProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // Thêm validate nếu có avatar
+            'dia_chi' => 'nullable|string|max:255',
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
-        
+        $user->dia_chi = $request->dia_chi;
+
         if ($request->hasFile('avatar')) {
         // Xóa avatar cũ nếu có
             if ($user->avatar && file_exists(public_path($user->avatar))) {
@@ -72,5 +73,25 @@ class AdminProfileController extends Controller
         $user->save();
 
         return redirect()->route('admin.profile.show')->with('success', 'Đổi mật khẩu thành công!');
+    }
+
+    public function updateContact(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+                return redirect()->back()->with('error', 'Không tìm thấy người dùng đang đăng nhập.');
+            }
+
+        $request->validate([
+            'so_dien_thoai' => 'nullable|string|max:20',
+            'dia_chi' => 'nullable|string|max:255',
+        ]);
+
+        $user->so_dien_thoai = $request->so_dien_thoai;
+        $user->dia_chi = $request->dia_chi;
+        $user->save();
+
+        return redirect()->route('admin.profile.show')->with('success', 'Cập nhật liên hệ thành công!');
     }
 }

@@ -288,11 +288,11 @@ CREATE TABLE `sach` (
 
 -- --------------------------------------------------------
 INSERT INTO danh_muc (ten, slug, mo_ta, created_at, updated_at) VALUES
-('Cánh Diều', 'canh-dieu', NULL, NOW(), NOW()),
-('Chân trời sáng tạo', 'chan-troi-sang-tao', NULL, NOW(), NOW()),
-('Cùng học để phát triển năng lực', 'cung-hoc-de-phat-trien-nang-luc', NULL, NOW(), NOW()),
-('Kết nối tri thức với cuộc sống', 'ket-noi-tri-thuc-voi-cuoc-song', NULL, NOW(), NOW()),
-('Vì sự bình đẳng và dân chủ trong giáo dục', 'vi-su-binh-dang-va-dan-chu-trong-giao-duc', NULL, NOW(), NOW());
+('Cánh Diều', 'canh-dieu', 'Bộ sách giáo khoa Cánh Diều được biên soạn theo định hướng phát triển phẩm chất và năng lực học sinh, chú trọng thực hành và trải nghiệm.', NOW(), NOW()),
+('Chân trời sáng tạo', 'chan-troi-sang-tao', 'Bộ sách Chân trời sáng tạo mang đến cách tiếp cận sáng tạo, gần gũi với thực tiễn và phát huy tư duy phản biện cho học sinh.', NOW(), NOW()),
+('Cùng học để phát triển năng lực', 'cung-hoc-de-phat-trien-nang-luc', 'Bộ sách giúp học sinh phát triển toàn diện năng lực và phẩm chất thông qua hoạt động học tích cực, khám phá và hợp tác.', NOW(), NOW()),
+('Kết nối tri thức với cuộc sống', 'ket-noi-tri-thuc-voi-cuoc-song', 'Bộ sách kết hợp giữa tri thức hàn lâm và thực tiễn cuộc sống, giúp học sinh vận dụng linh hoạt trong nhiều tình huống.', NOW(), NOW()),
+('Vì sự bình đẳng và dân chủ trong giáo dục', 'vi-su-binh-dang-va-dan-chu-trong-giao-duc', 'Bộ sách hướng tới một nền giáo dục nhân văn, lấy người học làm trung tâm, khuyến khích sự tham gia và sáng tạo của học sinh.', NOW(), NOW());
 ----------------------------------------------------------------
 INSERT INTO sach (TenSach, slug, LoaiSanPham, TacGia, GiaBia, SoLuong, NamXuatBan, MoTa, TrangThai, LuotMua, HinhAnh, Lop, chiet_khau, danh_muc_id, created_at, updated_at)
 VALUES
