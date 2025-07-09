@@ -145,5 +145,5 @@ Route::middleware(['web'])->group(function () {
 });
 Route::get('/vnpay-payment', [UserCheckoutController::class, 'createVnpayPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [UserCheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
-Route::get('/search-sach', [\App\Http\Controllers\HomeController::class, 'searchSachAjax'])->name('search.sach.ajax');
-
+Route::get('/search-sach', [HomeController::class, 'searchSachAjax'])->name('search.sach.ajax');
+Route::get('/danh-muc/{slug}', [HomeController::class, 'booksByCategory'])->name('books.by.category');

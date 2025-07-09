@@ -90,7 +90,7 @@ class HomeController extends Controller
     public function searchSachAjax(Request $request)
     {
         $q = $request->input('q');
-        $books = \App\Models\Sach::where('TenSach', 'like', '%' . $q . '%')
+        $books = Sach::where('TenSach', 'like', '%' . $q . '%')
             ->orWhere('TacGia', 'like', '%' . $q . '%')
             ->limit(10)
             ->get(['MaSach', 'TenSach', 'TacGia', 'HinhAnh', 'slug', 'GiaBia']);
@@ -101,10 +101,24 @@ class HomeController extends Controller
     public function searchPage(Request $request)
     {
         $q = $request->input('q');
-        $books = \App\Models\Sach::where('TenSach', 'like', '%' . $q . '%')
+        $books = Sach::where('TenSach', 'like', '%' . $q . '%')
             ->orWhere('TacGia', 'like', '%' . $q . '%')
             ->paginate(16);
 
         return view('user.home.search', compact('books', 'q'));
+    }
+
+    public function booksByCategory($slug)
+    {
+        // Lấy danh mục theo slug (hoặc bạn có thể dùng id tuỳ ý)
+        $danhMuc = DanhMuc::where('slug', $slug)->firstOrFail();
+
+        // Lấy các sách thuộc danh mục này
+        $books = Sach::where('danh_muc_id', $danhMuc->id)->paginate(16);
+
+        return view('user.home.category_books', [
+            'danhMuc' => $danhMuc,
+            'books' => $books,
+        ]);
     }
 }

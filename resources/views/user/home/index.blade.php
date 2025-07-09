@@ -58,8 +58,7 @@
                                      <h4 class="card-title mb-0">Gợi ý cho bạn</h4>
                                  </div>
                                  <div class="iq-card-header-toolbar d-flex align-items-center">
-                                     {{-- Dự định tạo 1 trang hiển thị danh sách sản phẩm (sau này)                           --}}
-                                     <a href="#" class="btn btn-sm btn-primary view-more">Xem Thêm</a>
+                                      <a href="#" class="btn btn-sm btn-primary view-more">Xem Thêm</a>
                                  </div>
                              </div>
                              <div class="iq-card-body">
@@ -87,7 +86,7 @@
                                                              <div class="col-6">
                                                                  <div class="mb-2">
                                                                      <h6 class="mb-1" title="{{ $book->TenSach }}">
-                                                                         {{ Str::limit($book->TenSach, 30) }}</h6>
+                                                                         {{ $book->TenSach }}</h6>
                                                                      <p class="font-size-13 line-height mb-1">
                                                                          {{ $book->TacGia ?: 'N/A' }}</p>
                                                                  </div>

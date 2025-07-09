@@ -20,43 +20,20 @@
                 </li>
                 <li>
                     <a href="#ui-elements" class="iq-waves-effect collapsed" data-toggle="collapse"
-                        aria-expanded="false"><i class="lab la-elementor iq-arrow-left"></i><span>Danh mục sản
-                            phẩm</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                        aria-expanded="false"><i class="lab la-elementor iq-arrow-left"></i>
+                        <span>Danh mục sản phẩm</span>
+                        <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                    </a>
                     <ul id="ui-elements" class="iq-submenu show" data-parent="#iq-sidebar-toggle">
-                        <!-- Sách Giáo Khoa -->
-                        <li class="elements">
-                            <a href="#sub-menu-giaokhoa" class="iq-waves-effect collapsed" data-toggle="collapse"
-                                aria-expanded="true">
-                                <i class="ri-play-circle-line"></i><span>Sách Giáo Khoa</span>
-                                <i class="ri-arrow-down-s-line iq-arrow-right"></i>
-                            </a>
-                            <!-- Danh sách lớp học -->
-                            <ul id="sub-menu-giaokhoa" class="iq-submenu collapse show" data-parent="#ui-elements">
-                                <li><a href="/sach-giao-khoa/lop-1">Sách lớp 1</a></li>
-                                <li><a href="/sach-giao-khoa/lop-2">Sách lớp 2</a></li>
-                                <li><a href="/sach-giao-khoa/lop-3">Sách lớp 3</a></li>
-                                <li><a href="/sach-giao-khoa/lop-4">Sách lớp 4</a></li>
-                                <li><a href="/sach-giao-khoa/lop-5">Sách lớp 5</a></li>
-                                <li><a href="/sach-giao-khoa/lop-6">Sách lớp 6</a></li>
-                                <li><a href="/sach-giao-khoa/lop-7">Sách lớp 7</a></li>
-                                <li><a href="/sach-giao-khoa/lop-8">Sách lớp 8</a></li>
-                                <li><a href="/sach-giao-khoa/lop-9">Sách lớp 9</a></li>
-                                <li><a href="/sach-giao-khoa/lop-10">Sách lớp 10</a></li>
-                                <li><a href="/sach-giao-khoa/lop-11">Sách lớp 11</a></li>
-                                <li><a href="/sach-giao-khoa/lop-12">Sách lớp 12</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Sách Tham Khảo -->
-                        <li class="elements">
-                            <a href="#sub-menu-thamkhao" class="iq-waves-effect collapsed" data-toggle="collapse"
-                                aria-expanded="false">
-                                <i class="ri-play-circle-line"></i><span>Sách Tham Khảo</span>
-                                <i class="ri-arrow-right-s-line iq-arrow-right"></i>
-                            </a>
-                        </li>
+                        @foreach($danhMucs as $danhMuc)
+                            <li class="elements">
+                                <a href="{{ route('books.by.category', $danhMuc->slug) }}" class="iq-waves-effect">
+                                    <i class="ri-book-line"></i>
+                                    <span>{{ $danhMuc->ten }}</span>
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
-
                 </li>
                 {{-- <li>
                 <a href="#pages" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-file-alt iq-arrow-left"></i><span>Admin Dashboard</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
@@ -443,29 +420,6 @@ $(document).ready(function() {
     $(document).on('click', '#see-all-search', function(e) {
         e.preventDefault();
         $('#main-search-form').submit();
-    });
-
-    $('#add-to-cart-form').on('submit', function(e) {
-        e.preventDefault();
-        let form = $(this);
-        $.ajax({
-            url: '{{ route('cart.add') }}',
-            method: 'POST',
-            data: form.serialize(),
-            success: function(res) {
-                if (res.success) {
-                    // Cập nhật số lượng sản phẩm trên icon giỏ hàng
-                    $('.count-cart').text(res.cart_count > 0 ? res.cart_count : '');
-                    // Có thể dùng toast/thông báo nhỏ thay alert nếu muốn
-                    alert(res.message);
-                } else {
-                    alert('Có lỗi xảy ra!');
-                }
-            },
-            error: function() {
-                alert('Có lỗi xảy ra!');
-            }
-        });
     });
 });
 </script>
