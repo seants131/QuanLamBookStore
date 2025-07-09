@@ -83,6 +83,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/change-password', [AdminProfileController::class, 'changePasswordForm'])->name('profile.password.form');
     Route::post('/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('profile.password');
+    Route::post('/profile/contact', [AdminProfileController::class, 'updateContact'])->name('profile.contact.update');
 });
 
 Route::get('/admin/ajax-thong-ke-hoa-don', [ThongKeController::class, 'thongKeHoaDon']);

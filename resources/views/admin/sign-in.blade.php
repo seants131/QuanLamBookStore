@@ -12,9 +12,10 @@
             <input type="email" name="email" id="email" class="form-control" required>
         </div>
 
-        <div class="form-group mt-2">
+       <div class="form-group mt-2 position-relative">
             <label for="password">Mật khẩu</label>
             <input type="password" name="password" id="password" class="form-control" required>
+            <i class="toggle-password ri-eye-line"></i>
         </div>
 
         <button type="submit" class="btn btn-primary mt-3">Đăng nhập</button>
@@ -32,3 +33,36 @@
     @endif
 </div>
 @endsection
+@section('styles')
+<style>
+.toggle-password {
+    position: absolute;
+    top: 45px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #999;
+}
+</style>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.toggle-password').forEach(function (icon) {
+            icon.addEventListener('click', function () {
+                // Tìm input trong cùng thẻ cha
+                const input = this.closest('.form-group').querySelector('input');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+
+                // Đổi icon
+                this.classList.toggle('ri-eye-line');
+                this.classList.toggle('ri-eye-off-line');
+            });
+        });
+    });
+</script>
+@endsection
+
+

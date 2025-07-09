@@ -21,7 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
         'is_admin',
+        'so_dien_thoai',
+        'dia_chi',
     ];
 
     /**
