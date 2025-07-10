@@ -176,9 +176,9 @@
                      @endif
 
                      <!-- Phân trang -->
-                     <div class="d-flex justify-content-center">
-                        {{ $books->links('pagination::bootstrap-4') }} 
-                     </div>
+                     <div class="d-flex justify-content-center mt-3">
+    {{ $books->appends(['q' => $q])->links('pagination::bootstrap-4') }}
+</div>
                   </div>
                </div>
             </div>

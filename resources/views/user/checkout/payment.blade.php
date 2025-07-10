@@ -76,7 +76,7 @@
                                                 Thanh toán VNPay
                                             </label>
                                         </div>
-                                        <div class="form-check">
+                                        {{-- <div class="form-check">
                                             <input class="form-check-input" type="radio" id="momo"
                                                 name="hinh_thuc_thanh_toan" value="momo_zalopay">
                                             <label class="form-check-label" for="momo">
@@ -89,7 +89,7 @@
                                             <label class="form-check-label" for="installment">
                                                 Trả góp
                                             </label>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" id="cod"
                                                 name="hinh_thuc_thanh_toan" value="tien_mat">

@@ -21,6 +21,7 @@ use App\Http\Controllers\UserCheckoutController;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserCartController;
 //user
 // Route::get('/', [HomeController::class, 'index'])->name('user.welcome');
 // sign_in_up
@@ -104,8 +105,6 @@ Route::get('/dieu-khoan', function () {
 
 
 Route::get('/signup', [HomeController::class, 'dangKy'])->name('user.auth.dang_ky');
-// tạm thời ghi chú lại
-// Route::get('/login', [HomeController::class, 'dangNhap'])->name('user.auth.dang_nhap');
 
 Route::get('/', [HomeController::class, 'index'])->name('user.home.index');
 Route::get('/categories', [HomeController::class, 'categories'])->name('user.categories.index');
@@ -127,8 +126,8 @@ Route::prefix('thanh-toan')->name('thanh_toan.')->group(function () {
     Route::get('/phuong-thuc-thanh-toan', [UserCheckoutController::class, 'phuongThucThanhToan'])->name('pt_thanh_toan');
 });
 
-
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('/tim-kiem', [HomeController::class, 'searchPage'])->name('search.page');
+Route::post('/cart/add', [UserCartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/update-ajax', [CartController::class, 'updateAjax'])->name('cart.update.ajax');
 Route::post('/cart/remove-ajax', [CartController::class, 'removeAjax'])->name('cart.remove.ajax');
@@ -148,3 +147,5 @@ Route::middleware(['web'])->group(function () {
 });
 Route::get('/vnpay-payment', [UserCheckoutController::class, 'createVnpayPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [UserCheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
+Route::get('/search-sach', [HomeController::class, 'searchSachAjax'])->name('search.sach.ajax');
+Route::get('/danh-muc/{slug}', [HomeController::class, 'booksByCategory'])->name('books.by.category');

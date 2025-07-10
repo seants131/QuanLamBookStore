@@ -1,22 +1,22 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Kết quả tìm kiếm</title>
+    <title>{{ $danhMuc->ten }}</title>
     @include('user.layout.link_chung')
 </head>
-
 <body>
     <div class="wrapper">
-        @include('user.layout.header', ['trang' => 'Tìm kiếm'])
+        @include('user.layout.header', ['trang' => $danhMuc->ten])
         <div id="content-page" class="content-page">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 mb-3">
-                        <h4 class="card-title mb-0">Kết quả tìm kiếm cho: <span
-                                class="text-primary">{{ $q }}</span></h4>
+                        <h4 class="card-title mb-0">Danh mục: <span class="text-primary">{{ $danhMuc->ten }}</span></h4>
+                        @if($danhMuc->mo_ta)
+                            <div class="text-muted mb-2">{{ $danhMuc->mo_ta }}</div>
+                        @endif
                     </div>
                 </div>
                 <div class="row">
@@ -40,8 +40,7 @@
                                             <div class="mb-2">
                                                 <h6 class="mb-1" title="{{ $book->TenSach }}">
                                                     {{ Str::limit($book->TenSach, 30) }}</h6>
-                                                <p class="font-size-13 line-height mb-1">{{ $book->TacGia ?: 'N/A' }}
-                                                </p>
+                                                <p class="font-size-13 line-height mb-1">{{ $book->TacGia ?: 'N/A' }}</p>
                                             </div>
                                             <div class="price d-flex align-items-center">
                                                 <h6><b>{{ number_format($book->GiaBia, 0, ',', '.') }} đ</b></h6>
@@ -59,46 +58,20 @@
                             </div>
                         </div>
                     @empty
-                        <div class="col-12 text-center text-muted py-5">Không tìm thấy sách phù hợp.</div>
+                        <div class="col-12 text-center text-muted py-5">Không có sách nào trong danh mục này.</div>
                     @endforelse
                 </div>
                 <div class="d-flex justify-content-center mt-3">
-                    {{ $books->appends(['q' => $q])->links('pagination::bootstrap-4') }}
+                    {{ $books->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
     @include('user.layout.footer')
     <!-- JS -->
-
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.appear.js') }}"></script>
-    <script src="{{ asset('js/countdown.min.js') }}"></script>
-    <script src="{{ asset('js/waypoints.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('js/wow.min.js') }}"></script>
-    <script src="{{ asset('js/apexcharts.js') }}"></script>
-    <script src="{{ asset('js/slick.min.js') }}"></script>
-    <script src="{{ asset('js/select2.min.js') }}"></script>
-    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('js/smooth-scrollbar.js') }}"></script>
-    <script src="{{ asset('js/lottie.js') }}"></script>
-    <script src="{{ asset('js/core.js') }}"></script>
-    <script src="{{ asset('js/charts.js') }}"></script>
-    <script src="{{ asset('js/animated.js') }}"></script>
-    <script src="{{ asset('js/kelly.js') }}"></script>
-    <script src="{{ asset('js/maps.js') }}"></script>
-    <script src="{{ asset('js/worldLow.js') }}"></script>
-    <script src="{{ asset('js/raphael-min.js') }}"></script>
-    <script src="{{ asset('js/morris.js') }}"></script>
-    <script src="{{ asset('js/morris.min.js') }}"></script>
-    <script src="{{ asset('js/flatpickr.js') }}"></script>
-    <script src="{{ asset('js/style-customizer.js') }}"></script>
-    <script src="{{ asset('js/chart-custom.js') }}"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+    <!-- ...các file js khác nếu cần... -->
 </body>
-
 </html>

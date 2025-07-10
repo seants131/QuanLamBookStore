@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class NguoiDungSeeder extends Seeder
 {
@@ -11,24 +12,24 @@ class NguoiDungSeeder extends Seeder
     {
         DB::table('nguoi_dung')->insert([
             [
-                'name' => 'Admin',
+                'name' => 'Quản trị viên',
                 'username' => 'admin',
-                'password' => bcrypt('admin123'),
+                'password' => Hash::make('123456'),
                 'role' => 'admin',
                 'email' => 'admin@example.com',
-                'so_dien_thoai' => '0900000000',
-                'dia_chi' => '123 Đường Nguyễn Trãi, Phường 1, Quận 5, TP. Hồ Chí Minh',
+                'so_dien_thoai' => '0912345678',
+                'dia_chi' => 'Hà Nội',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Khách hàng',
-                'username' => 'khach1',
-                'password' => bcrypt('123456'),
+                'name' => 'Nguyễn Văn A',
+                'username' => 'nguyenvana',
+                'password' => Hash::make('123456'),
                 'role' => 'khach',
-                'email' => 'khach1@example.com',
-                'so_dien_thoai' => '0911111111',
-                'dia_chi' => '456 Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh',
+                'email' => 'vana@example.com',
+                'so_dien_thoai' => '0987654321',
+                'dia_chi' => 'TP. Hồ Chí Minh',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

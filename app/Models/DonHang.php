@@ -20,7 +20,7 @@ class DonHang extends Model
         'khuyen_mai_id',
         'dia_chi_giao_hang',
         'sdt',
-        'email',,
+        'email',
         'transaction_no'
     ];
 

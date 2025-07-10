@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="bg-light text-dark pt-5 pb-4">
+<footer class="iq-footer">
   <div class="container">
     <div class="row">
 

@@ -16,7 +16,8 @@
             <li><strong>Mã đơn hàng:</strong> #{{ $order->id }}</li>
             <li><strong>Ngày mua:</strong> {{ $order->ngay_mua->format('d/m/Y') }}</li>
             <li><strong>Hình thức thanh toán:</strong> {{ $order->hinh_thuc_thanh_toan }}</li>
-            <li><strong>Trạng thái:</strong> {{ $order->trang_thai }}</li>
+            <li><strong>Trạng thái:</strong> chờ xử lý</li>
+            {{-- <li><strong>Trạng thái:</strong> {{ $order->trang_thai }}</li> --}}
         </ul>
 
         <h3 style="color: #3182ce;">Chi tiết sản phẩm</h3>
