@@ -12,7 +12,7 @@
 
       <style>
          .sign-in-from {
-            color: black !important;
+            color: rgb(58, 57, 57) !important;
          }
 
          .sign-in-from label,
@@ -20,13 +20,13 @@
          .sign-in-from h3,
          .sign-in-from span,
          .sign-in-from a {
-            color: black !important;
+            color: rgb(90, 88, 88) !important;
          }
 
          .sign-in-from input,
          .sign-in-from input::placeholder,
          .sign-in-from button {
-            color: black !important;
+            color: rgb(73, 73, 73) !important;
          }
 
          .sign-in-from input {
@@ -75,8 +75,9 @@
                               </div>
                               <div class="sign-info text-center">
                                  <button type="submit" class="btn d-block w-100 mb-2">Đăng nhập</button>
-                                 <span class="d-inline-block line-height-2">Không có tài khoản?
-                                    <a href="{{ route('user.sign-up') }}">Đăng ký</a>
+                                 <a href="{{ route('user.forgot-password') }}" class="btn btn-link mb-2" style="color:#007bff;font-weight:500;text-decoration:underline;">Quên mật khẩu?</a>
+                                 <span class="d-inline-block line-height-2">
+                                    <a href="{{ route('user.sign-up') }}" class="btn btn-link mb-2" style="color:#007bff;font-weight:500;text-decoration:underline;">Đăng ký</a>
                                  </span>
                               </div>
                            </form>

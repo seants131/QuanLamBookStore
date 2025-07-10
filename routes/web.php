@@ -32,7 +32,7 @@ Route::get('/login', function () {
 // Đăng ký
 Route::get('/sign-up', [UserAuthController::class, 'showSignupForm'])->name('user.sign-up');
 Route::post('/sign-up', [UserAuthController::class, 'signup'])->name('user.sign-up');
-
+Route::post('/logout', [UserAuthController::class, 'logout'])->name('user.logout');
 // Đăng nhập
 Route::get('/sign-in', [UserAuthController::class, 'showSigninForm'])->name('user.sign-in');
 Route::post('/sign-in', [UserAuthController::class, 'signin'])->name('user.sign-in');
@@ -57,10 +57,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
 // Auth::routes(); cái này của người dùng mà chưa bt làm.
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect()->route('admin.sign-in')->with('success', 'Đăng xuất thành công');
-})->name('logout');
+// Route::post('/logout', function () {
+//     Auth::logout();
+//     return redirect()->route('user.sign-in')->with('success', 'Đăng xuất thành công');
+// })->name('logout');
 
 //admin
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
@@ -149,3 +149,7 @@ Route::get('/vnpay-payment', [UserCheckoutController::class, 'createVnpayPayment
 Route::get('/vnpay-return', [UserCheckoutController::class, 'vnpayReturn'])->name('vnpay.return');
 Route::get('/search-sach', [HomeController::class, 'searchSachAjax'])->name('search.sach.ajax');
 Route::get('/danh-muc/{slug}', [HomeController::class, 'booksByCategory'])->name('books.by.category');
+Route::get('forgot-password', [UserAuthController::class, 'showForgotForm'])->name('user.forgot-password');
+Route::post('forgot-password', [UserAuthController::class, 'sendResetLink'])->name('user.forgot-password.send');
+Route::get('reset-password/{token}', [UserAuthController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [UserAuthController::class, 'resetPassword'])->name('user.reset-password.send');

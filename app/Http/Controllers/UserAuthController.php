@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use App\Models\KhachHang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderPlacedMail; // Tạo mailable này
-use App\Models\HoaDon;
+use App\Mail\OrderPlacedMail;
+use App\Models\DonHang;
 use App\Models\ChiTietHoaDon;
-use App\Models\DonHang; // Thêm dòng này
+use Illuminate\Support\Str;
+
 class UserAuthController extends Controller
 {
     // Hiển thị form đăng ký
@@ -32,11 +34,9 @@ class UserAuthController extends Controller
         $user = KhachHang::where('email', $request->email)->first();
 
         if ($user) {
-            // Nếu user đã có username thì báo lỗi
             if (!empty($user->username)) {
                 return back()->withErrors(['username' => 'Tài khoản đã được tạo.'])->withInput();
             }
-            // Nếu chưa có username thì cho cập nhật
             $user->update([
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
@@ -44,8 +44,6 @@ class UserAuthController extends Controller
             Auth::guard('khach')->login($user);
             return redirect()->route('user.home.index');
         } else {
-            // Nếu email chưa tồn tại, tạo mới
-            // Kiểm tra username đã tồn tại ở user khác chưa
             $userByUsername = KhachHang::where('username', $request->username)->first();
             if ($userByUsername) {
                 return back()->withErrors(['username' => 'Tên đăng nhập đã tồn tại.'])->withInput();
@@ -90,59 +88,54 @@ class UserAuthController extends Controller
     // Đăng xuất
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('khach')->logout();
         return redirect()->route('user.sign-in');
     }
+    // Hiển thị form quên mật khẩu
+    public function showForgotForm()
+    {
+        return view('user.auth.forgot_password');
+    }
 
-    public function placeOrder(Request $request)
+    // Gửi link đặt lại mật khẩu
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email|exists:nguoi_dung,email']);
+
+        $status = Password::broker('khachhangs')->sendResetLink(
+            $request->only('email')
+        );
+
+        return back()->with('status', __($status));
+    }
+
+    // Hiển thị form đặt lại mật khẩu
+    public function showResetForm(Request $request, $token)
+    {
+        $email = $request->query('email');
+        return view('user.auth.reset_password', ['token' => $token, 'email' => $email]);
+    }
+
+    // Xử lý đặt lại mật khẩu
+    public function resetPassword(Request $request)
     {
         $request->validate([
-            'payment_method' => 'required',
+            'email' => 'required|email|exists:nguoi_dung,email',
+            'password' => 'required|confirmed|min:6',
+            'token' => 'required'
         ]);
 
-        // Lấy thông tin từ session
-        $cart = session('cart', []);
-        $address = session('shipping_address', []);
-        $cart_total = 0;
-        $tong_so_luong = 0;
-        foreach ($cart as $item) {
-            $cart_total += $item['price'] * $item['quantity'];
-            $tong_so_luong += $item['quantity'];
-        }
+        $status = Password::broker('khachhangs')->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->setRememberToken(Str::random(60));
+                $user->save();
+            }
+        );
 
-        // Nếu có giảm giá hoặc khuyến mãi, lấy từ session hoặc tính toán
-        $giam_gia = session('giam_gia', 0);
-        $khuyen_mai_id = session('khuyen_mai_id', null);
-
-        // Tạo đơn hàng (hoa_don)
-        $donHang = DonHang::create([
-            'user_id' => Auth::id(), // null nếu khách vãng lai
-            'ngay_mua' => now(),
-            'trang_thai' => 'pending',
-            'hinh_thuc_thanh_toan' => $request->payment_method,
-            'giam_gia' => $giam_gia,
-            'tong_tien' => $cart_total,
-            'tong_so_luong' => $tong_so_luong,
-            'khuyen_mai_id' => $khuyen_mai_id,
-        ]);
-
-        // Lưu chi tiết hóa đơn
-        foreach ($cart as $item) {
-            ChiTietHoaDon::create([
-                'hoa_don_id' => $donHang->id,
-                'sach_id' => $item['id'],
-                'so_luong' => $item['quantity'],
-                'don_gia' => $item['price'],
-                'thanh_tien' => $item['price'] * $item['quantity'],
-            ]);
-        }
-
-        // Gửi email xác nhận đơn hàng
-        Mail::to($address['email'])->send(new OrderPlacedMail($donHang, $cart));
-
-        // Xóa giỏ hàng khỏi session
-        session()->forget('cart');
-
-        return redirect()->route('checkout.thankyou')->with('success', 'Đặt hàng thành công! Vui lòng kiểm tra email.');
+        return $status == Password::PASSWORD_RESET
+            ? redirect()->route('user.sign-in')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     }
 }

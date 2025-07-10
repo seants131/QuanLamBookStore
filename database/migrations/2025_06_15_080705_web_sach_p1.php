@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('email')->unique()->nullable();
             $table->string('so_dien_thoai')->nullable();
             $table->text('dia_chi')->nullable();
-
+            $table->rememberToken()->after('password')->nullable();
             $table->timestamps();
 
             $table->index('email');
