@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Sach;
 class CartController extends Controller
 {
     public function index()
@@ -14,20 +14,21 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $book = \App\Models\Sach::findOrFail($request->id);
+        $book = Sach::findOrFail($request->id);
 
         $cart = session('cart', []);
         $id = $book->MaSach;
+        $qty = $request->input('quantity', 1);
 
         if(isset($cart[$id])) {
-            $cart[$id]['quantity'] += 1;
+            $cart[$id]['quantity'] += $qty;
         } else {
             $cart[$id] = [
                 'id' => $book->MaSach,
                 'name' => $book->TenSach,
                 'price' => $book->GiaBia,
                 'image' => $book->HinhAnh,
-                'quantity' => 1,
+                'quantity' => $qty,
             ];
         }
 

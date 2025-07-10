@@ -127,7 +127,7 @@ Route::prefix('thanh-toan')->name('thanh_toan.')->group(function () {
 });
 
 Route::get('/tim-kiem', [HomeController::class, 'searchPage'])->name('search.page');
-Route::post('/cart/add', [UserCartController::class, 'add'])->name('cart.add');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/update-ajax', [CartController::class, 'updateAjax'])->name('cart.update.ajax');
 Route::post('/cart/remove-ajax', [CartController::class, 'removeAjax'])->name('cart.remove.ajax');
