@@ -153,3 +153,5 @@ Route::get('forgot-password', [UserAuthController::class, 'showForgotForm'])->na
 Route::post('forgot-password', [UserAuthController::class, 'sendResetLink'])->name('user.forgot-password.send');
 Route::get('reset-password/{token}', [UserAuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('reset-password', [UserAuthController::class, 'resetPassword'])->name('user.reset-password.send');
+
+Route::get('/bestseller', [HomeController::class, 'bestseller'])->name('user.bestseller');

@@ -97,10 +97,10 @@
                                 <div class="iq-card">
                                     <div class="iq-card-body">
                                         <p>Tùy chọn</p>
-                                        <div class="d-flex justify-content-between">
+                                        {{-- <div class="d-flex justify-content-between">
                                             <span>Phiếu giảm giá</span>
                                             <span><a href="#"><strong>Áp dụng</strong></a></span>
-                                        </div>
+                                        </div> --}}
                                         <hr>
                                         <p><b>Chi tiết</b></p>
                                         <div class="d-flex justify-content-between mb-1">

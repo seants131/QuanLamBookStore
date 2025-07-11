@@ -50,7 +50,7 @@
                    </li>
                 </ul>
              </li> --}}
-                <li><a href="book-page.html"><i class="ri-book-line"></i>Thịnh hành</a></li>
+                <li><a href="{{route('user.bestseller')}}"><i class="ri-book-line"></i>Thịnh hành</a></li>
                 <!-- <li><a href="book-pdf.html"><i class="ri-book-line"></i>Sách PDF</a></li> -->
             </ul>
         </nav>

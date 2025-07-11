@@ -1,4 +1,4 @@
- <!doctype html>
+<!doctype html>
  <html lang="en">
 
  <head>
@@ -95,13 +95,16 @@
                                                                              đ</b></h6>
                                                                  </div>
                                                                  <div class="iq-product-action">
-                                                                     <a href="javascript:void();"
-                                                                         title="Thêm vào giỏ hàng"><i
-                                                                             class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                                     <a href="javascript:void();" class="ml-2"
-                                                                         title="Thêm vào yêu thích"><i
-                                                                             class="ri-heart-fill text-danger"></i></a>
-                                                                 </div>
+                                                                    <form action="{{ route('cart.add') }}" method="POST" class="d-inline">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" value="{{ $book->MaSach }}">
+                                                                        <input type="hidden" name="quantity" value="1">
+                                                                        <button type="submit" class="btn p-0" title="Thêm vào giỏ hàng">
+                                                                            <i class="ri-shopping-cart-2-fill text-primary"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                    {{-- <a href="javascript:void();" class="ml-2" title="Thêm vào yêu thích"><i class="ri-heart-fill text-danger"></i></a> --}}
+                                                                </div>
                                                              </div>
                                                          </div>
                                                      </div>

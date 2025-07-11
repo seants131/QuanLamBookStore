@@ -89,7 +89,7 @@ class UserAuthController extends Controller
     public function logout()
     {
         Auth::guard('khach')->logout();
-        return redirect()->route('user.sign-in');
+        return redirect()->route('user.home.index');
     }
     // Hiển thị form quên mật khẩu
     public function showForgotForm()
