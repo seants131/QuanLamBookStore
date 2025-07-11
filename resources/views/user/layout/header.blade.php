@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="navbar-breadcrumb">
-                <h5 class="mb-0">{{ $trang ?? 'Web bán sách' }}</h5>
+                {{-- <h5 class="mb-0">{{ $trang ?? 'Web bán sách' }}</h5> --}}
             </div>
             <div class="iq-search-bar position-relative" style="z-index:1000;">
                 <form action="{{ route('search.page') }}" class="searchbox" autocomplete="off" method="get" id="main-search-form">
@@ -337,7 +337,7 @@
                                             </div>
                                         </a>
                                         <div class="d-inline-block w-100 text-center p-3">
-                                            <form action="{{ route('logout') }}" method="POST">
+                                            <form action="{{ route('user.logout') }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="bg-primary iq-sign-btn"
                                                     style="border:none;">
