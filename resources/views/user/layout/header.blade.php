@@ -50,7 +50,7 @@
                    </li>
                 </ul>
              </li> --}}
-                <li><a href="book-page.html"><i class="ri-book-line"></i>Yêu Thích</a></li>
+                <li><a href="book-page.html"><i class="ri-book-line"></i>Thịnh hành</a></li>
                 <!-- <li><a href="book-pdf.html"><i class="ri-book-line"></i>Sách PDF</a></li> -->
             </ul>
         </nav>
@@ -299,7 +299,7 @@
 
                         @if ($khach)
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                                <img src="images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
+                                <img src="{{ asset('images/user/1.jpg') }}" class="img-fluid rounded-circle mr-3" alt="user">
                                 <div class="caption">
                                     <h6 class="mb-1 line-height">{{ $khach->name }}</h6>
                                     <p class="mb-0 text-primary">

@@ -17,7 +17,9 @@ class UserController extends Controller
     // Danh sách đơn hàng
     public function orders()
     {
-        $orders = DonHang::where('user_id', Auth::id())->orderByDesc('ngay_mua')->get();
+        $orders = DonHang::where('user_id', Auth::id())
+            ->orderByDesc('ngay_mua')
+            ->paginate(10); // Sử dụng paginate thay cho get()
         return view('user.orders.index', compact('orders'));
     }
 
