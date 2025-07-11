@@ -31,7 +31,7 @@
                     <div class="row m-0">
                       <div class="col-sm-12 sign-in-page-data">
                           <div class="sign-in-from bg-primary rounded">
-                              <h3 class="mb-0 text-center text-white">Đăng ký</h3>
+                              <h3 class="mb-0 text-center text-black">Đăng ký</h3>
                               <p class="text-center text-white">Hãy nhập email và mật khẩu</p>
                               <form class="mt-4 form-text" method="POST" action="{{ route('user.sign-up') }}">
                                 @csrf

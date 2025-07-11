@@ -121,6 +121,8 @@ class UserCheckoutController extends Controller
                 'khuyen_mai_id' => null,
                 'dia_chi_giao_hang' => $fullAddress,
                 'transaction_no' => $transactionNo,
+                'sdt' => $user->so_dien_thoai,
+                'email' => $user->email,
             ]);
 
             foreach ($cart as $item) {
