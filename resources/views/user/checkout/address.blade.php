@@ -137,7 +137,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-
+                                        <br>
                                         <div class="col-md-6 d-flex align-items-end">
                                             <button type="submit" class="btn btn-primary mt-4">
                                                 {{ Auth::guard('khach')->check() ? 'Lưu và giao tại đây' : 'Tiếp tục' }}

@@ -121,4 +121,9 @@ class HomeController extends Controller
             'books' => $books,
         ]);
     }
+    public function bestseller()
+{
+    $books = \App\Models\Sach::orderByDesc('LuotMua')->paginate(16);
+    return view('user.home.bestseller', compact('books'));
+}
 }
