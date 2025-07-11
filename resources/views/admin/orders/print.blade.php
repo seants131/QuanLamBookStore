@@ -207,8 +207,8 @@
             <p>Xin cảm ơn quý khách đã tin tưởng và mua hàng tại hệ thống của chúng tôi!</p>
             <strong>THÔNG TIN LIÊN HỆ CỬA HÀNG:</strong>
             <p>
-                📍 123 Đường Sách, Phường Học Tập, Quận Tri Thức, TP. Giáo Dục<br>
-                ☎️ 0909 123 456 – ✉️ lienhe@quanglambookstore.vn<br>
+                📍  60-62 Lê Lợi, Q.1, TP. HCM<br>
+                ☎️ 1900636467 – ✉️ cskh@nhasachtv.com.vn<br>
                 🌐 www.quanglambookstore.vn
             </p>
         </div>

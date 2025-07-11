@@ -23,11 +23,7 @@
       <div class="col-md-3 mb-4">
         <h6 class="font-weight-bold">DỊCH VỤ</h6>
         <ul class="list-unstyled small">
-          <li><a href="#">Điều khoản sử dụng</a></li>
-          <li><a href="#">Chính sách bảo mật thông tin cá nhân</a></li>
-          <li><a href="#">Chính sách bảo mật thanh toán</a></li>
-          <li><a href="#">Giới thiệu NHASACHTV</a></li>
-          <li><a href="#">Hệ thống nhà sách</a></li>
+          <li><a href="/dieu-khoan">Điều khoản sử dụng</a></li>
         </ul>
       </div>
 
@@ -35,10 +31,7 @@
       <div class="col-md-3 mb-4">
         <h6 class="font-weight-bold">HỖ TRỢ</h6>
         <ul class="list-unstyled small">
-          <li><a href="#">Chính sách đổi - trả - hoàn tiền</a></li>
-          <li><a href="#">Chính sách bảo hành - bồi hoàn</a></li>
-          <li><a href="#">Chính sách vận chuyển</a></li>
-          <li><a href="#">Chính sách khách sỉ</a></li>
+          <li><a href="/chinh-sach">Chính sách</a></li>
         </ul>
       </div>
 
@@ -46,7 +39,7 @@
       <div class="col-md-3 mb-4">
         <h6 class="font-weight-bold">TÀI KHOẢN CỦA TÔI</h6>
         <ul class="list-unstyled small">
-          <li><a href="#">Đăng nhập/Tạo mới tài khoản</a></li>
+          <li><a href="/admin/login">Đăng nhập/Tạo mới tài khoản</a></li>
           <li><a href="#">Thay đổi địa chỉ khách hàng</a></li>
           <li><a href="#">Chi tiết tài khoản</a></li>
           <li><a href="#">Lịch sử mua hàng</a></li>

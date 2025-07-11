@@ -75,7 +75,7 @@
 
                         <div class="form-group">
                             <label for="chiet_khau">Chiết khấu (%):</label>
-                            <input type="number" name="chiet_khau" id="Chiet_Khau" value="{{ old('chiet_khau', 0) }}" min="0" max="100">
+                            <input type="number" name="chiet_khau" id="Chiet_Khau" value="{{ old('chiet_khau', $book->chiet_khau,0) }}" min="0" max="100">
                         </div>
                         
                         <div class="form-group">

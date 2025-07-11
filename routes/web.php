@@ -32,7 +32,8 @@ Route::get('/login', function () {
 // Đăng ký
 Route::get('/sign-up', [UserAuthController::class, 'showSignupForm'])->name('user.sign-up');
 Route::post('/sign-up', [UserAuthController::class, 'signup'])->name('user.sign-up');
-Route::post('/logout', [UserAuthController::class, 'logout'])->name('user.logout');
+// Sửa route này:
+Route::post('/user/logout', [UserAuthController::class, 'logout'])->name('user.logout');
 // Đăng nhập
 Route::get('/sign-in', [UserAuthController::class, 'showSigninForm'])->name('user.sign-in');
 Route::post('/sign-in', [UserAuthController::class, 'signin'])->name('user.sign-in');
@@ -56,11 +57,10 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admi
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
-// Auth::routes(); cái này của người dùng mà chưa bt làm.
-// Route::post('/logout', function () {
-//     Auth::logout();
-//     return redirect()->route('user.sign-in')->with('success', 'Đăng xuất thành công');
-// })->name('logout');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('admin.sign-in')->with('success', 'Đăng xuất thành công');
+})->name('logout');
 
 //admin
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
