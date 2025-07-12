@@ -12,14 +12,24 @@ class HomeController extends Controller
     {
         // Lấy 9 sách mới nhất có hình ảnh
         $newReleaseSlides = Sach::whereNotNull('HinhAnh')
+                                ->where('SoLuong', '>', 0)
                                 ->orderBy('created_at', 'desc')
                                 ->take(9)
                                 ->get();
 
-        $suggestedBooks = Sach::orderBy('created_at', 'desc')->take(12)->get();
-        $bestSellerBook = Sach::orderBy('LuotMua', 'desc')->first();
+        $suggestedBooks = Sach::where('SoLuong', '>', 0)
+                                ->orderBy('created_at', 'desc')
+                                ->take(12)
+                                ->get();
+
+        $bestSellerBook = Sach::where('SoLuong', '>', 0)
+                                ->orderBy('LuotMua', 'desc')
+                                ->first();
         // $categoriesWithBookCounts = DanhMuc::withCount('books')->whereNull('parent_id')->take(6)->get();
-        $favoriteBooks = Sach::orderBy('LuotMua', 'desc')->take(4)->get();
+        $favoriteBooks = Sach::where('SoLuong', '>', 0)
+                                ->orderBy('LuotMua', 'desc')
+                                ->take(4)
+                                ->get();
 
         // XÓA 'categoriesWithBookCounts' khỏi compact nếu chưa dùng
         return view('user.home.index', compact(
@@ -67,12 +77,16 @@ class HomeController extends Controller
         // Sách tương tự: cùng loại, khác mã sách
         $similarBooks = Sach::where('LoaiSanPham', $book->LoaiSanPham)
             ->where('MaSach', '!=', $book->MaSach)
+            ->where('SoLuong', '>', 0)
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
 
         // Sách yêu thích: nhiều lượt mua nhất
-        $favoriteBooks = Sach::orderBy('LuotMua', 'desc')->take(4)->get();
+        $favoriteBooks = Sach::where('SoLuong', '>', 0)
+            ->orderBy('LuotMua', 'desc')
+            ->take(4)
+            ->get();
 
         return view('user.product.chi_tiet_sach', compact('book', 'similarBooks', 'favoriteBooks'));
     }
@@ -92,6 +106,7 @@ class HomeController extends Controller
         $q = $request->input('q');
         $books = Sach::where('TenSach', 'like', '%' . $q . '%')
             ->orWhere('TacGia', 'like', '%' . $q . '%')
+            ->where('SoLuong', '>', 0)
             ->limit(10)
             ->get(['MaSach', 'TenSach', 'TacGia', 'HinhAnh', 'slug', 'GiaBia']);
 
@@ -103,6 +118,7 @@ class HomeController extends Controller
         $q = $request->input('q');
         $books = Sach::where('TenSach', 'like', '%' . $q . '%')
             ->orWhere('TacGia', 'like', '%' . $q . '%')
+            ->where('SoLuong', '>', 0)
             ->paginate(16);
 
         return view('user.home.search', compact('books', 'q'));
@@ -114,7 +130,9 @@ class HomeController extends Controller
         $danhMuc = DanhMuc::where('slug', $slug)->firstOrFail();
 
         // Lấy các sách thuộc danh mục này
-        $books = Sach::where('danh_muc_id', $danhMuc->id)->paginate(16);
+        $books = Sach::where('danh_muc_id', $danhMuc->id)
+            ->where('SoLuong', '>', 0)
+            ->paginate(16);
 
         return view('user.home.category_books', [
             'danhMuc' => $danhMuc,
@@ -123,7 +141,9 @@ class HomeController extends Controller
     }
     public function bestseller()
 {
-    $books = \App\Models\Sach::orderByDesc('LuotMua')->paginate(16);
+    $books = Sach::where('SoLuong', '>', 0)
+    ->orderByDesc('LuotMua')
+    ->paginate(16);
     return view('user.home.bestseller', compact('books'));
 }
 }

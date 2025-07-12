@@ -16,9 +16,19 @@ class CartController extends Controller
     {
         $book = Sach::findOrFail($request->id);
 
+        if ($book->SoLuong <= 0) {
+            return redirect()->back()->with('error', 'Sản phẩm đã hết hàng!');
+        }
+
         $cart = session('cart', []);
         $id = $book->MaSach;
         $qty = $request->input('quantity', 1);
+
+        // Tổng số lượng trong giỏ sau khi thêm
+        $currentQty = isset($cart[$id]) ? $cart[$id]['quantity'] : 0;
+        if ($qty + $currentQty > $book->SoLuong) {
+            return redirect()->back()->with('error', 'Số lượng vượt quá tồn kho!');
+        }
 
         if(isset($cart[$id])) {
             $cart[$id]['quantity'] += $qty;
@@ -52,11 +62,23 @@ class CartController extends Controller
         $action = $request->input('action');
 
         if (isset($cart[$id])) {
-            if ($action === 'increase') {
-                $cart[$id]['quantity'] += 1;
-            } elseif ($action === 'decrease' && $cart[$id]['quantity'] > 1) {
-                $cart[$id]['quantity'] -= 1;
+            $book = Sach::find($id);
+            if (!$book || $book->SoLuong <= 0) {
+                return response()->json(['success' => false, 'message' => 'Sản phẩm đã hết hàng!']);
             }
+
+            $newQty = $cart[$id]['quantity'];
+            if ($action === 'increase') {
+                $newQty++;
+            } elseif ($action === 'decrease' && $cart[$id]['quantity'] > 1) {
+                $newQty--;
+            }
+
+            if ($newQty > $book->SoLuong) {
+                return response()->json(['success' => false, 'message' => 'Số lượng vượt quá tồn kho!']);
+            }
+
+            $cart[$id]['quantity'] = $newQty;
             session()->put('cart', $cart);
             $item = $cart[$id];
             $total = collect($cart)->sum(function($i) { return $i['price'] * $i['quantity']; });
