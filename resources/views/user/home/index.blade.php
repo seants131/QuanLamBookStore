@@ -94,17 +94,18 @@
                                                                 </div>
                                                                 <div class="iq-product-action">
                                                                     <a href="javascript:void(0);"
-                                                                       class="btn-add-to-cart"
-                                                                       data-id="{{ $book->MaSach }}"
-                                                                       data-quantity="1"
-                                                                       title="Thêm vào giỏ hàng">
-                                                                        <i class="ri-shopping-cart-2-fill text-primary"></i>
+                                                                        class="btn-add-to-cart"
+                                                                        data-id="{{ $book->MaSach }}" data-quantity="1"
+                                                                        title="Thêm vào giỏ hàng">
+                                                                        <i
+                                                                            class="ri-shopping-cart-2-fill text-primary"></i>
                                                                     </a>
                                                                     {{-- Nút yêu thích --}}
                                                                     <a href="javascript:void(0);" class="btn-favorite"
-                                                                       data-id="{{ $book->MaSach }}"
-                                                                       title="Yêu thích">
-                                                                        <i class="ri-heart-fill {{ in_array($book->MaSach, $favoriteBookIds ?? []) ? 'text-danger' : 'text-secondary' }}"></i>
+                                                                        data-id="{{ $book->MaSach }}"
+                                                                        title="Yêu thích">
+                                                                        <i
+                                                                            class="ri-heart-fill {{ in_array($book->MaSach, $favoriteBookIds ?? []) ? 'text-danger' : 'text-secondary' }}"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -182,7 +183,7 @@
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                             <div class="iq-card-header d-flex justify-content-between mb-0">
                                 <div class="iq-header-title">
-                                    <h4 class="card-title">Nhà Sách TV</h4>
+                                    <h4 class="card-title">Sách yêu thích</h4>
                                 </div>
                                 <div class="iq-card-header-toolbar d-flex align-items-center">
                                     <div class="dropdown">
@@ -200,25 +201,39 @@
                             </div>
                             <div class="iq-card-body">
                                 <ul class="list-inline row mb-0 align-items-center iq-scrollable-block">
-                                    @if (isset($categoriesWithBookCounts) && $categoriesWithBookCounts->count() > 0)
-                                        @foreach ($categoriesWithBookCounts as $category)
-                                            <li class="col-sm-6 d-flex mb-3 align-items-center">
-                                                <div class="icon iq-icon-box mr-3">
-                                                    {{-- Categories currently don't have images in the model. Using a default. --}}
-                                                    <a href="{{ route('user.categories.detail', $category->id) }}"><img
-                                                            class="img-fluid avatar-60 rounded-circle"
-                                                            src="{{ asset('images/user/category_default.png') }}"
-                                                            alt="{{ $category->name }}"></a>
-                                                </div>
-                                                <div class="mt-1">
-                                                    <h6>{{ $category->name }}</h6>
-                                                    <p class="mb-0 text-primary">Số sách: <span
-                                                            class="text-body">{{ $category->books_count }}</span></p>
-                                                </div>
-                                            </li>
-                                        @endforeach
+                                    @if (Auth::guard('khach')->check())
+                                        @if (isset($favoriteBooks) && $favoriteBooks->count() > 0)
+                                            @foreach ($favoriteBooks as $favBook)
+                                                <li class="col-sm-6 d-flex mb-3 align-items-center">
+                                                    <div class="icon iq-icon-box mr-3">
+                                                        <a href="{{ route('user.books.detail', $favBook->slug) }}">
+                                                            <img class="img-fluid avatar-60 rounded-circle"
+                                                                src="{{ $favBook->HinhAnh ? asset('uploads/books/' . $favBook->HinhAnh) : asset('images/default-book-placeholder.jpg') }}"
+                                                                alt="{{ $favBook->TenSach }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="mt-1">
+                                                        <h6>
+                                                            <a href="{{ route('user.books.detail', $favBook->slug) }}"
+                                                                class="text-dark">
+                                                                {{ $favBook->TenSach }}
+                                                            </a>
+                                                        </h6>
+                                                        {{-- <p class="mb-0 text-primary">Tác giả: <span
+                                                                class="text-body">{{ $favBook->TacGia ?: 'N/A' }}</span>
+                                                        </p> --}}
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        @else
+                                            <p class="col-12">Không có sách yêu thích nào để hiển thị.</p>
+                                        @endif
                                     @else
-                                        <p class="col-12">Không có danh mục nào để hiển thị.</p>
+                                        <div class="col-12 text-center py-5">
+                                            <h5>Vui lòng <a href="{{ route('user.sign-in') }}"
+                                                    class="text-primary">đăng nhập</a> để xem sách yêu thích của bạn!
+                                            </h5>
+                                        </div>
                                     @endif
                                 </ul>
                             </div>
@@ -229,7 +244,7 @@
                             <div
                                 class="iq-card-header d-flex justify-content-between align-items-center position-relative">
                                 <div class="iq-header-title">
-                                    <h4 class="card-title mb-0">Sách yêu thích</h4>
+                                    <h4 class="card-title mb-0">Sách thịnh hành</h4>
                                 </div>
                                 <div class="iq-card-header-toolbar d-flex align-items-center">
                                     {{-- Dự định tạo 1 trang hiển thị danh sách sản phẩm (sau này) --}}

@@ -154,6 +154,7 @@ class UserAuthController extends Controller
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'role' => 'khach',
+                'password' => Hash::make(Str::random(16)), // Tạo mật khẩu ngẫu nhiên
             ]);
         }
 
