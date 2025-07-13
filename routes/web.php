@@ -139,6 +139,8 @@ Route::get('/sach/{slug}', [HomeController::class, 'bookDetail'])->name('user.bo
 
 Route::middleware(['auth:khach'])->group(function () {
     Route::get('/profile', [UserController::class, 'index'])->name('user.profile.index');
+    Route::post('/profile/update', [UserController::class, 'update'])->name('user.profile.update');
+    Route::post('/profile/password', [UserController::class, 'changePassword'])->name('user.profile.password');
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');
     Route::get('/orders/{id}', [UserController::class, 'orderDetail'])->name('user.orders.detail');
     Route::get('/yeu-thich', [YeuThichSachController::class, 'index'])->name('user.favorite.index');
