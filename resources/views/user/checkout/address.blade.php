@@ -58,7 +58,7 @@
                                     <div class="alert alert-danger">{{ session('error') }}</div>
                                 @endif
 
-                                <form action="{{ route('checkout.submit') }}" method="POST">
+                                <form action="{{ route('checkout.submit') }}" method="POST" id="address-form">
                                     @csrf
                                     <div class="row mt-3">
                                         <div class="col-md-6">
@@ -96,7 +96,7 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Địa chỉ: *</label>
+                                                <label>Số nhà, đường, thôn/xóm: *</label>
                                                 <input type="text" class="form-control" name="houseno"
                                                     value="{{ old('houseno', $address['houseno'] ?? '') }}" required>
                                                 @error('houseno')
@@ -107,9 +107,10 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Tỉnh/thành phố: *</label>
-                                                <input type="text" class="form-control" name="city"
-                                                    value="{{ old('city', $address['city'] ?? '') }}" required>
+                                                <label>Tỉnh/Thành phố: *</label>
+                                                <select class="form-control" name="city" id="province-select" required>
+                                                    <option value="">Chọn tỉnh/thành phố</option>
+                                                </select>
                                                 @error('city')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -119,8 +120,9 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Quận/Huyện: *</label>
-                                                <input type="text" class="form-control" name="district"
-                                                    value="{{ old('district', $address['district'] ?? '') }}" required>
+                                                <select class="form-control" name="district" id="district-select" required>
+                                                    <option value="">Chọn quận/huyện</option>
+                                                </select>
                                                 @error('district')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -129,16 +131,17 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Phường: *</label>
-                                                <input type="text" class="form-control" name="state"
-                                                    value="{{ old('state', $address['state'] ?? '') }}" required>
+                                                <label>Phường/Xã: *</label>
+                                                <select class="form-control" name="state" id="ward-select" required>
+                                                    <option value="">Chọn phường/xã</option>
+                                                </select>
                                                 @error('state')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
                                         <br>
-                                        <div class="col-md-6 d-flex align-items-end">
+                                        <div class="col-md-6 d-flex align-items-center">
                                             <button type="submit" class="btn btn-primary mt-4">
                                                 {{ Auth::guard('khach')->check() ? 'Lưu và giao tại đây' : 'Tiếp tục' }}
                                             </button>
@@ -226,6 +229,52 @@
     <script src="{{ asset('js/style-customizer.js') }}"></script>
     <script src="{{ asset('js/chart-custom.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Load tỉnh/thành phố
+            $.get('https://provinces.open-api.vn/api/p/', function(data) {
+                let html = '<option value="">Chọn tỉnh/thành phố</option>';
+                data.forEach(function(item) {
+                    html += `<option value="${item.name}" data-code="${item.code}">${item.name}</option>`;
+                });
+                $('#province-select').html(html);
+            });
+
+            // Khi chọn tỉnh, load quận/huyện
+            $('#province-select').on('change', function() {
+                let provinceCode = $(this).find('option:selected').data('code');
+                if (!provinceCode) {
+                    $('#district-select').html('<option value="">Chọn quận/huyện</option>');
+                    $('#ward-select').html('<option value="">Chọn phường/xã</option>');
+                    return;
+                }
+                $.get(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`, function(data) {
+                    let html = '<option value="">Chọn quận/huyện</option>';
+                    data.districts.forEach(function(item) {
+                        html += `<option value="${item.name}" data-code="${item.code}">${item.name}</option>`;
+                    });
+                    $('#district-select').html(html);
+                    $('#ward-select').html('<option value="">Chọn phường/xã</option>');
+                });
+            });
+
+            // Khi chọn quận/huyện, load phường/xã
+            $('#district-select').on('change', function() {
+                let districtCode = $(this).find('option:selected').data('code');
+                if (!districtCode) {
+                    $('#ward-select').html('<option value="">Chọn phường/xã</option>');
+                    return;
+                }
+                $.get(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`, function(data) {
+                    let html = '<option value="">Chọn phường/xã</option>';
+                    data.wards.forEach(function(item) {
+                        html += `<option value="${item.name}">${item.name}</option>`;
+                    });
+                    $('#ward-select').html(html);
+                });
+            });
+        });
+    </script>
 
 </body>
 

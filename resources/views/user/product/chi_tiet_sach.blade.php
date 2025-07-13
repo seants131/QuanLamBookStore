@@ -101,21 +101,29 @@
                                                 <div class="text-primary mb-4">Tác giả: <span
                                                         class="text-body">{{ $book->TacGia }}</span></div>
                                                 <div class="mb-4 d-flex align-items-center">
-                                                    <form action="{{ route('cart.add') }}" method="POST" class="mr-2">
+                                                    <form action="{{ route('cart.add') }}" method="POST"
+                                                        class="mr-2">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $book->MaSach }}">
-                                                        <button type="submit" class="btn btn-primary view-more btn-add-to-cart">Thêm
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $book->MaSach }}">
+                                                        <button type="submit"
+                                                            class="btn btn-primary view-more btn-add-to-cart">Thêm
                                                             vào giỏ hàng</button>
                                                     </form>
                                                     <a href="#" class="btn btn-primary view-more mr-2">Mua
                                                         ngay</a>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <a href="#" class="text-body text-center"><span
-                                                            class="avatar-30 rounded-circle bg-primary d-inline-block mr-2"><i
-                                                                class="ri-heart-fill"></i></span><span>Thêm vào danh
-                                                            sách yêu
-                                                            thích</span></a>
+                                                    <a href="javascript:void(0);" 
+                                                       class="btn-favorite text-body text-center" 
+                                                       data-id="{{ $book->MaSach }}">
+                                                        <span class="avatar-30 rounded-circle bg-primary d-inline-block mr-2">
+                                                            <i class="ri-heart-fill {{ in_array($book->MaSach, $favoriteBookIds ?? []) ? 'text-danger' : 'text-secondary' }}"></i>
+                                                        </span>
+                                                        <span class="favorite-text">
+                                                            {{ in_array($book->MaSach, $favoriteBookIds ?? []) ? 'Đã yêu thích' : 'Thêm vào danh sách yêu thích' }}
+                                                        </span>
+                                                    </a>
                                                 </div>
                                                 <div class="iq-social d-flex align-items-center">
                                                     <h5 class="mr-2">Chia sẻ:</h5>
@@ -525,8 +533,7 @@
     <script src="{{ asset('js/chart-custom.js') }}"></script>
     <!-- Custom JavaScript -->
     <script src="{{ asset('js/custom.js') }}"></script>
-
-
+    @include('user.layout.script_chung')
 </body>
 
 </html>

@@ -47,11 +47,12 @@
                                                 <h6><b>{{ number_format($book->GiaBia, 0, ',', '.') }} đ</b></h6>
                                             </div>
                                             <div class="iq-product-action">
-                                                <a href="javascript:void();" title="Thêm vào giỏ hàng"><i
-                                                        class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                <a href="javascript:void();" class="ml-2"
-                                                    title="Thêm vào yêu thích"><i
-                                                        class="ri-heart-fill text-danger"></i></a>
+                                                <a href="javascript:void(0);" 
+                                                   class="btn-add-to-cart" 
+                                                   data-id="{{ $book->MaSach }}" 
+                                                   title="Thêm vào giỏ hàng">
+                                                    <i class="ri-shopping-cart-2-fill text-primary"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -99,6 +100,7 @@
     <script src="{{ asset('js/style-customizer.js') }}"></script>
     <script src="{{ asset('js/chart-custom.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+    @include('user.layout.script_chung')
 </body>
 
 </html>

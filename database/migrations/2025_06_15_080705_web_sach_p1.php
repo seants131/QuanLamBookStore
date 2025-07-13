@@ -142,6 +142,16 @@ return new class extends Migration {
             $table->boolean('trang_thai')->default(true);
             $table->timestamps();
         });
+        Schema::create('yeu_thich_sach', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('khach_hang_id');
+            $table->unsignedBigInteger('sach_id');
+            $table->timestamps();
+
+            $table->unique(['khach_hang_id', 'sach_id']);
+            $table->foreign('khach_hang_id')->references('id')->on('nguoi_dung')->onDelete('cascade');
+            $table->foreign('sach_id')->references('MaSach')->on('sach')->onDelete('cascade');
+        });
     }
 
     public function down(): void
@@ -155,5 +165,6 @@ return new class extends Migration {
         Schema::dropIfExists('sach');
         Schema::dropIfExists('nha_xuat_ban');
         Schema::dropIfExists('nguoi_dung');
+        Schema::dropIfExists('yeu_thich_sach');
     }
 };

@@ -25,7 +25,7 @@
                         <i class="ri-arrow-right-s-line iq-arrow-right"></i>
                     </a>
                     <ul id="ui-elements" class="iq-submenu show" data-parent="#iq-sidebar-toggle">
-                        @foreach($danhMucs as $danhMuc)
+                        @foreach ($danhMucs as $danhMuc)
                             <li class="elements">
                                 <a href="{{ route('books.by.category', $danhMuc->slug) }}" class="iq-waves-effect">
                                     <i class="ri-book-line"></i>
@@ -50,7 +50,7 @@
                    </li>
                 </ul>
              </li> --}}
-                <li><a href="{{route('user.bestseller')}}"><i class="ri-book-line"></i>Thịnh hành</a></li>
+                <li><a href="{{ route('user.bestseller') }}"><i class="ri-book-line"></i>Thịnh hành</a></li>
                 <!-- <li><a href="book-pdf.html"><i class="ri-book-line"></i>Sách PDF</a></li> -->
             </ul>
         </nav>
@@ -77,10 +77,14 @@
                 {{-- <h5 class="mb-0">{{ $trang ?? 'Web bán sách' }}</h5> --}}
             </div>
             <div class="iq-search-bar position-relative" style="z-index:1000;">
-                <form action="{{ route('search.page') }}" class="searchbox" autocomplete="off" method="get" id="main-search-form">
-                    <input type="text" class="text search-input" id="search-sach-input" name="q" placeholder="Tìm kiếm sách, tác giả..." value="{{ request('q') }}">
-                    <a class="search-link" href="#" onclick="$('#main-search-form').submit();return false;"><i class="ri-search-line"></i></a>
-                    <div id="search-sach-result" class="bg-white border rounded shadow-sm position-absolute w-100" style="display:none;max-height:350px;overflow-y:auto;top:100%;left:0;z-index:9999;"></div>
+                <form action="{{ route('search.page') }}" class="searchbox" autocomplete="off" method="get"
+                    id="main-search-form">
+                    <input type="text" class="text search-input" id="search-sach-input" name="q"
+                        placeholder="Tìm kiếm sách theo tên..." value="{{ request('q') }}">
+                    <a class="search-link" href="#" onclick="$('#main-search-form').submit();return false;"><i
+                            class="ri-search-line"></i></a>
+                    <div id="search-sach-result" class="bg-white border rounded shadow-sm position-absolute w-100"
+                        style="display:none;max-height:350px;overflow-y:auto;top:100%;left:0;z-index:9999;"></div>
                 </form>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -173,7 +177,7 @@
                         </a> -->
                         <div class="iq-sub-dropdown">
                             <div class="iq-card shadow-none m-0">
-                              {{-- cái này vốn là hộp thư, tin nhăn --}}
+                                {{-- cái này vốn là hộp thư, tin nhăn --}}
                                 <div class="iq-card-body p-0 ">
                                     <div class="bg-primary p-3">
                                         <h5 class="mb-0 text-white">Tin Nhắn<small
@@ -245,7 +249,7 @@
                     </li>
                     {{-- <li class="nav-item nav-icon dropdown"> --}}
                     <li class="nav-item nav-icon">
-                        <a href="{{ route('cart.index') }}" class="search-toggle iq-waves-effect text-gray rounded">
+                        <a href="{{ route('cart.index') }}" class="iq-waves-effect text-gray rounded">
                             {{-- <a href="{{ route('cart.index') }}" class="search-toggle iq-waves-effect text-gray rounded"> --}}
                             <i class="ri-shopping-cart-2-line"></i>
                             {{-- dòng dưới giúp hiện thị số lượng sản phẩm trong giỏ hàng --}}
@@ -299,7 +303,8 @@
 
                         @if ($khach)
                             <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                                <img src="{{ asset('images/user/1.jpg') }}" class="img-fluid rounded-circle mr-3" alt="user">
+                                <img src="{{ asset('images/user/1.jpg') }}" class="img-fluid rounded-circle mr-3"
+                                    alt="user">
                                 <div class="caption">
                                     <h6 class="mb-1 line-height">{{ $khach->name }}</h6>
                                     <p class="mb-0 text-primary">
@@ -336,6 +341,17 @@
                                                 </div>
                                             </div>
                                         </a>
+                                        <a href="{{ route('user.favorite.index') }}"
+                                            class="iq-sub-card iq-bg-primary-hover">
+                                            <div class="media align-items-center">
+                                                <div class="rounded iq-card-icon iq-bg-primary">
+                                                    <i class="ri-account-box-line"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <h6 class="mb-0 ">Sách yêu thích</h6>
+                                                </div>
+                                            </div>
+                                        </a>
                                         <div class="d-inline-block w-100 text-center p-3">
                                             <form action="{{ route('user.logout') }}" method="POST">
                                                 @csrf
@@ -367,7 +383,7 @@
 <!-- TOP Nav Bar END -->
 <script>
     // Hiển thị số lượng sản phẩm trong giỏ hàng
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const countCart = document.querySelector('.count-cart');
         if (countCart) {
             const cartCount = {{ collect(session('cart', []))->sum('quantity') }};
@@ -375,22 +391,24 @@
         }
     });
 
-$(document).ready(function() {
-    let timer = null;
-    $('#search-sach-input').on('input', function() {
-        clearTimeout(timer);
-        let q = $(this).val().trim();
-        if (q.length < 2) {
-            $('#search-sach-result').hide().empty();
-            return;
-        }
-        timer = setTimeout(function() {
-            $.get('{{ route('search.sach.ajax') }}', {q: q}, function(data) {
-                let html = '';
-                if (data.length) {
-                    html = '<ul class="list-group">';
-                    data.forEach(function(book) {
-                        html += `<li class="list-group-item d-flex align-items-center">
+    $(document).ready(function() {
+        let timer = null;
+        $('#search-sach-input').on('input', function() {
+            clearTimeout(timer);
+            let q = $(this).val().trim();
+            if (q.length < 2) {
+                $('#search-sach-result').hide().empty();
+                return;
+            }
+            timer = setTimeout(function() {
+                $.get('{{ route('search.sach.ajax') }}', {
+                    q: q
+                }, function(data) {
+                    let html = '';
+                    if (data.length) {
+                        html = '<ul class="list-group">';
+                        data.forEach(function(book) {
+                            html += `<li class="list-group-item d-flex align-items-center">
                             <img src="${book.HinhAnh ? book.HinhAnh : '/images/no-image.png'}" width="40" class="mr-2 rounded" alt="">
                             <div>
                                 <a href="/sach/${book.slug}" class="font-weight-bold text-dark">${book.TenSach}</a>
@@ -398,28 +416,30 @@ $(document).ready(function() {
                                 <div class="small text-danger">${book.GiaBia ? book.GiaBia.toLocaleString() + ' đ' : ''}</div>
                             </div>
                         </li>`;
-                    });
-                    html += `<li class="list-group-item text-center"><a href="#" id="see-all-search">Xem tất cả kết quả</a></li>`;
-                    $('#search-sach-result').html(html).show();
-                } else {
-                    html = '<div class="p-2 text-muted">Không tìm thấy sách phù hợp.</div>';
-                    $('#search-sach-result').html(html).show();
-                }
-            });
-        }, 250);
-    });
+                        });
+                        html +=
+                            `<li class="list-group-item text-center"><a href="#" id="see-all-search">Xem tất cả kết quả</a></li>`;
+                        $('#search-sach-result').html(html).show();
+                    } else {
+                        html =
+                            '<div class="p-2 text-muted">Không tìm thấy sách phù hợp.</div>';
+                        $('#search-sach-result').html(html).show();
+                    }
+                });
+            }, 250);
+        });
 
-    // Ẩn gợi ý khi click ngoài
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#search-sach-input, #search-sach-result').length) {
-            $('#search-sach-result').hide();
-        }
-    });
+        // Ẩn gợi ý khi click ngoài
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('#search-sach-input, #search-sach-result').length) {
+                $('#search-sach-result').hide();
+            }
+        });
 
-    // Xem tất cả kết quả
-    $(document).on('click', '#see-all-search', function(e) {
-        e.preventDefault();
-        $('#main-search-form').submit();
+        // Xem tất cả kết quả
+        $(document).on('click', '#see-all-search', function(e) {
+            e.preventDefault();
+            $('#main-search-form').submit();
+        });
     });
-});
 </script>

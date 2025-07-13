@@ -27,6 +27,7 @@
                                         </div> --}}
                                     </div>
                                     <div class="iq-card-body">
+                                        @php $total = 0; @endphp
                                         @if (count($cart) > 0)
                                             <table class="table">
                                                 <thead>
@@ -40,7 +41,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @php $total = 0; @endphp
                                                     @foreach ($cart as $item)
                                                         @php $total += $item['price'] * $item['quantity']; @endphp
                                                         <tr>
@@ -102,19 +102,82 @@
                                             <span><a href="#"><strong>Áp dụng</strong></a></span>
                                         </div> --}}
                                         <hr>
-                                        <p><b>Chi tiết</b></p>
+                                        <p><b>Chi tiết:</b></p>
+                                        @php
+                                            $discount = 0;
+                                            if(session('applied_coupon')) {
+                                                $discount = $total * session('applied_coupon.phan_tram_giam') / 100;
+                                            }
+                                        @endphp
                                         <div class="d-flex justify-content-between mb-1">
                                             <span>Tổng</span>
-                                            <span id="cart-total">{{ isset($total) ? number_format($total, 0, ',', '.') : '0' }} đ</span>
+                                            <span id="cart-total">{{ number_format($total, 0, ',', '.') }} đ</span>
                                         </div>
-                                        {{-- Có thể bổ sung giảm giá, VAT, vận chuyển nếu muốn --}}
+                                        @if($discount > 0)
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Giảm giá</span>
+                                            <span class="text-success">-{{ number_format($discount, 0, ',', '.') }} đ</span>
+                                        </div>
+                                        @endif
                                         <hr>
                                         <div class="d-flex justify-content-between">
                                             <span class="text-dark"><strong>Tổng thanh toán</strong></span>
-                                            <span class="text-dark"><strong id="cart-total-final">{{ isset($total) ? number_format($total, 0, ',', '.') : '0' }} đ</strong></span>
+                                            <span class="text-dark"><strong id="cart-total-final">{{ number_format($total - $discount, 0, ',', '.') }} đ</strong></span>
                                         </div>
                                         <a id="place-order" href="{{ route('checkout.address') }}" class="btn btn-primary d-block mt-3 next">Đặt
                                             hàng</a>
+                                    </div>
+                                </div>
+                                <div class="iq-card">
+                                    <div class="iq-card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span>Khuyến mãi</span>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modal-khuyenmai">
+                                                Chọn khuyến mãi
+                                            </button>
+                                        </div>
+                                        @if(session('applied_coupon'))
+                                            <div class="mb-2 text-success">
+                                                <b>Đã áp dụng:</b> {{ session('applied_coupon.ten') }} ({{ session('applied_coupon.phan_tram_giam') }}%)
+                                                <button type="button" class="btn btn-link btn-sm text-danger p-0 ml-2" id="remove-coupon">Bỏ chọn</button>
+                                            </div>
+                                        @endif
+
+                                        <!-- Modal chọn khuyến mãi -->
+                                        <div class="modal fade" id="modal-khuyenmai" tabindex="-1" role="dialog" aria-labelledby="modalKhuyenMaiLabel" aria-hidden="true">
+                                          <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="modalKhuyenMaiLabel">Chọn khuyến mãi</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body">
+                                                @if(isset($dsKhuyenMai) && count($dsKhuyenMai))
+                                                    <ul class="list-group">
+                                                        @foreach($dsKhuyenMai as $km)
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <b>{{ $km->ten }}</b>
+                                                                <div class="small text-muted">Giảm {{ $km->phan_tram_giam }}% | {{ $km->getTrangThaiHienThiAttribute() }}</div>
+                                                            </div>
+                                                            <button class="btn btn-primary btn-sm btn-apply-coupon" 
+                                                                data-id="{{ $km->id }}" 
+                                                                data-ten="{{ $km->ten }}" 
+                                                                data-phantram="{{ $km->phan_tram_giam }}">
+                                                                Áp dụng
+                                                            </button>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @else
+                                                    <div class="text-muted">Không có khuyến mãi khả dụng.</div>
+                                                @endif
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 {{-- <div class="iq-card">
@@ -200,6 +263,9 @@
                             $('#cart-total').html(res.cart_total + ' đ');
                             $('#cart-total-final').html(res.cart_total + ' đ');
                             $row.find('.btn-qty[data-action="decrease"]').prop('disabled', res.quantity <= 1);
+
+                            // Cập nhật số lượng trên icon giỏ hàng
+                            $('.count-cart').text(res.cart_count > 0 ? res.cart_count : '');
                         }
                     }
                 });
@@ -221,6 +287,45 @@
                             $row.remove();
                             $('#cart-total').html(res.cart_total + ' đ');
                             $('#cart-total-final').html(res.cart_total + ' đ');
+                            // Cập nhật số lượng trên icon giỏ hàng
+                            $('.count-cart').text(res.cart_count > 0 ? res.cart_count : '');
+                        }
+                    }
+                });
+            });
+
+            // Áp dụng khuyến mãi
+            $('.btn-apply-coupon').click(function() {
+                var id = $(this).data('id');
+                var ten = $(this).data('ten');
+                var phantram = $(this).data('phantram');
+                $.ajax({
+                    url: '{{ route('cart.apply_coupon') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            $('#modal-khuyenmai').modal('hide');
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
+            // Bỏ chọn khuyến mãi
+            $('#remove-coupon').click(function() {
+                $.ajax({
+                    url: '{{ route('cart.remove_coupon') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            location.reload();
                         }
                     }
                 });

@@ -5,7 +5,8 @@
 
       <!-- Logo và địa chỉ -->
       <div class="col-md-3 mb-4">
-        <img src="https://yourdomain.com/assets/logo_nhasachtv.png" alt="NHASACHTV" style="height: 40px;">
+        {{-- <img src="https://yourdomain.com/assets/logo_nhasachtv.png" alt="NHASACHTV" style="height: 40px;"> --}}
+        <span class="text-primary text-uppercase">NHASACHTV</span>
         <p class="mt-3 small">
           Lầu 5, 387-389 Hai Bà Trưng Quận 3 TP HCM<br>
           Công Ty Cổ Phần Phát Hành Sách TP HCM - NHASACHTV<br>
