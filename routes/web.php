@@ -22,6 +22,9 @@ use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserCartController;
+use App\Http\Controllers\YeuThichSachController;
+use App\Models\User;
+
 //user
 // Route::get('/', [HomeController::class, 'index'])->name('user.welcome');
 // sign_in_up
@@ -138,6 +141,9 @@ Route::middleware(['auth:khach'])->group(function () {
     Route::get('/profile', [UserController::class, 'index'])->name('user.profile.index');
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');
     Route::get('/orders/{id}', [UserController::class, 'orderDetail'])->name('user.orders.detail');
+    Route::get('/yeu-thich', [YeuThichSachController::class, 'index'])->name('user.favorite.index');
+    Route::post('/yeu-thich/toggle', [YeuThichSachController::class, 'toggle'])->name('user.favorite.toggle');
+    Route::post('/yeu-thich/is-favorite', [YeuThichSachController::class, 'isFavorite'])->name('user.favorite.is_favorite');
 });
 Route::middleware(['web'])->group(function () {
     Route::get('/checkout/address', [UserCheckoutController::class, 'showAddressForm'])->name('checkout.address');
@@ -155,3 +161,9 @@ Route::get('reset-password/{token}', [UserAuthController::class, 'showResetForm'
 Route::post('reset-password', [UserAuthController::class, 'resetPassword'])->name('user.reset-password.send');
 
 Route::get('/bestseller', [HomeController::class, 'bestseller'])->name('user.bestseller');
+Route::post('/cart/add-ajax', [CartController::class, 'addAjax'])->name('cart.add.ajax');
+
+route::get('/google/login',[UserAuthController::class, 'redirectToGoogle'])->name('google.login');
+route::get('/auth/google/callback',[UserAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
+Route::post('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');

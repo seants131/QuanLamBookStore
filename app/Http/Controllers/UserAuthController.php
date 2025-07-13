@@ -12,6 +12,7 @@ use App\Mail\OrderPlacedMail;
 use App\Models\DonHang;
 use App\Models\ChiTietHoaDon;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserAuthController extends Controller
 {
@@ -137,5 +138,26 @@ class UserAuthController extends Controller
         return $status == Password::PASSWORD_RESET
             ? redirect()->route('user.sign-in')->with('status', __($status))
             : back()->withErrors(['email' => [__($status)]]);
+    }
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+    public function handleGoogleCallback()
+    {
+        // Cái stateless không bị lỗi đâu, đừng sửa
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = KhachHang::where('email', $googleUser->getEmail())->first();
+
+        if (!$user) {
+            $user = KhachHang::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'role' => 'khach',
+            ]);
+        }
+
+        Auth::guard('khach')->login($user);
+        return redirect()->route('user.home.index');
     }
 }

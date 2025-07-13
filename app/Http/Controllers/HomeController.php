@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sach;
 use App\Models\DanhMuc;
+use App\Models\YeuThichSach;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -31,12 +33,20 @@ class HomeController extends Controller
                                 ->take(4)
                                 ->get();
 
+        $favoriteBookIds = [];
+        if (Auth::guard('khach')->check()) {
+            $favoriteBookIds = YeuThichSach::where('khach_hang_id', Auth::guard('khach')->id())
+                ->pluck('sach_id')
+                ->toArray();
+        }
+
         // XÓA 'categoriesWithBookCounts' khỏi compact nếu chưa dùng
         return view('user.home.index', compact(
             'newReleaseSlides',
             'suggestedBooks',
             'bestSellerBook',
-            'favoriteBooks'
+            'favoriteBooks',
+            'favoriteBookIds'
         ));
     }
 

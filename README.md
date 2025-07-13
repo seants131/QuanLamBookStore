@@ -70,6 +70,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 database/database.sqlite
 composer install
+composer require laravel/socialite
 cp .env.example .env
 php artisan key:generate
 php artisan config:clear
