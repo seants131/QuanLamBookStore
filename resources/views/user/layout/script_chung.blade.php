@@ -92,4 +92,14 @@ $(document).on('click', '#remove-coupon', function() {
         }
     });
 });
+$(document).on('click', '.best-seller-option', function(e) {
+    e.preventDefault();
+    var type = $(this).data('type');
+    $('.best-seller-block').addClass('d-none');
+    $('#best-seller-' + type).removeClass('d-none');
+    let label = 'Trong ngày';
+    if(type === 'week') label = 'Trong tuần';
+    if(type === 'month') label = 'Trong tháng';
+    $('#best-seller-label').text(label);
+});
 </script>

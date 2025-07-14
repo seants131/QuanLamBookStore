@@ -101,17 +101,13 @@
                                                 <div class="text-primary mb-4">Tác giả: <span
                                                         class="text-body">{{ $book->TacGia }}</span></div>
                                                 <div class="mb-4 d-flex align-items-center">
-                                                    <form action="{{ route('cart.add') }}" method="POST"
-                                                        class="mr-2">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $book->MaSach }}">
-                                                        <button type="submit"
-                                                            class="btn btn-primary view-more btn-add-to-cart">Thêm
-                                                            vào giỏ hàng</button>
-                                                    </form>
-                                                    <a href="#" class="btn btn-primary view-more mr-2">Mua
-                                                        ngay</a>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary view-more btn-add-to-cart mr-2"
+                                                       data-id="{{ $book->MaSach }}"
+                                                       data-quantity="1">
+                                                        Thêm vào giỏ hàng
+                                                    </a>
+                                                    <a href="#" class="btn btn-primary view-more mr-2">Mua ngay</a>
                                                 </div>
                                                 <div class="mb-3">
                                                     <a href="javascript:void(0);" 
@@ -534,6 +530,32 @@
     <!-- Custom JavaScript -->
     <script src="{{ asset('js/custom.js') }}"></script>
     @include('user.layout.script_chung')
+    <script>
+        $(document).on('click', '.btn-add-to-cart', function(e) {
+            e.preventDefault();
+            var bookId = $(this).data('id');
+            var quantity = $(this).data('quantity') || 1;
+            $.ajax({
+                url: "{{ route('cart.add.ajax') }}",
+                method: "POST",
+                data: {
+                    id: bookId,
+                    quantity: quantity,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    if (res.success) {
+                        $('.count-cart').text(res.cart_count > 0 ? res.cart_count : '');
+                    } else {
+                        alert(res.message || 'Có lỗi xảy ra!');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra!');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

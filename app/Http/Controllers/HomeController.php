@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Lấy 9 sách mới nhất có hình ảnh
         $newReleaseSlides = Sach::whereNotNull('HinhAnh')
@@ -24,10 +24,50 @@ class HomeController extends Controller
                                 ->take(12)
                                 ->get();
 
+        // Bestseller chung
         $bestSellerBook = Sach::where('SoLuong', '>', 0)
                                 ->orderBy('LuotMua', 'desc')
                                 ->first();
-        // $categoriesWithBookCounts = DanhMuc::withCount('books')->whereNull('parent_id')->take(6)->get();
+
+        // Bestseller theo ngày
+        $bestSellerBookDay = Sach::where('SoLuong', '>', 0)
+            ->whereDate('updated_at', now()->toDateString())
+            ->orderByDesc('LuotMua')
+            ->first();
+
+        // Bestseller theo tuần, loại trừ sách đã lấy ở ngày
+        $bestSellerBookWeek = Sach::where('SoLuong', '>', 0)
+            ->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()])
+            ->when($bestSellerBookDay, function($q) use ($bestSellerBookDay) {
+                return $q->where('MaSach', '!=', $bestSellerBookDay->MaSach);
+            })
+            ->orderByDesc('LuotMua')
+            ->first();
+
+        // Bestseller theo tháng, loại trừ sách đã lấy ở ngày và tuần
+        $excludeIds = [];
+        if ($bestSellerBookDay) $excludeIds[] = $bestSellerBookDay->MaSach;
+        if ($bestSellerBookWeek) $excludeIds[] = $bestSellerBookWeek->MaSach;
+
+        $bestSellerBookMonth = Sach::where('SoLuong', '>', 0)
+            ->whereMonth('updated_at', now()->month)
+            ->whereYear('updated_at', now()->year)
+            ->whereNotIn('MaSach', $excludeIds)
+            ->orderByDesc('LuotMua')
+            ->first();
+
+        // Chỉ lấy 3 danh mục đặc biệt
+        $categorySlugs = ['canh-dieu', 'chan-troi-sang-tao', 'ket-noi-tri-thuc-voi-cuoc-song'];
+        $categoriesWithBookCounts = DanhMuc::whereIn('slug', $categorySlugs)
+            ->get()
+            ->map(function($category) {
+                $count = Sach::where('danh_muc_id', $category->id)
+                    ->where('SoLuong', '>', 0)
+                    ->count();
+                $category->book_count = $count;
+                return $category;
+            });
+
         $favoriteBooks = Sach::where('SoLuong', '>', 0)
                                 ->orderBy('LuotMua', 'desc')
                                 ->take(4)
@@ -40,39 +80,22 @@ class HomeController extends Controller
                 ->toArray();
         }
 
+        // Lấy tất cả sách thuộc danh mục "Cánh Diều"
+        $danhMuc = DanhMuc::where('ten', 'Cánh Diều')->first();
+        $sachCanhDieu = $danhMuc ? $danhMuc->books : collect();
+
         // XÓA 'categoriesWithBookCounts' khỏi compact nếu chưa dùng
         return view('user.home.index', compact(
             'newReleaseSlides',
             'suggestedBooks',
             'bestSellerBook',
+            'bestSellerBookDay',
+            'bestSellerBookWeek',
+            'bestSellerBookMonth',
             'favoriteBooks',
-            'favoriteBookIds'
+            'favoriteBookIds',
+            'sachCanhDieu' // Thêm biến sách Cánh Diều vào view
         ));
-    }
-
-    public function dangNhap()
-    {
-        return view('user.auth.dang_nhap');
-    }
-
-    public function postDangNhap()
-    {
-        return view('user.auth.dang_nhap');
-    }
-
-    public function dangXuat()
-    {
-        return view('user.home.dang_nhap');
-    }
-
-    public function dangKy()
-    {
-        return view('user.auth.dang_ky');
-    }
-
-    public function postDangKy()
-    {
-        return view('user.home.dang_ky');
     }
 
     public function contact()
@@ -95,7 +118,7 @@ class HomeController extends Controller
         // Sách yêu thích: nhiều lượt mua nhất
         $favoriteBooks = Sach::where('SoLuong', '>', 0)
             ->orderBy('LuotMua', 'desc')
-            ->take(4)
+            ->take(5)
             ->get();
 
         return view('user.product.chi_tiet_sach', compact('book', 'similarBooks', 'favoriteBooks'));

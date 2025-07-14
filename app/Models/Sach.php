@@ -10,8 +10,10 @@ class Sach extends Model
     use HasFactory;
 
     protected $table = 'sach';
-    public $incrementing = true; 
     protected $primaryKey = 'MaSach';
+    public $incrementing = true; 
+    protected $keyType = 'int';  // ĐÚNG nếu MaSach là INT
+
 
     protected $fillable = [
         'TenSach',

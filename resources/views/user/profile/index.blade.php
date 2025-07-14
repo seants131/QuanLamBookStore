@@ -16,351 +16,13 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="css/responsive.css">
+    @include('user.layout.link_chung')
 </head>
 
 <body class="sidebar-main-active right-column-fixed">
     <!-- loader Start -->
     @include('user.layout.header')
     <!-- TOP Nav Bar -->
-    <div class="iq-top-navbar">
-        <div class="iq-navbar-custom">
-            <nav class="navbar navbar-expand-lg navbar-light p-0">
-                <div class="iq-menu-bt d-flex align-items-center">
-                    <div class="wrapper-menu">
-                        <div class="main-circle"><i class="las la-bars"></i></div>
-                    </div>
-                    <div class="iq-navbar-logo d-flex justify-content-between">
-                        <a href="index.html" class="header-logo">
-                            <img src="images/logo.png" class="img-fluid rounded-normal" alt="">
-                            <div class="logo-title">
-                                <span class="text-primary text-uppercase">Booksto</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-breadcrumb">
-                    <h5 class="mb-0">User Profile</h5>
-                    <nav aria-label="breadcrumb">
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="iq-search-bar">
-                    <form action="#" class="searchbox">
-                        <input type="text" class="text search-input" placeholder="Search Here...">
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                    </form>
-                </div>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-label="Toggle navigation">
-                    <i class="ri-menu-3-line"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto navbar-list">
-                        <li class="nav-item nav-icon search-content">
-                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                                <i class="ri-search-line"></i>
-                            </a>
-                            <form action="#" class="search-box p-0">
-                                <input type="text" class="text search-input" placeholder="Type here to search...">
-                                <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                            </form>
-                        </li>
-                        <li class="nav-item nav-icon">
-                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                                <i class="ri-notification-2-fill"></i>
-                                <span class="bg-primary dots"></span>
-                            </a>
-                            <div class="iq-sub-dropdown">
-                                <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body p-0">
-                                        <div class="bg-primary p-3">
-                                            <h5 class="mb-0 text-white">All Notifications<small
-                                                    class="badge  badge-light float-right pt-1">4</small></h5>
-                                        </div>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                {{-- <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/01.jpg"
-                                                        alt="">
-                                                </div> --}}
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Emma Watson Barry</h6>
-                                                    <small class="float-right font-size-12">Just Now</small>
-                                                    <p class="mb-0">95 MB</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/02.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">New customer is join</h6>
-                                                    <small class="float-right font-size-12">5 days ago</small>
-                                                    <p class="mb-0">Cyst Barry</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/03.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Two customer is left</h6>
-                                                    <small class="float-right font-size-12">2 days ago</small>
-                                                    <p class="mb-0">Cyst Barry</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/04.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">New Mail from Fenny</h6>
-                                                    <small class="float-right font-size-12">3 days ago</small>
-                                                    <p class="mb-0">Cyst Barry</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item nav-icon dropdown">
-                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                                <span class="bg-primary count-mail"></span>
-                            </a>
-                            <div class="iq-sub-dropdown">
-                                <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body p-0 ">
-                                        <div class="bg-primary p-3">
-                                            <h5 class="mb-0 text-white">All Messages<small
-                                                    class="badge  badge-light float-right pt-1">5</small></h5>
-                                        </div>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/01.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Barry Emma Watson</h6>
-                                                    <small class="float-left font-size-12">13 Jun</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/02.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Lorem Ipsum Watson</h6>
-                                                    <small class="float-left font-size-12">20 Apr</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/03.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Why do we use it?</h6>
-                                                    <small class="float-left font-size-12">30 Jun</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/04.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Variations Passages</h6>
-                                                    <small class="float-left font-size-12">12 Sep</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="avatar-40 rounded" src="images/user/05.jpg"
-                                                        alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Lorem Ipsum generators</h6>
-                                                    <small class="float-left font-size-12">5 Dec</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item nav-icon dropdown">
-                            <a href="#" class="search-toggle iq-waves-effect text-gray rounded">
-                                <i class="ri-shopping-cart-2-line"></i>
-                                <span class="badge badge-danger count-cart rounded-circle">4</span>
-                            </a>
-                            <div class="iq-sub-dropdown">
-                                <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body p-0 toggle-cart-info">
-                                        <div class="bg-primary p-3">
-                                            <h5 class="mb-0 text-white">All Carts<small
-                                                    class="badge  badge-light float-right pt-1">4</small></h5>
-                                        </div>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="rounded" src="images/cart/01.jpg" alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Night People book</h6>
-                                                    <p class="mb-0">$32</p>
-                                                </div>
-                                                <div class="float-right font-size-24 text-danger"><i
-                                                        class="ri-close-fill"></i></div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="rounded" src="images/cart/02.jpg" alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">The Sin Eater Book</h6>
-                                                    <p class="mb-0">$40</p>
-                                                </div>
-                                                <div class="float-right font-size-24 text-danger"><i
-                                                        class="ri-close-fill"></i></div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="rounded" src="images/cart/03.jpg" alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">the Orange Tree</h6>
-                                                    <p class="mb-0">$30</p>
-                                                </div>
-                                                <div class="float-right font-size-24 text-danger"><i
-                                                        class="ri-close-fill"></i></div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="iq-sub-card">
-                                            <div class="media align-items-center">
-                                                <div class="">
-                                                    <img class="rounded" src="images/cart/04.jpg" alt="">
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Harsh Reality book</h6>
-                                                    <p class="mb-0">$25</p>
-                                                </div>
-                                                <div class="float-right font-size-24 text-danger"><i
-                                                        class="ri-close-fill"></i></div>
-                                            </div>
-                                        </a>
-                                        <div class="d-flex align-items-center text-center p-3">
-                                            <a class="btn btn-primary mr-2 iq-sign-btn" href="#"
-                                                role="button">View Cart</a>
-                                            <a class="btn btn-primary iq-sign-btn" href="#" role="button">Shop
-                                                now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="line-height pt-3">
-                            <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                                <img src="images/user/1.jpg" class="img-fluid rounded-circle mr-3" alt="user">
-                                <div class="caption">
-                                    <h6 class="mb-1 line-height">Barry Tech</h6>
-                                    <p class="mb-0 text-primary">$20.32</p>
-                                </div>
-                            </a>
-                            <div class="iq-sub-dropdown iq-user-dropdown">
-                                <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body p-0 ">
-                                        <div class="bg-primary p-3">
-                                            <h5 class="mb-0 text-white line-height">Hello Barry Tech</h5>
-                                            <span class="text-white font-size-12">Available</span>
-                                        </div>
-                                        <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
-                                            <div class="media align-items-center">
-                                                <div class="rounded iq-card-icon iq-bg-primary">
-                                                    <i class="ri-file-user-line"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">My Profile</h6>
-                                                    <p class="mb-0 font-size-12">View personal profile details.</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
-                                            <div class="media align-items-center">
-                                                <div class="rounded iq-card-icon iq-bg-primary">
-                                                    <i class="ri-profile-line"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Edit Profile</h6>
-                                                    <p class="mb-0 font-size-12">Modify your personal details.</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                            <div class="media align-items-center">
-                                                <div class="rounded iq-card-icon iq-bg-primary">
-                                                    <i class="ri-account-box-line"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Account settings</h6>
-                                                    <p class="mb-0 font-size-12">Manage your account parameters.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
-                                            <div class="media align-items-center">
-                                                <div class="rounded iq-card-icon iq-bg-primary">
-                                                    <i class="ri-lock-line"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Privacy Settings</h6>
-                                                    <p class="mb-0 font-size-12">Control your privacy parameters.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <div class="d-inline-block w-100 text-center p-3">
-                                            <a class="bg-primary iq-sign-btn" href="sign-in.html" role="button">Sign
-                                                out<i class="ri-login-box-line ml-2"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </div>
     <!-- TOP Nav Bar END -->
     <!-- Page Content  -->
     <div id="content-page" class="content-page">
@@ -382,11 +44,6 @@
                                             Đổi mật khẩu
                                         </a>
                                     </li>
-                                    <li class="col-md-4 p-0">
-                                        <a class="nav-link" data-toggle="pill" href="#manage-contact">
-                                            Quản lý liên hệ
-                                        </a>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -405,34 +62,19 @@
                                         <h4 class="card-title">Thông tin cá nhân</h4>
                                     </div>
                                     <div class="iq-card-body">
-                                        <form action="{{ route('admin.profile.update') }}" method="POST"
-                                            enctype="multipart/form-data">
+                                        <form action="{{ route('user.profile.update') }}" method="POST">
                                             @csrf
-                                            <div class="form-group row align-items-center">
-                                                {{-- <div class="col-md-12">
-                                                    <div class="profile-img-edit">
-                                                        <img class="profile-pic"
-                                                            src="{{ asset($user->avatar ?? 'images/user/default.jpg') }}"
-                                                            alt="avatar">
-
-                                                        <i class="ri-pencil-line upload-button"></i>
-                                                        <input class="file-upload" type="file" name="avatar"
-                                                            accept="image/*" />
-
-                                                    </div>
-                                                </div> --}}
-                                            </div>
                                             <div class="row align-items-center">
                                                 <div class="form-group col-sm-6">
-                                                    <label>Tên:</label>
+                                                    <label>Tên hiển thị:</label>
                                                     <input type="text" name="name" class="form-control"
-                                                        value="{{ $user->name }}">
+                                                        value="{{ $user->name }}" required>
                                                 </div>
-                                                {{-- <div class="form-group col-sm-6">
+                                                <div class="form-group col-sm-6">
                                                     <label>Email:</label>
-                                                    <input type="email" name="email" class="form-control"
-                                                        value="{{ $user->email }}">
-                                                </div> --}}
+                                                    <input type="email" class="form-control"
+                                                        value="{{ $user->email }}" disabled>
+                                                </div>
                                                 <div class="form-group col-sm-12">
                                                     <label>Địa chỉ:</label>
                                                     <textarea name="dia_chi" class="form-control" rows="4">{{ $user->dia_chi ?? '' }}</textarea>
@@ -451,59 +93,31 @@
                                         <h4 class="card-title">Đổi mật khẩu</h4>
                                     </div>
                                     <div class="iq-card-body">
-                                        <form action="{{ route('admin.profile.password') }}" method="POST">
+                                        <form action="{{ route('user.profile.password') }}" method="POST">
                                             @csrf
                                             <div class="form-group position-relative">
                                                 <label>Mật khẩu hiện tại:</label>
                                                 <input type="password" name="current_password"
-                                                    class="form-control password-field">
+                                                    class="form-control password-field" required>
                                                 <i class="toggle-password ri-eye-line"></i>
                                             </div>
-
                                             <div class="form-group position-relative">
                                                 <label>Mật khẩu mới:</label>
                                                 <input type="password" name="password"
-                                                    class="form-control password-field">
+                                                    class="form-control password-field" required>
                                                 <i class="toggle-password ri-eye-line"></i>
                                             </div>
-
                                             <div class="form-group position-relative">
                                                 <label>Xác nhận mật khẩu:</label>
                                                 <input type="password" name="password_confirmation"
-                                                    class="form-control password-field">
+                                                    class="form-control password-field" required>
                                                 <i class="toggle-password ri-eye-line"></i>
                                             </div>
-
                                             <button type="submit" class="btn btn-warning">Đổi mật khẩu</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Quản lý liên hệ -->
-                            <div class="tab-pane fade" id="manage-contact" role="tabpanel">
-                                <div class="iq-card">
-                                    <div class="iq-card-header d-flex justify-content-between">
-                                        <h4 class="card-title">Quản lý liên hệ</h4>
-                                    </div>
-                                    <div class="iq-card-body">
-                                        <form action="{{ route('admin.profile.contact.update') }}" method="POST">
-                                            @csrf
-                                            <div class="form-group">
-                                                <label>Số điện thoại:</label>
-                                                <input type="text" name="so_dien_thoai" class="form-control"
-                                                    value="{{ $user->so_dien_thoai ?? '' }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Địa chỉ:</label>
-                                                <textarea name="dia_chi" class="form-control">{{ $user->dia_chi ?? '' }}</textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Lưu liên hệ</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div> <!-- tab-content -->
                     </div>
                 </div>

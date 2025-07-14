@@ -122,7 +122,7 @@ class CartController extends Controller
     }
     public function addAjax(Request $request)
     {
-        $book = \App\Models\Sach::find($request->id);
+        $book = Sach::find($request->id);
         if (!$book) {
             return response()->json(['success' => false, 'message' => 'Sách không tồn tại!']);
         }

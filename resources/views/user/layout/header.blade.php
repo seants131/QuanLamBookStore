@@ -3,7 +3,8 @@
     <div class="iq-sidebar-logo d-flex justify-content-between">
         <a href="/" class="header-logo">
             <div class="logo-title">
-                <img src={{ asset('images/logo.png') }} class="img-fluid rounded-normal" alt="">
+                <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+                <img src="{{ asset('images/logo.ico') }}" class="img-fluid rounded-normal" alt="">
                 <span class="text-primary text-uppercase">NHASACHTV</span>
             </div>
         </a>
