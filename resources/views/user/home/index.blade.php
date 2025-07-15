@@ -57,7 +57,7 @@
                                     <h4 class="card-title mb-0">Gợi ý cho bạn</h4>
                                 </div>
                                 <div class="iq-card-header-toolbar d-flex align-items-center">
-                                    <a href="#" class="btn btn-sm btn-primary view-more">Xem Thêm</a>
+                                    {{-- <a href="#" class="btn btn-sm btn-primary view-more">Xem Thêm</a> --}}
                                 </div>
                             </div>
                             <div class="iq-card-body">

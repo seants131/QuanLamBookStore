@@ -37,7 +37,7 @@
                                 <ul id="newrealease-slider" class="list-inline p-0 m-0 d-flex align-items-center">
                                     <li class="item">
                                         <a href="javascript:void(0);">
-                                            <img src="images/new_realeases/img01.jpg" class="img-fluid w-100 rounded"
+                                            <img src="{{ asset('mages/new_realeases/img01.jpg')}}i" class="img-fluid w-100 rounded"
                                                 alt="">
                                         </a>
                                     </li>
