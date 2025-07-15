@@ -160,6 +160,7 @@ class UserCheckoutController extends Controller
         // COD
         return $this->createOrder('cod');
     }   
+    // Nếu thanh toán không được thì qua email tui nhé Lãm: hellotoilaquan@gmail.com
     public function createVnpayPayment(Request $request)
     {
         $vnp_TmnCode = "2U7M2JOT";
