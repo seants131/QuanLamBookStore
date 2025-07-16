@@ -94,4 +94,12 @@ class LienHeController extends Controller
         return redirect()->route('admin.lienhe.index')
                          ->with('success', 'Liên hệ đã được xóa thành công.');
     }
+    public function toggleTrangThai($id)
+    {
+        $contact = LienHe::findOrFail($id);
+        $contact->trang_thai = !$contact->trang_thai;
+        $contact->save();
+
+        return redirect()->route('admin.lienhe.index')->with('success', 'Cập nhật trạng thái thành công.');
+    }
 }

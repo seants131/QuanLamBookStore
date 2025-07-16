@@ -79,6 +79,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/orders/{id}/print', [OrderController::class, 'print'])->name('orders.print');
     Route::resource('khachhang', KhachHangController::class);
     Route::resource('lienhe', LienHeController::class);
+    Route::patch('/lienhe/{id}/toggle', [LienHeController::class, 'toggleTrangThai'])->name('lienhe.toggle');
     Route::resource('phieunhap',PhieuNhapController::class);
     Route::resource('khuyenmai', KhuyenMaiController::class);
     Route::resource('danhmuc', DanhMucController::class);
