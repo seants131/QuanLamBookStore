@@ -30,7 +30,13 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $query->orderBy('created_at', 'desc')->paginate(5);
+        if ($request->filled('trang_thai')) {
+            $query->where('trang_thai', $request->trang_thai);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')
+                ->paginate(5)
+                ->appends($request->all());
         $customers = KhachHang::all();
 
         return view('admin.orders.index', compact('orders', 'customers'));
