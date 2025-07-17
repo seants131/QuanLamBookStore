@@ -28,11 +28,15 @@
               <div class="w-100 p-3 bg-light rounded mb-3 border">
                 <form action="{{ route('admin.lienhe.index') }}" method="GET" class="d-flex flex-wrap">
                   <input type="text" name="ho_ten" class="form-control mb-2 mr-2" style="max-width:200px"
-                         placeholder="Họ tên" value="{{ request('ho_ten') }}">
+                        placeholder="Họ tên" value="{{ request('ho_ten') }}">
                   <input type="text" name="email" class="form-control mb-2 mr-2" style="max-width:220px"
-                         placeholder="Email" value="{{ request('email') }}">
-                  <input type="date" name="ngay_tao" class="form-control mb-2 mr-2"
-                         value="{{ request('ngay_tao') }}">
+                        placeholder="Email" value="{{ request('email') }}">
+                  <select name="trang_thai" class="form-control mb-2 mr-2" style="max-width:180px">
+                    <option value="">-- Trạng thái --</option>
+                    <option value="1" {{ request('trang_thai') === '1' ? 'selected' : '' }}>Đã xử lý</option>
+                    <option value="0" {{ request('trang_thai') === '0' ? 'selected' : '' }}>Chưa xử lý</option>
+                  </select>
+                  <input type="date" name="ngay_tao" class="form-control mb-2 mr-2" value="{{ request('ngay_tao') }}">
                   <button class="btn btn-success mb-2 mr-2">Tìm</button>
                   <a href="{{ route('admin.lienhe.index') }}" class="btn btn-secondary mb-2">Reset</a>
                 </form>
