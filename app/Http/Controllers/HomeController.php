@@ -21,7 +21,7 @@ class HomeController extends Controller
                                 ->get();
 
         $suggestedBooks = Sach::where('SoLuong', '>', 0)
-                                ->orderBy('created_at', 'desc')
+                                ->inRandomOrder()
                                 ->take(12)
                                 ->get();
 
