@@ -129,6 +129,18 @@
                                     <span>Giá sản phẩm</span>
                                     <span><strong>{{ number_format($cart_total, 0, ',', '.') }}đ</strong></span>
                                 </div>
+                                @if (session('applied_coupon'))
+                                    @php
+                                        $coupon = session('applied_coupon');
+                                        $giam_gia = $cart_total * $coupon['phan_tram_giam'] / 100;
+                                    @endphp
+                                    <div class="d-flex justify-content-between">
+                                        <span>Giảm giá ({{ $coupon['ten'] ?? '' }})</span>
+                                        <span class="text-danger">-{{ number_format($giam_gia, 0, ',', '.') }}đ</span>
+                                    </div>
+                                @else
+                                    @php $giam_gia = 0; @endphp
+                                @endif
                                 <div class="d-flex justify-content-between">
                                     <span>Phí vận chuyển</span>
                                     <span class="text-success">Miễn phí</span>
@@ -136,7 +148,9 @@
                                 <hr>
                                 <div class="d-flex justify-content-between">
                                     <span>Số tiền phải trả</span>
-                                    <span><strong>{{ number_format($cart_total, 0, ',', '.') }}đ</strong></span>
+                                    <span>
+                                        <strong>{{ number_format($cart_total - $giam_gia, 0, ',', '.') }}đ</strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>

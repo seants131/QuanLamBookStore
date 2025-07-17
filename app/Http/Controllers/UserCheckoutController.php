@@ -107,6 +107,16 @@ class UserCheckoutController extends Controller
         $tong_tien = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
         $tong_so_luong = collect($cart)->sum('quantity');
 
+        // Áp dụng khuyến mãi nếu có
+        $giam_gia = 0;
+        $khuyen_mai_id = null;
+        if (session('applied_coupon')) {
+            $coupon = session('applied_coupon');
+            $giam_gia = $coupon['phan_tram_giam']; // chỉ lưu phần trăm
+            $khuyen_mai_id = $coupon['id'];
+        }
+        $tong_tien_thanh_toan = $tong_tien - ($tong_tien * $giam_gia / 100);
+
         DB::beginTransaction();
 
         try {
@@ -115,10 +125,10 @@ class UserCheckoutController extends Controller
                 'ngay_mua' => now(),
                 'trang_thai' => 'cho_xu_ly',
                 'hinh_thuc_thanh_toan' => $hinh_thuc_thanh_toan,
-                'giam_gia' => 0,
-                'tong_tien' => $tong_tien,
+                'giam_gia' => $giam_gia, // chỉ lưu phần trăm
+                'tong_tien' => $tong_tien_thanh_toan,
                 'tong_so_luong' => $tong_so_luong,
-                'khuyen_mai_id' => null,
+                'khuyen_mai_id' => $khuyen_mai_id,
                 'dia_chi_giao_hang' => $fullAddress,
                 'transaction_no' => $transactionNo,
                 'sdt' => $user->so_dien_thoai,
@@ -135,15 +145,18 @@ class UserCheckoutController extends Controller
                 ]);
             }
 
+            // Xóa giỏ hàng và mã giảm giá trước khi gửi mail/commit
+            session()->forget('cart');
+            session()->forget('applied_coupon');
+
             Mail::to($user->email)->send(new OrderPlacedMail($donHang, $cart));
 
-            session()->forget('cart');
             DB::commit();
 
             return redirect()->route('cart.index')->with('success', 'Đặt hàng thành công! Vui lòng kiểm tra email.');
         } catch (\Exception $e) {
-            // DB::rollBack();
-            throw $e;
+            DB::rollBack();
+            return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra khi đặt hàng!');
         }
     }
     public function placeOrder(Request $request)

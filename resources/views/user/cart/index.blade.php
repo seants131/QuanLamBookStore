@@ -20,8 +20,11 @@
                                 <div class="iq-card">
                                     <div class="iq-card-header d-flex justify-content-between iq-border-bottom mb-0">
                                         @if (session('success'))
-                                    <div class="alert alert-success">{{ session('success') }}</div>
-                                @endif
+                                            <div class="alert alert-success">{{ session('success') }}</div>
+                                        @endif
+                                        @if (session('error'))
+                                            <div class="alert alert-danger">{{ session('error') }}</div>
+                                        @endif
                                         {{-- <div class="iq-header-title">
                                             <h4 class="card-title">Giỏ hàng</h4>
                                         </div> --}}
