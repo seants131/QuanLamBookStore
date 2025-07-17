@@ -169,3 +169,8 @@ route::get('/google/login',[UserAuthController::class, 'redirectToGoogle'])->nam
 route::get('/auth/google/callback',[UserAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
 Route::post('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
+
+// Hiển thị form liên hệ
+Route::get('/lien-he', [HomeController::class, 'create'])->name('user.lienhe.create');
+// Xử lý gửi liên hệ
+Route::post('/lien-he', [HomeController::class, 'store'])->name('user.lienhe.store');

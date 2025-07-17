@@ -13,7 +13,7 @@
         <nav class="iq-sidebar-menu">
             <ul id="iq-sidebar-toggle" class="iq-menu">
                 <li class="active active-menu">
-                    <a href="#dashboard" class="iq-waves-effect"><span class="ripple rippleEffect"></span><i
+                    <a href="/" class="iq-waves-effect"><span class="ripple rippleEffect"></span><i
                             class="las la-home iq-arrow-left"></i><span>Trang Chủ</span><i
                             class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="dashboard" class="iq-submenu collapse show" data-parent="#iq-sidebar-toggle">
@@ -53,6 +53,7 @@
              </li> --}}
                 <li><a href="{{ route('user.bestseller') }}"><i class="ri-book-line"></i>Thịnh hành</a></li>
                 <!-- <li><a href="book-pdf.html"><i class="ri-book-line"></i>Sách PDF</a></li> -->
+                 <li><a href="{{route('user.lienhe.create')}}"><i class="ri-book-line"></i>Liên hệ</a></li>
             </ul>
         </nav>
     </div>

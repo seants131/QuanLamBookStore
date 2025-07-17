@@ -7,6 +7,7 @@ use App\Models\Sach;
 use App\Models\DanhMuc;
 use App\Models\YeuThichSach;
 use Illuminate\Support\Facades\Auth;
+use \App\Models\LienHe;
 
 class HomeController extends Controller
 {
@@ -178,5 +179,28 @@ class HomeController extends Controller
     ->orderByDesc('LuotMua')
     ->paginate(16);
     return view('user.home.bestseller', compact('books'));
+}
+
+public function create()
+{
+    return view('user.lienhe.create');
+}
+
+public function store(Request $request)
+{
+    $request->validate([
+        'ho_ten' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'noi_dung' => 'required|string|max:1000',
+    ]);
+
+    LienHe::create([
+        'ho_ten' => $request->ho_ten,
+        'email' => $request->email,
+        'noi_dung' => $request->noi_dung,
+        'trang_thai' => 0, // chưa xử lý
+    ]);
+
+    return back()->with('success', 'Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm nhất.');
 }
 }
