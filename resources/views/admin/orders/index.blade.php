@@ -40,6 +40,15 @@
                                                placeholder="Nhập tên khách hàng"
                                                value="{{ request('khach_hang') }}">
                                     </div>
+                                    <div class="col-md-4 mt-2">
+                                        <select name="trang_thai" class="form-control">
+                                            <option value="">-- Tất cả trạng thái --</option>
+                                            <option value="cho_xu_ly" {{ request('trang_thai') == 'cho_xu_ly' ? 'selected' : '' }}>Chờ xử lý</option>
+                                            <option value="dang_giao" {{ request('trang_thai') == 'dang_giao' ? 'selected' : '' }}>Đang giao</option>
+                                            <option value="hoan_thanh" {{ request('trang_thai') == 'hoan_thanh' ? 'selected' : '' }}>Hoàn thành</option>
+                                            <option value="huy" {{ request('trang_thai') == 'huy' ? 'selected' : '' }}>Hủy</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-4">
                                         <button type="submit" class="btn btn-success">Tìm kiếm</button>
                                         <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary ml-2">Reset</a>
