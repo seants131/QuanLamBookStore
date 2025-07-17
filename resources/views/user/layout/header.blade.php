@@ -5,7 +5,7 @@
             <div class="logo-title">
                 <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
                 <img src="{{ asset('images/logo.ico') }}" class="img-fluid rounded-normal" alt="">
-                <span class="text-primary text-uppercase">NHASACHTV</span>
+                <span class="text-primary text-uppercase">NHASACH</span>
             </div>
         </a>
     </div>

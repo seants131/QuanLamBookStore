@@ -247,7 +247,7 @@
                         <li class="line-height pt-3">
                         @if (Auth::check())
                            <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                              <img src="{{ asset(Auth::user()->avatar ?? 'images/user/default.jpg') }}" class="img-fluid rounded-circle mr-3" alt="user">
+                              <img src="{{ asset(Auth::user()->avatar ?? 'images/user/default.png') }}" class="img-fluid rounded-circle mr-3" alt="user">
                               <div class="caption">
                               <h6 class="mb-1 line-height">{{ Auth::user()->name }}</h6> <!-- Hiển thị tên người dùng -->
                               <p class="mb-0 text-primary">Tài Khoản</p>

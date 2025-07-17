@@ -12,6 +12,7 @@ use App\Models\DanhMuc;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -29,14 +30,17 @@ class OrderController extends Controller
             });
         }
 
-        // 👉 Sắp xếp hóa đơn mới nhất lên đầu
-        $orders = $query->orderBy('created_at', 'desc')->paginate(5);
-        
+        if ($request->filled('trang_thai')) {
+            $query->where('trang_thai', $request->trang_thai);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')
+                ->paginate(5)
+                ->appends($request->all());
         $customers = KhachHang::all();
 
         return view('admin.orders.index', compact('orders', 'customers'));
     }
-
 
     public function show($id)
     {
@@ -48,10 +52,20 @@ class OrderController extends Controller
     {
         $customers = KhachHang::all();
         $sachs = Sach::all();
-        $khuyenMaiList = KhuyenMai::all();
+        $now = Carbon::now();
+
+        $activePromotions = KhuyenMai::where('trang_thai', 'kich_hoat')
+            ->whereDate('ngay_bat_dau', '<=', $now)
+            ->whereDate('ngay_ket_thuc', '>=', $now)
+            ->get();
         $danhMucs = DanhMuc::all();
 
-       return view('admin.orders.create', compact('customers', 'sachs', 'khuyenMaiList', 'danhMucs'));
+        return view('admin.orders.create', [
+            'customers' => $customers,
+            'sachs' => $sachs,
+            'khuyenMaiList' => $activePromotions,
+            'danhMucs' => $danhMucs,
+        ]);
     }
 
     public function store(Request $request)
@@ -78,8 +92,18 @@ class OrderController extends Controller
         try {
             $phanTramGiam = 0;
             if (!empty($validated['khuyen_mai_id'])) {
-                $km = KhuyenMai::find($validated['khuyen_mai_id']);
-                $phanTramGiam = $km ? $km->phan_tram_giam : 0;
+                $now = Carbon::now();
+                $km = KhuyenMai::where('id', $validated['khuyen_mai_id'])
+                    ->where('trang_thai', 'kich_hoat')
+                    ->whereDate('ngay_bat_dau', '<=', $now)
+                    ->whereDate('ngay_ket_thuc', '>=', $now)
+                    ->first();
+
+                if (!$km) {
+                    return back()->withInput()->with('error', 'Khuyến mãi không hợp lệ hoặc đã hết hạn.');
+                }
+
+                $phanTramGiam = $km->phan_tram_giam;
             }
 
             $tongTien = 0;
@@ -91,10 +115,10 @@ class OrderController extends Controller
                 'trang_thai' => $validated['trang_thai'],
                 'hinh_thuc_thanh_toan' => $validated['hinh_thuc_thanh_toan'],
                 'giam_gia' => $phanTramGiam,
-                'tong_tien' => 0, // cập nhật sau
+                'tong_tien' => 0,
                 'tong_so_luong' => 0,
                 'khuyen_mai_id' => $validated['khuyen_mai_id'] ?? null,
-                'dia_chi_giao_hang' => $validated['dia_chi_giao_hang'], // thêm dòng này
+                'dia_chi_giao_hang' => $validated['dia_chi_giao_hang'],
                 'sdt' => $validated['sdt'] ?? null,
                 'email' => $validated['email'] ?? null,
             ]);
@@ -151,7 +175,16 @@ class OrderController extends Controller
         $order = DonHang::with('chiTietDonHang.sach.danhMuc')->findOrFail($id);
         $customers = KhachHang::all();
         $sachs = Sach::all();
-        $khuyenMaiList = KhuyenMai::all();
+        $now = Carbon::now();
+
+        $khuyenMaiList = KhuyenMai::where(function ($query) use ($now) {
+                $query->where('trang_thai', 'kich_hoat')
+                      ->whereDate('ngay_bat_dau', '<=', $now)
+                      ->whereDate('ngay_ket_thuc', '>=', $now);
+            })
+            ->orWhere('id', $order->khuyen_mai_id)
+            ->get();
+
         return view('admin.orders.edit', compact('order', 'customers', 'sachs', 'khuyenMaiList'));
     }
 

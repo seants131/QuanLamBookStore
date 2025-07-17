@@ -77,8 +77,17 @@ class DanhMucController extends Controller
     /** Xóa danh mục */
     public function destroy($id)
     {
-        DanhMuc::findOrFail($id)->delete();
+        $danhmuc = DanhMuc::findOrFail($id);
+
+        // Kiểm tra nếu còn sách
+        if ($danhmuc->sachs()->count() > 0) {
+            return redirect()->route('admin.danhmuc.index')
+                            ->with('error', 'Không thể xóa danh mục vì vẫn còn sách liên kết.');
+        }
+
+        $danhmuc->delete();
+
         return redirect()->route('admin.danhmuc.index')
-                         ->with('success', 'Danh mục đã được xóa thành công.');
+                        ->with('success', 'Danh mục đã được xóa thành công.');
     }
 }

@@ -101,10 +101,12 @@
 
                         <div class="form-group">
                             <label for="khuyen_mai_id">Khuyến mãi (nếu có)</label>
-                            <select name="khuyen_mai_id" class="form-control">
+                           <select name="khuyen_mai_id" class="form-control">
                                 <option value="">-- Không áp dụng --</option>
-                                @foreach ($khuyenMaiList as $km)
-                                    <option value="{{ $km->id }}">{{ $km->ten }} ({{ $km->phan_tram_giam }}%)</option>
+                                @foreach($khuyenMaiList as $km)
+                                    <option value="{{ $km->id }}">
+                                        {{ $km->ten }} (Giảm {{ $km->phan_tram_giam }}%)
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

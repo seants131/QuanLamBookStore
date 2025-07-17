@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\LienHe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TraLoiLienHeMail;
 
 class LienHeController extends Controller
 {
@@ -30,6 +32,11 @@ class LienHeController extends Controller
         // Tìm theo ngày tạo
         if ($request->filled('ngay_tao')) {
             $query->whereDate('created_at', $request->ngay_tao);
+        }
+        
+        // Tìm theo trạng thái
+        if ($request->filled('trang_thai')) {
+            $query->where('trang_thai', $request->trang_thai);
         }
 
         $lienhe = $query->orderBy('created_at', 'desc')->paginate(10);
@@ -93,5 +100,31 @@ class LienHeController extends Controller
         LienHe::findOrFail($id)->delete();
         return redirect()->route('admin.lienhe.index')
                          ->with('success', 'Liên hệ đã được xóa thành công.');
+    }
+    // trạng thái
+    public function toggleTrangThai($id)
+    {
+        $contact = LienHe::findOrFail($id);
+        $contact->trang_thai = !$contact->trang_thai;
+        $contact->save();
+
+        return redirect()->route('admin.lienhe.index')->with('success', 'Cập nhật trạng thái thành công.');
+    }
+    // trả lời liên hê
+   public function reply(Request $request, $id)
+    {
+        $request->validate([
+            'phan_hoi' => 'required|string',
+        ]);
+
+        $contact = LienHe::findOrFail($id);
+
+        try {
+            // Truyền thêm $contact
+            \Mail::to($contact->email)->send(new \App\Mail\TraLoiLienHeMail($request->phan_hoi, $contact));
+            return redirect()->back()->with('success', 'Phản hồi đã được gửi thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gửi email thất bại: ' . $e->getMessage());
+        }
     }
 }

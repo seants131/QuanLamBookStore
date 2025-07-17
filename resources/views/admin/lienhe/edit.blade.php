@@ -10,12 +10,18 @@
             <h4 class="card-title">Chỉnh sửa liên hệ</h4>
           </div>
 
-          @if ($errors->any())
-            <div class="alert alert-danger">
-              <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+          @if (session('success'))
+            <div class="alert alert-success">
+              {{ session('success') }}
             </div>
           @endif
 
+          @if (session('error'))
+            <div class="alert alert-danger">
+              {{ session('error') }}
+            </div>
+          @endif
+          
           <form method="POST" action="{{ route('admin.lienhe.update', $contact->id) }}">
             @csrf 
             @method('PUT')
@@ -53,6 +59,23 @@
                 <a href="{{ route('admin.lienhe.index') }}" class="btn btn-secondary">← Trở về</a>
             </div>
           </form>
+          {{-- FORM GỬI PHẢN HỒI --}}
+          <div class="mt-4 p-4 bg-light rounded border">
+            <h5 class="mb-3 text-info">
+              <i class="fas fa-envelope-open-text"></i> Phản hồi qua email
+            </h5>
+
+            <form method="POST" action="{{ route('admin.lienhe.reply', $contact->id) }}">
+              @csrf
+              <div class="form-group">
+                <label for="phan_hoi" class="font-weight-bold">Nội dung phản hồi:</label>
+                <textarea name="phan_hoi" id="phan_hoi" class="form-control" rows="5" placeholder="Nhập nội dung phản hồi..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-success mt-2">
+                <i class="fas fa-paper-plane"></i> Gửi phản hồi
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

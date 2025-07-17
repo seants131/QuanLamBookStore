@@ -18,7 +18,7 @@ class CartController extends Controller
         return view('user.cart.index', compact('cart', 'dsKhuyenMai'));
     }
 
-    public function add(Request $request)
+    public function addFast(Request $request)
     {
         $book = Sach::findOrFail($request->id);
 

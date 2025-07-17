@@ -21,7 +21,7 @@ class HomeController extends Controller
                                 ->get();
 
         $suggestedBooks = Sach::where('SoLuong', '>', 0)
-                                ->orderBy('created_at', 'desc')
+                                ->inRandomOrder()
                                 ->take(12)
                                 ->get();
 
@@ -116,13 +116,19 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        // Sách yêu thích: nhiều lượt mua nhất
-        $favoriteBooks = Sach::where('SoLuong', '>', 0)
+        // 8 sách mới nhất
+        $latestBooks = Sach::where('SoLuong', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->take(8)
+            ->get();    
+
+        // Best seller: nhiều lượt mua nhất
+        $bestSellerBooks = Sach::where('SoLuong', '>', 0)
             ->orderBy('LuotMua', 'desc')
-            ->take(5)
+            ->take(8)
             ->get();
 
-        return view('user.product.chi_tiet_sach', compact('book', 'similarBooks', 'favoriteBooks'));
+        return view('user.product.chi_tiet_sach', compact('book', 'similarBooks', 'bestSellerBooks', 'latestBooks'));
     }
 
     public function cart()

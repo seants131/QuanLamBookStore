@@ -107,7 +107,9 @@
                                                        data-quantity="1">
                                                         Thêm vào giỏ hàng
                                                     </a>
-                                                    <a href="#" class="btn btn-primary view-more mr-2">Mua ngay</a>
+                                                    <a href="#" class="btn btn-primary view-more mr-2 btn-buy-now"
+                                                       data-id="{{ $book->MaSach }}"
+                                                       data-quantity="1">Mua ngay</a>
                                                 </div>
                                                 <div class="mb-3">
                                                     <a href="javascript:void(0);" 
@@ -121,7 +123,7 @@
                                                         </span>
                                                     </a>
                                                 </div>
-                                                <div class="iq-social d-flex align-items-center">
+                                                {{-- <div class="iq-social d-flex align-items-center">
                                                     <h5 class="mr-2">Chia sẻ:</h5>
                                                     <ul class="list-inline d-flex p-0 mb-0 align-items-center">
                                                         <li>
@@ -147,7 +149,7 @@
                                                                     aria-hidden="true"></i></a>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -163,7 +165,7 @@
                                     <h4 class="card-title mb-0">Sản phẩm tương tự</h4>
                                 </div>
                                 <div class="iq-card-header-toolbar d-flex align-items-center">
-                                    <a href="category.html" class="btn btn-sm btn-primary view-more">Xem thêm</a>
+                                    {{-- <a href="category.html" class="btn btn-sm btn-primary view-more">Xem thêm</a> --}}
                                 </div>
                             </div>
                             <div class="iq-card-body single-similar-contens">
@@ -198,245 +200,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
-                            <div
-                                class="iq-card-header d-flex justify-content-between align-items-center position-relative mb-0 trendy-detail">
-                                <div class="iq-header-title">
-                                    <h4 class="card-title mb-0">Thịnh hành</h4>
-                                </div>
-                                <div class="iq-card-header-toolbar d-flex align-items-center">
-                                    <a href="category.html" class="btn btn-sm btn-primary view-more">Xem thêm</a>
-                                </div>
-                            </div>
-                            <div class="iq-card-body trendy-contens">
-                                <ul id="trendy-slider" class="list-inline p-0 mb-0 row">
-                                    <li class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="col-5 p-0 position-relative image-overlap-shadow">
-                                                <a href="javascript:void();"><img class="img-fluid rounded w-100"
-                                                        src="images/trendy-books/01.jpg" alt=""></a>
-                                                <div class="view-book">
-                                                    <a href="book-page.html" class="btn btn-sm btn-white">Xem sách</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">Sinh Ra Để Trở Thành ..</h6>
-                                                    <p class="font-size-13 line-height mb-1">Paul Molive</p>
-                                                    <div class="d-block">
-                                                        <span class="font-size-13 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price d-flex align-items-center">
-                                                    <h6><b>107.900 ₫</b></h6>
-                                                </div>
-                                                <div class="iq-product-action">
-                                                    <a href="javascript:void();"><i
-                                                            class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                    <a href="javascript:void();" class="ml-2"><i
-                                                            class="ri-heart-fill text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="col-5 p-0 position-relative image-overlap-shadow">
-                                                <a href="javascript:void();"><img class="img-fluid rounded w-100"
-                                                        src="images/trendy-books/02.jpg" alt=""></a>
-                                                <div class="view-book">
-                                                    <a href="book-page.html" class="btn btn-sm btn-white">Xem sách</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">Năng Lực Tìm Kiếm</h6>
-                                                    <p class="font-size-13 line-height mb-1">Anna Sthesia</p>
-                                                    <div class="d-block">
-                                                        <span class="font-size-13 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price d-flex align-items-center">
-                                                    <h6><b>45.500 ₫</b></h6>
-                                                </div>
-                                                <div class="iq-product-action">
-                                                    <a href="javascript:void();"><i
-                                                            class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                    <a href="javascript:void();" class="ml-2"><i
-                                                            class="ri-heart-fill text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="col-5 p-0 position-relative image-overlap-shadow">
-                                                <a href="javascript:void();"><img class="img-fluid rounded w-100"
-                                                        src="images/trendy-books/03.jpg" alt=""></a>
-                                                <div class="view-book">
-                                                    <a href="book-page.html" class="btn btn-sm btn-white">Xem sách</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">Phân Tích Thị Trường...</h6>
-                                                    <p class="font-size-13 line-height mb-1">Monty Carlo</p>
-                                                    <div class="d-block">
-                                                        <span class="font-size-13 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price d-flex align-items-center">
-                                                    <h6><b>105.900 ₫</b></h6>
-                                                </div>
-                                                <div class="iq-product-action">
-                                                    <a href="javascript:void();"><i
-                                                            class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                    <a href="javascript:void();" class="ml-2"><i
-                                                            class="ri-heart-fill text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="col-5 p-0 position-relative image-overlap-shadow">
-                                                <a href="javascript:void();"><img class="img-fluid rounded w-100"
-                                                        src="images/trendy-books/04.jpg" alt=""></a>
-                                                <div class="view-book">
-                                                    <a href="book-page.html" class="btn btn-sm btn-white">Xem sách</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">Siêu Cò – How To Be A Power...</h6>
-                                                    <p class="font-size-13 line-height mb-1">Smith goal</p>
-                                                    <div class="d-block">
-                                                        <span class="font-size-13 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price d-flex align-items-center">
-                                                    <h6><b>249.000 ₫</b></h6>
-                                                </div>
-                                                <div class="iq-product-action">
-                                                    <a href="javascript:void();"><i
-                                                            class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                    <a href="javascript:void();" class="ml-2"><i
-                                                            class="ri-heart-fill text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="col-5 p-0 position-relative image-overlap-shadow">
-                                                <a href="javascript:void();"><img class="img-fluid rounded w-100"
-                                                        src="images/trendy-books/05.jpg" alt=""></a>
-                                                <div class="view-book">
-                                                    <a href="book-page.html" class="btn btn-sm btn-white">Xem sách</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">7 Thói Quen Của Bạn Trẻ... </h6>
-                                                    <p class="font-size-13 line-height mb-1">Paige Turner</p>
-                                                    <div class="d-block">
-                                                        <span class="font-size-13 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price d-flex align-items-center">
-                                                    <h6><b>95.900 ₫</b></h6>
-                                                </div>
-                                                <div class="iq-product-action">
-                                                    <a href="javascript:void();"><i
-                                                            class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                    <a href="javascript:void();" class="ml-2"><i
-                                                            class="ri-heart-fill text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="col-5 p-0 position-relative image-overlap-shadow">
-                                                <a href="javascript:void();"><img class="img-fluid rounded w-100"
-                                                        src="images/trendy-books/06.jpg" alt=""></a>
-                                                <div class="view-book">
-                                                    <a href="book-page.html" class="btn btn-sm btn-white">Xem sách</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-7">
-                                                <div class="mb-2">
-                                                    <h6 class="mb-1">Jeff Bezos Và Kỷ ..</h6>
-                                                    <p class="font-size-13 line-height mb-1">Barb Ackue</p>
-                                                    <div class="d-block">
-                                                        <span class="font-size-13 text-warning">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="price d-flex align-items-center">
-                                                    <h6><b>76.800 ₫</b></h6>
-                                                </div>
-                                                <div class="iq-product-action">
-                                                    <a href="javascript:void();"><i
-                                                            class="ri-shopping-cart-2-fill text-primary"></i></a>
-                                                    <a href="javascript:void();" class="ml-2"><i
-                                                            class="ri-heart-fill text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="col-lg-12">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                             <div
                                 class="iq-card-header d-flex justify-content-between align-items-center position-relative">
                                 <div class="iq-header-title">
-                                    <h4 class="card-title mb-0">Sách yêu thích</h4>
+                                    <h4 class="card-title mb-0">Sách Thịnh hành</h4>
                                 </div>
                                 <div class="iq-card-header-toolbar d-flex align-items-center">
-                                    <a href="category.html" class="btn btn-sm btn-primary view-more">Xem thêm</a>
+                                    {{-- <a href="category.html" class="btn btn-sm btn-primary view-more">Xem thêm</a> --}}
                                 </div>
                             </div>
-                            <div class="iq-card-body favorites-contens">
+                            {{-- <div class="iq-card-body favorites-contens">
                                 <ul id="favorites-slider" class="list-inline p-0 mb-0 row">
                                     @foreach ($favoriteBooks as $favBook)
                                         <li class="col-md-4">
@@ -459,6 +235,51 @@
                                                     <a href="{{ route('user.books.detail', $favBook->slug) }}"
                                                         class="text-dark">Đọc ngay<i
                                                             class="ri-arrow-right-s-line"></i></a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div> --}}
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                            <div class="iq-card-header d-flex justify-content-between align-items-center position-relative mb-0">
+                                <div class="iq-header-title">
+                                    <h4 class="card-title mb-0">Sách mới nhất</h4>
+                                </div>
+                                {{-- <div class="iq-card-header-toolbar d-flex align-items-center">
+                                    <a href="{{ route('user.home') }}" class="btn btn-sm btn-primary view-more">Xem thêm</a>
+                                </div> --}}
+                            </div>
+                            <div class="iq-card-body trendy-contens">
+                                <ul id="latest-slider" class="list-inline p-0 mb-0 row">
+                                    @foreach ($latestBooks as $latest)
+                                        <li class="col-md-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="col-5 p-0 position-relative image-overlap-shadow">
+                                                    <a href="{{ route('user.books.detail', $latest->slug) }}">
+                                                        <img class="img-fluid rounded w-100"
+                                                             src="{{ $latest->HinhAnh ? asset('uploads/books/' . $latest->HinhAnh) : asset('images/default-book-placeholder.jpg') }}"
+                                                             alt="{{ $latest->TenSach }}">
+                                                    </a>
+                                                    <div class="view-book">
+                                                        <a href="{{ route('user.books.detail', $latest->slug) }}" class="btn btn-sm btn-white">Xem sách</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-7">
+                                                    <div class="mb-2">
+                                                        <h6 class="mb-1">{{ Str::limit($latest->TenSach, 25) }}</h6>
+                                                        <p class="font-size-13 line-height mb-1">{{ $latest->TacGia }}</p>
+                                                    </div>
+                                                    <div class="price d-flex align-items-center">
+                                                        <h6><b>{{ number_format($latest->GiaBia, 0, ',', '.') }} ₫</b></h6>
+                                                    </div>
+                                                    <div class="iq-product-action">
+                                                        <a href="javascript:void();"><i class="ri-shopping-cart-2-fill text-primary"></i></a>
+                                                        <a href="javascript:void();" class="ml-2"><i class="ri-heart-fill text-danger"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </li>
@@ -546,6 +367,32 @@
                 success: function(res) {
                     if (res.success) {
                         $('.count-cart').text(res.cart_count > 0 ? res.cart_count : '');
+                    } else {
+                        alert(res.message || 'Có lỗi xảy ra!');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra!');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.btn-buy-now', function(e) {
+            e.preventDefault();
+            var bookId = $(this).data('id');
+            var quantity = $(this).data('quantity') || 1;
+            $.ajax({
+                url: "{{ route('cart.add.ajax') }}",
+                method: "POST",
+                data: {
+                    id: bookId,
+                    quantity: quantity,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    if (res.success) {
+                        window.location.href = "{{ route('cart.index') }}";
                     } else {
                         alert(res.message || 'Có lỗi xảy ra!');
                     }
