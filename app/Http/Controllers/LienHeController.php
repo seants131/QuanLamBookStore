@@ -33,6 +33,11 @@ class LienHeController extends Controller
         if ($request->filled('ngay_tao')) {
             $query->whereDate('created_at', $request->ngay_tao);
         }
+        
+        // Tìm theo trạng thái
+        if ($request->filled('trang_thai')) {
+            $query->where('trang_thai', $request->trang_thai);
+        }
 
         $lienhe = $query->orderBy('created_at', 'desc')->paginate(10);
 
